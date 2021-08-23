@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\LinkController;
+use App\Http\Controllers\PageController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,6 +26,10 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
+Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
+    Route::get('/dashboard', [PageController::class, 'list'])->name('dashboard');
+    Route::get('/page-editor/{id?}', [PageController::class, 'pageEditor'])->name('page-editor');
+    Route::post('/pages', [PageController::class, 'create'])->name('create-page');
+    Route::post('/pages/{pageId}/links', [LinkController::class, 'create'])->name('create-link');
+    Route::get('/api/links/get-meta', [LinkController::class, 'getMetaData'])->name('get-meta');
+});

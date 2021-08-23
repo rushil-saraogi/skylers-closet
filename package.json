@@ -17,12 +17,19 @@
         "@tailwindcss/typography": "^0.3.0",
         "@vue/compiler-sfc": "^3.0.5",
         "axios": "^0.21",
+        "eslint": "^7.32.0",
+        "eslint-plugin-vue": "^7.16.0",
         "laravel-mix": "^6.0.6",
-        "lodash": "^4.17.19",
+        "lodash": "^4.17.21",
         "postcss": "^8.1.14",
         "postcss-import": "^12.0.1",
         "tailwindcss": "^2.0.1",
         "vue": "^3.0.5",
         "vue-loader": "^16.1.2"
+    },
+    "dependencies": {
+        "@headlessui/vue": "^1.4.0",
+        "@heroicons/vue": "^1.0.4",
+        "vue-grid-layout": "^3.0.0-beta1"
     }
 }

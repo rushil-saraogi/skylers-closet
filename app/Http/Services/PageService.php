@@ -11,8 +11,9 @@ class PageService
     /**
      * PageService constructor.
      */
-    public function __construct()
+    public function __construct(LinkService $linkService)
     {
+        $this->linkService = $linkService;
     }
 
     /**

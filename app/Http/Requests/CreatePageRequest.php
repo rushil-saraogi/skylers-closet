@@ -13,7 +13,7 @@ class CreatePageRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class CreatePageRequest extends FormRequest
     public function rules()
     {
         return [
-            'slug' => 'required|string'
+            'slug' => 'required|string',
+            'links' => 'array'
         ];
     }
 }

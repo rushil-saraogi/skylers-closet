@@ -11,11 +11,14 @@ class Link extends Model
 
     protected $fillable = [
         'url',
+        'name',
         'title',
         'og_title',
         'description',
         'og_description',
-        'image'
+        'og_image',
+        'color',
+        'icon'
     ];
 
     public function page() {

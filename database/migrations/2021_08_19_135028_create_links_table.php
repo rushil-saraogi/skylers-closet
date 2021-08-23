@@ -17,11 +17,14 @@ class CreateLinksTable extends Migration
             $table->id();
             $table->unsignedBigInteger('page_id');
             $table->string('url');
-            $table->string('title');
-            $table->string('og_title');
-            $table->string('description');
-            $table->string('og_description');
-            $table->string('image');
+            $table->string('name');
+            $table->string('color');
+            $table->string('icon');
+            $table->string('title')->nullable();
+            $table->string('og_title')->nullable();
+            $table->string('description')->nullable();
+            $table->string('og_description')->nullable();
+            $table->string('og_image')->nullable();
             $table->timestamps();
 
             $table->foreign('page_id')

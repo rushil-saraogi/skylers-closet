@@ -17,6 +17,7 @@ class CreatePagesTable extends Migration
             $table->id();
             $table->string('slug');
             $table->unsignedBigInteger('user_id');
+            $table->json('layout')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePageRequest;
 use App\Http\Services\PageService;
+use App\Models\Page;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -22,21 +25,44 @@ class PageController extends Controller
     /**
      * Get the current user's pages
      *
-     * @param Request $request
      */
-    public function list(Request $request)
+    public function list()
     {
-        dd($request);
+        return Inertia::render('Dashboard', [
+            'pages' => Auth::user()->pages
+        ]);
     }
 
     /**
-     * Create a single page
+     * Get the current user's pages
+     *
+     */
+    public function pageEditor($id)
+    {
+        return Inertia::render('PageEditor', [
+            'page' => Page::find($id)
+                ->with('links')
+                ->get()
+                ->toArray()[0]
+        ]);
+    }
+
+    /**
+     * Create a single page for the current user
      *
      * @param CreatePageRequest $request
      */
     public function create(CreatePageRequest $request)
     {
-        dd($request);
-        
+        $page = $this->pageService->create(array_merge($request->all(), [
+            'user_id' => Auth::user()->id
+        ]));
+
+        return Inertia::render('PageEditor', [
+            'page' => Page::find($page->id)
+                ->with('links')
+                ->get()
+                ->toArray()[0]
+        ]);
     }
 }
