@@ -13,6 +13,7 @@ class Link extends Model
         'url',
         'name',
         'title',
+        'animated',
         'og_title',
         'description',
         'og_description',

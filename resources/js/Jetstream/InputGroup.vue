@@ -17,6 +17,7 @@
                 <loader class="mr-2" />
             </div>
         </div>
+        <div v-if="error" class="mt-1 text-red-500">{{ error }}</div>
     </div>
 </template>
 
@@ -27,12 +28,13 @@ export default {
     inheritAttrs: false,
     components: { Loader },
     emits: ['update:modelValue'],
-    props: ['isLoading', 'modelValue', 'icon'],
+    props: ['isLoading', 'modelValue', 'icon', 'error'],
     computed: {
         inputClasses() {
             return {
                 'pl-9': this.icon,
-                'pl-4': !this.icon
+                'pl-4': !this.icon,
+                'border-red-500': this.error
             }
         }
     }

@@ -5,7 +5,20 @@
         <ListboxButton
           class="relative w-full py-2 pl-3 pr-10 text-left border border-gray-300 bg-white rounded-md shadow-sm cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
         >
-          <span v-if="selectedOption" class="block truncate">{{ selectedOption }}</span>
+          <div v-if="selectedOption" class="flex items-center">
+            <span
+              v-if="selectedOption.icon"
+              class="mr-3"
+            >
+              <component
+                :is="selectedOption.icon"
+                class="w-4 h-4"
+                aria-hidden="true"
+                v-bind="selectedOption.iconProps || {}"
+              />
+            </span>
+            <span class="block truncate">{{ selectedOption.value }}</span>
+          </div>
           <span v-else class="block truncate text-gray-500">{{ label }}</span>
           <span
             class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
@@ -14,19 +27,21 @@
           </span>
         </ListboxButton>
 
+        <div v-if="error" class="mt-1 text-red-500">{{ error }}</div>
+
         <transition
           leave-active-class="transition duration-100 ease-in"
           leave-from-class="opacity-100"
           leave-to-class="opacity-0"
         >
           <ListboxOptions
-            class="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+            class="absolute w-full py-1 z-10 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
           >
             <ListboxOption
               v-slot="{ active, selected }"
               v-for="(item, index) in options"
               :key="index"
-              :value="item.value"
+              :value="item"
               as="template"
             >
               <li
@@ -47,7 +62,12 @@
                   v-if="item.icon"
                   class="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600"
                 >
-                  <component :is="item.icon" class="w-5 h-5" aria-hidden="true" />
+                  <component
+                    :is="item.icon"
+                    class="w-5 h-5"
+                    aria-hidden="true"
+                    v-bind="item.iconProps || {}"
+                  />
                 </span>
               </li>
             </ListboxOption>
@@ -86,9 +106,20 @@ export default {
       type: Array,
       default: []
     },
+
     label: {
       type: String,
       default: 'Select an option'
+    },
+
+    selected: {
+      type: String,
+      default: null,
+    },
+
+    error: {
+      type: String,
+      default: null
     }
   },
 
@@ -98,9 +129,15 @@ export default {
     }
   },
 
+  mounted() {
+    if (this.selected) {
+      this.selectedOption = this.options.find(option => option.value === this.selected);
+    }
+  },
+
   watch: {
     selectedOption(newVal) {
-      this.$emit('change', newVal);
+      this.$emit('change', newVal.value);
     }
   }
 }

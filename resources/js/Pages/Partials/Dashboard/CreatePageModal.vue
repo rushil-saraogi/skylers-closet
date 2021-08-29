@@ -24,16 +24,17 @@
                     autocomplete="off"
                     placeholder="Ex - alex-jones, movie-list"
                 />
-                <p class="text-sm text-gray-500 mt-3">Don't worry, you can always change this later.</p>
+                <!-- <p class="text-sm text-gray-500 mt-3">Don't worry, you can always change this later.</p> -->
+                <!-- Can you change this later?? -->
             </form>
 
-            <div class="bg-gray-100 p-3 mt-3 rounded text-gray-600">
+            <div class="bg-gray-100 p-3 mt-4 rounded text-gray-600">
                 <div class="font-mono text-sm text-gray-600">https://www.cover-story.com/{{form.slug}}</div>
             </div>
         </template>
 
         <template #footer>
-            <secondary-button class="mt-3 sm:mt-0 sm:ml-3">Nevermind</secondary-button>
+            <jet-secondary-button class="mt-3 sm:mt-0 sm:ml-3">Nevermind</jet-secondary-button>
             <jet-button @click="submit" class="sm:ml-3">Create</jet-button>
         </template>
     </dialog-modal>
@@ -42,7 +43,7 @@
 <script>
 import DialogModal from '@/Jetstream/DialogModal.vue';
 import JetButton from '@/Jetstream/Button.vue'
-import SecondaryButton from '@/Jetstream/SecondaryButton.vue'
+import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue'
 import IconPageAdd from '@/icons/IconPageAdd'
 import JetInput from '@/Jetstream/Input.vue'
 import JetLabel from '@/Jetstream/Label.vue'
@@ -53,7 +54,7 @@ export default {
     components: {
         DialogModal,
         JetButton,
-        SecondaryButton,
+        JetSecondaryButton,
         IconPageAdd,
         IconPageAdd,
         JetInput,

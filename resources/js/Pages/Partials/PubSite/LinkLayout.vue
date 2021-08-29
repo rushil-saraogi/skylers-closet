@@ -3,13 +3,14 @@
         v-if="layout && layout.length"
         :layout="layout"
         :col-num="colNum"
-        :row-height="30"
+        :row-height="GRID_CONSTANTS.rowHeight"
         :is-draggable="draggable"
         :is-resizable="resizable"
         :vertical-compact="true"
         :use-css-transforms="true"
         :prevent-collision="false"
         :responsive="false"
+        @layout-updated="handleLayoutUpdate"
     >
         <grid-item
             v-for="(item, index) in layout"
@@ -22,8 +23,10 @@
             :i="item.i"
         >
             <tile
-                @click:edit="$emit('click:edit-tile')"
+                @click:edit="$emit('click:edit-tile', links[index])"
+                @click:delete="toggleDeleteLinkModal(true, index)"
                 :data="links[index]"
+                :gridPosition="item"
             />
         </grid-item>
     </grid-layout>
@@ -34,16 +37,23 @@
         cta="Create Tile"
         @cta:click="$emit('click:edit-tile')"
     />
+    <delete-link-modal
+        :show="shouldShowDeleteModal"
+        @click:confirm="handleDeleteConfirm"
+        @click:close="toggleDeleteLinkModal(false)" 
+    />
 </template>
 
 <script>
     import Tile from './Tile';
     import ZeroState from '@/Jetstream/ZeroState.vue';
+    import DeleteLinkModal from './DeleteLinkModal.vue';
+    import { GRID_CONSTANTS } from './constants';
 
     export default {
-        components: { Tile, ZeroState },
+        components: { Tile, ZeroState, DeleteLinkModal },
 
-        emits: ['click:edit-tile'],
+        emits: ['click:edit-tile', 'update:layout', 'click:delete-tile'],
 
         data() {
             return {
@@ -52,6 +62,9 @@
                 resizable: true,
                 index: 0,
                 colNum: 4,
+                shouldShowDeleteModal: false,
+                selectedForDeletion: null,
+                GRID_CONSTANTS
             }
         },
 
@@ -64,35 +77,71 @@
                 type: Number,
                 default: 2,
             },
-            initalLayout: {
+            initialLayout: {
                 type: Array,
-                default: []
+                default: null
             },
         },
 
         mounted() {
-            for (const link of this.links) {
-                this.addItem();
+            this.resetLayout();
+        },
+
+        watch: {
+            links(newVal, oldVal) {
+                if (newVal.length > oldVal.length) {
+                    this.addItems(newVal.length - oldVal.length);
+                }
+            },
+
+            initialLayout() {
+                this.resetLayout();
             }
-            console.log(this.layout);
         },
 
         methods: {
-            addItem: function () {
-                // Add a new item. It must have a unique key!
-                this.layout.push({
-                    x: (this.layout.length * 2) % (this.colNum || 12),
-                    y: this.layout.length + (this.colNum || 12), // puts it at the bottom
-                    w: 2,
-                    h: 2,
-                    i: this.layout.length - 1,
-                });
+            addItems: function (n = 1) {
+                for (let i = 0; i < n; i++) {
+                    this.layout.push({
+                        x: (this.layout.length * 2) % (this.colNum || 12),
+                        y: this.layout.length + (this.colNum || 12), // puts it at the bottom
+                        w: 2,
+                        h: 4,
+                        i: this.layout.length - 1,
+                    });
+                }
             },
 
-            removeItem: function (val) {
-                const index = this.layout.map(item => item.i).indexOf(val);
+            removeItem: function (index) {
                 this.layout.splice(index, 1);
             },
+
+            handleDeleteConfirm() {
+                this.removeItem(this.selectedForDeletion);
+                this.$emit('click:delete-tile', this.links[this.selectedForDeletion].id);
+                this.toggleDeleteLinkModal(false);
+            },
+
+            handleLayoutUpdate(newLayout) {
+                this.$emit('update:layout', newLayout);
+            },
+
+            toggleDeleteLinkModal(show, selected = null) {
+                this.selectedForDeletion = selected;
+                this.shouldShowDeleteModal = show;
+            },
+
+            resetLayout() {
+                this.layout = this.initialLayout || [];
+
+                if (this.initialLayout && this.initialLayout.length < this.links.length) {
+                    this.addItems(this.links.length - this.initialLayout.length);
+                }
+
+                if (!this.initialLayout) {
+                    this.addItems(this.links.length);
+                }
+            }
         }
     }
 </script>
@@ -102,9 +151,6 @@
     Vue Grid Layout needs classes to be overriden for styling
     Details here - https://jbaysolutions.github.io/vue-grid-layout/guide/styling.html#placeholder
 */
-.vue-grid-layout {
-    /* background: red; */
-}
 .vue-grid-item:not(.vue-grid-placeholder) {
     background: #E5E7EB;
 }

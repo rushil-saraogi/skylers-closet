@@ -13,7 +13,10 @@
 
         <div class="py-12 px-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
-                <page-list :data="pages" @click:create-page="toggleCreatePageModal(true)" />
+                <page-list :data="pages"
+                    @click:create-page="toggleCreatePageModal(true)"
+                    @click:delete-page="deletePage"
+                />
             </div>
         </div>
 
@@ -28,7 +31,7 @@
     import AppLayout from '@/Layouts/AppLayout.vue'
     import PageList from './Partials/Dashboard/PageList.vue'
     import CreatePageModal from './Partials/Dashboard/CreatePageModal.vue'
-    import JetButton from '@/Jetstream/Button'
+    import JetButton from '@/Jetstream/Button';
 
     export default {
         props: ['pages'],
@@ -46,6 +49,10 @@
         methods: {
             toggleCreatePageModal(show) {
                 this.shouldShowCreatePageModal = show;
+            },
+
+            deletePage(id) {
+                this.$inertia.delete(this.route('delete-page', id));
             }
         }
     }

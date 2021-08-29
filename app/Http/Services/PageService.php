@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\Models\Page;
+use Illuminate\Support\Facades\Auth;
 use Exception;
 
 class PageService
@@ -17,7 +18,7 @@ class PageService
     }
 
     /**
-     * Create a link
+     * Create a page
      *
      * @param array $data
      * @return array
@@ -25,6 +26,27 @@ class PageService
     public function create(array $data):Page
     {
         $page = new Page();
+        $page->fill(array_merge($data, [
+            'user_id' => Auth::user()->id,
+        ]));
+        $page->save();
+
+        if (!$page->save()) {
+            throw new Exception('Page could not be saved.');
+        }
+
+        return $page;
+    }
+
+    /**
+     * Update a page
+     *
+     * @param array $data
+     * @return array
+     */
+    public function update(array $data, string $pageId):Page
+    {
+        $page = Page::find($pageId);
         $page->fill($data);
         $page->save();
 
@@ -33,6 +55,19 @@ class PageService
         }
 
         return $page;
+    }
+
+    /**
+     * Delete a link
+     *
+     * @param string $pageId
+     * @return array
+     */
+    public function delete(string $pageId)
+    {
+        $page = Page::find($pageId);
+        $page->links()->delete();
+        $page->delete();
     }
 
     /**

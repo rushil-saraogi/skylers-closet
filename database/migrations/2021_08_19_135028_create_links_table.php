@@ -20,6 +20,7 @@ class CreateLinksTable extends Migration
             $table->string('name');
             $table->string('color');
             $table->string('icon');
+            $table->boolean('animated')->default(false);
             $table->string('title')->nullable();
             $table->string('og_title')->nullable();
             $table->string('description')->nullable();

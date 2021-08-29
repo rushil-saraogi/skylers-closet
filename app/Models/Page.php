@@ -14,7 +14,15 @@ class Page extends Model
      *
      * @var array
      */
-    protected $fillable = ['slug', 'user_id'];
+    protected $fillable = [
+        'slug',
+        'user_id',
+        'layout'
+    ];
+
+    protected $casts = [
+        'layout' => 'array',
+    ];
 
     public function user() {
         return $this->belongsTo(User::class);  

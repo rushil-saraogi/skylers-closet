@@ -19,6 +19,7 @@
                         autofocus 
                         placeholder="Ex - https://www.linkedin.com/alex-jones..."
                         :isLoading="loadingMetaData"
+                        :error="errors?.url"
                     />
                 </div>
                 <div class="col-span-2">
@@ -29,6 +30,7 @@
                         v-model="form.name"
                         required
                         placeholder="Ex - LinkedIn, GitHub"
+                        :error="errors?.name"
                     />
                 </div>
                 <div class="col-span-2 md:col-span-1">
@@ -36,8 +38,9 @@
                         class="w-full"
                         label="Tile Color"
                         :options="TILE_COLORS"
-                        :selected-option="form.color"
+                        :selected="form.color"
                         @change="(val) => setFormValue(val, 'color')"
+                        :error="errors?.color"
                     />
                 </div>
                 <div class="col-span-2 md:col-span-1">
@@ -45,9 +48,16 @@
                         class="w-full"
                         label="Icon"
                         :options="TILE_ICONS"
-                        :selected-option="form.icon"
+                        :selected="form.icon"
                         @change="(val) => setFormValue(val, 'icon')"
+                        :error="errors?.icon"
                     />
+                </div>
+                <div class="col-span-2">
+                    <label class="flex items-center">
+                        <jet-checkbox name="animated" v-model:checked="form.animated" />
+                        <span class="ml-2 text-sm text-gray-600">Animated</span>
+                    </label>
                 </div>
             </form>
 
@@ -61,7 +71,7 @@
                 Nevermind
             </jet-secondary-button>
 
-            <jet-button @click="submit" class="ml-2" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <jet-button @click="submit" class="ml-2" :class="{ 'opacity-25': form.processing }" :disabled="isSubmitDisabled">
                 Save
             </jet-button>
         </template>
@@ -72,6 +82,7 @@
     import DialogModal from '@/Jetstream/DialogModal.vue';
     import JetButton from '@/Jetstream/Button.vue'
     import JetDropdown from '@/Jetstream/Dropdown.vue'
+    import JetCheckbox from '@/Jetstream/Checkbox.vue'
     import InputGroup from '@/Jetstream/InputGroup.vue'
     import JetSecondaryButton from '@/Jetstream/SecondaryButton';
     import JetLabel from '@/Jetstream/Label.vue'
@@ -87,12 +98,13 @@
             DialogModal,
             JetButton,
             JetLabel,
+            JetCheckbox,
             InputGroup,
             Loader,
             JetSecondaryButton,
             JetDropdown,
             Tile,
-            ListBox
+            ListBox,
         },
 
         emits: ['click:close'],
@@ -105,6 +117,16 @@
             pageId: {
                 type: Number,
                 required: true,
+            },
+            selectedTile: {
+                type: Object,
+                default: null,
+            },
+        },
+
+        computed: {
+            isSubmitDisabled() {
+                return this.form.processing || this.loadingMetaData;
             }
         },
 
@@ -116,11 +138,13 @@
                     icon: '',
                     color: '',
                     title: '',
+                    animated: false,
                     og_title: '',
                     description: '',
                     og_description: '',
                     og_image: '',
                 }),
+                errors: {},
                 inputTimeoutRef: null,
                 loadingMetaData: false,
                 metaData: null,
@@ -136,17 +160,40 @@
                 this.form.og_title = metaData.og_title;
                 this.form.og_description = metaData.og_description;
                 this.form.og_image = metaData.og_image;
-            }
+            },
+
+            show() {
+                this.form.reset();
+
+                if (this.selectedTile) {
+                    this.form.url = this.selectedTile.url;
+                    this.form.color = this.selectedTile.color;
+                    this.form.name = this.selectedTile.name;
+                    this.form.icon = this.selectedTile.icon;
+                    this.form.animated = !!this.selectedTile.animated;
+                    this.handleURLInputChange();
+                }
+            },
         },
 
         methods: {
             submit() {
-                this.form.post(this.route('create-link', this.pageId), {
-                    onFinish: () => {
-                        this.form.reset();
-                        this.$emit('click:close');
-                    },
-                })
+                const onFinish = () => {
+                    this.form.reset();
+                    this.$emit('click:close');
+                }
+
+                if (!this.validate()) return;
+
+                if (this.selectedTile) {
+                    this.form.put(this.route('update-link', [
+                        this.pageId,
+                        this.selectedTile.id
+                    ]), { onFinish });
+                    return;
+                }
+
+                this.form.post(this.route('create-link', this.pageId), { onFinish })
             },
 
             handleURLInputChange() {
@@ -157,8 +204,6 @@
                         if (isValidURL(this.form.url)) {
                             this.loadingMetaData = true;
                             this.metaData = await LinksApi.getMetaData(this.form.url);
-
-                            console.log('Scraped meta data from' + this.form.url, this.metaData);
                         }
                     } catch(e) {
                         console.error('Could not fetch Meta data');
@@ -166,6 +211,30 @@
                         this.loadingMetaData = false;
                     }
                 }, 750);
+            },
+
+            validate() {
+                this.errors = {};
+
+                if (!this.form.url) {
+                    this.errors.url = "We'll need a URL";
+                }
+
+                if (!this.form.name) {
+                    this.errors.name = "We'll need a name";
+                }
+
+
+                if (!this.form.icon) {
+                    this.errors.icon = 'How about an icon?';
+                }
+
+
+                if (!this.form.color) {
+                    this.errors.color = "It'll look a lot better with some color";
+                }
+
+                return Object.keys(this.errors).length === 0;
             },
 
             setFormValue(value, field) {

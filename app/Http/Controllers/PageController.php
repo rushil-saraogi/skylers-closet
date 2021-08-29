@@ -8,6 +8,7 @@ use App\Models\Page;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class PageController extends Controller
 {
@@ -39,11 +40,16 @@ class PageController extends Controller
      */
     public function pageEditor($id)
     {
+        $page = Page::with('links')->findOrFail($id)->toArray();
+
+        if (!$page) {
+            return Inertia::render('Dashboard', [
+                'pages' => Auth::user()->pages
+            ]);
+        }
+
         return Inertia::render('PageEditor', [
-            'page' => Page::find($id)
-                ->with('links')
-                ->get()
-                ->toArray()[0]
+            'page' => $page
         ]);
     }
 
@@ -54,15 +60,41 @@ class PageController extends Controller
      */
     public function create(CreatePageRequest $request)
     {
-        $page = $this->pageService->create(array_merge($request->all(), [
-            'user_id' => Auth::user()->id
-        ]));
+        $page = $this->pageService->create($request->all());
 
-        return Inertia::render('PageEditor', [
-            'page' => Page::find($page->id)
-                ->with('links')
-                ->get()
-                ->toArray()[0]
+        return Redirect::route('page-editor', $page->id);
+    }
+
+    /**
+     * Update a page
+     *
+     * @param Request $request
+     */
+    public function update(Request $request, string $pageId)
+    {
+        $page = $this->pageService->update($request->all(), $pageId);
+
+        return Redirect::route('page-editor', $page->id);
+    }
+
+    /**
+     * Delete a page
+     *
+     * @param Request $request
+     */
+    public function delete(string $pageId)
+    {
+        $this->pageService->delete($pageId);
+
+        return Redirect::route('dashboard');
+    }
+
+    public function pubsite(string $slug)
+    {
+        $page = Page::with('links')->where('slug', $slug)->first();
+        
+        return Inertia::render('Pubsite', [
+            'page' => $page
         ]);
     }
 }

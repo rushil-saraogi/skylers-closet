@@ -13,10 +13,14 @@
                 {{ content }}
 
                 <div class="mt-4">
-                    <jet-input type="password" class="mt-1 block w-3/4" placeholder="Password"
-                                ref="password"
-                                v-model="form.password"
-                                @keyup.enter="confirmPassword" />
+                    <jet-input 
+                        type="password"
+                        class="mt-1 block w-3/4"
+                        placeholder="Password"
+                        ref="password"
+                        v-model="form.password"
+                        @keyup.enter="confirmPassword"
+                    />
 
                     <jet-input-error :message="form.error" class="mt-2" />
                 </div>
