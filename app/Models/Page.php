@@ -17,7 +17,8 @@ class Page extends Model
     protected $fillable = [
         'slug',
         'user_id',
-        'layout'
+        'layout',
+        'wallpaper',
     ];
 
     protected $casts = [

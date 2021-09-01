@@ -1,5 +1,5 @@
 <template>
-    <button class="p-1 hover:background flex justify-center items-center hover:bg-gray-100 hover:bg-opacity-90 rounded-md">
+    <button class="p-2 hover:background flex justify-center items-center bg-white hover:bg-gray-200 h-12 w-12 rounded-full">
         <span class="material-icons text-2xl text-gray-400">{{ icon }}</span>
     </button>
 </template>

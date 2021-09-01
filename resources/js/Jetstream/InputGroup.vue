@@ -13,11 +13,14 @@
                 :value="modelValue"
                 @input="$emit('update:modelValue', $event.target.value)"
             >
-            <div v-if="isLoading" class="absolute inset-y-0 right-0 flex items-center">
-                <loader class="mr-2" />
+            <div class="absolute inset-y-0 right-0 flex items-center">
+                <loader v-if="isLoading" class="mr-2" />
+                <div class="mr-2 v-else">
+                    <slot name="icon" ></slot>
+                </div>
             </div>
         </div>
-        <div v-if="error" class="mt-1 text-red-500">{{ error }}</div>
+        <div v-if="error" class="mt-1.5 text-red-500">{{ error }}</div>
     </div>
 </template>
 

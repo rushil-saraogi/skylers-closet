@@ -1,6 +1,6 @@
 <template>
     <Component :is="Icons[icon]"
-        class="h-5 w-5 hover:cursor-pointer opacity-50 hover:opacity-70"
+        class="h-5 w-5 hover:cursor-pointer opacity-50 hover:opacity-80"
         :class="wrapperClasses"
         :v-bind="$attrs"
     />
@@ -29,7 +29,7 @@ export default {
 
     computed: {
         wrapperClasses() {
-            return this.theme === themes.light ? 'text-white' : 'text-black';
+            return this.theme === themes.light ? 'text-gray-800' : 'text-black';
         }
     }
 }

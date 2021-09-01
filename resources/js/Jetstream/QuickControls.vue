@@ -3,7 +3,7 @@
         v-if="show"
         class="h-full w-full flex justify-center items-center absolute top-0 left-0"
     >   
-        <div class="bg-opacity-10 rounded-full flex gap-4 p-2" :class="wrapperClasses">
+        <div class="bg-opacity-80 rounded-full flex gap-4 p-2" :class="wrapperClasses">
             <slot></slot>
         </div>
     </div>
@@ -26,7 +26,7 @@ export default {
 
     computed: {
         wrapperClasses() {
-            return this.theme === themes.light ? 'bg-white' : 'bg-black';
+            return this.theme === themes.light ? 'bg-white' : 'bg-gray-300';
         }
     }
 }

@@ -1,14 +1,15 @@
 <template>
-    <div class="rounded" :class="[`bg-${color}`]" />
+    <div :class="`rounded h-5 w-5 bg-${color}`" />
 </template>
 
 <script>
+
 export default {
     props: {
         color: {
             type: String,
-            required: true
+            default: 'black'
         }
-    }
+    },
 }
 </script>

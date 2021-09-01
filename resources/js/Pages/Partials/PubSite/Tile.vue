@@ -15,7 +15,7 @@
                     :style="tileScreenStyles"
                 >
                     <div>
-                        <tile-icon v-if="icon" :icon="icon" />
+                        <tile-icon v-if="icon" :icon="icon" class="h-7 w-7" />
                     </div>
                     <div class="flex justify-between items-center min-h-7">
                         <div class="text-white font-semibold">{{ name }}</div>
@@ -36,8 +36,8 @@
                     class="h-full w-full p-4"
                     :style="tileScreenStyles"
                 >
-                    <div class="text-white font-semibold">{{ ogTitle || title }}</div>
-                    <div class="text-white mt-1 text-sm">{{ ogDescription || description }}</div>
+                    <div class="text-white font-semibold line-clamp-2">{{ ogTitle || title }}</div>
+                    <div class="text-white mt-1 text-sm line-clamp-2">{{ ogDescription || description }}</div>
                 </div>
             </div>
         </div>
@@ -171,11 +171,11 @@
             },
 
             tileScreenStyles() {
-                // I have NO idea where the extra height is coming from
                 if (this.inPreviewMode) {
                     return { height: '8rem' };
                 }
 
+                // I have NO idea where the extra height is coming from
                 return {
                     height: `${(GRID_CONSTANTS.rowHeight * this.gridPosition.h) + ((this.gridPosition.h - 1) * 10)}px`
                 }

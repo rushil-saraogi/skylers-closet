@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     // Misc
     // Routes prefixed with API do not follow the inertia pattern
     Route::get('/api/links/get-meta', [MetaDataController::class, 'getMetaData'])->name('get-meta');
+    Route::get('/api/pages/valid-slug', [PageController::class, 'validateSlug'])->name('validate-slug');
 });
 
 // Catch all route for pubsites

@@ -17,7 +17,7 @@
                 v-bind="selectedOption.iconProps || {}"
               />
             </span>
-            <span class="block truncate">{{ selectedOption.value }}</span>
+            <span class="block truncate">{{ selectedOption }}</span>
           </div>
           <span v-else class="block truncate text-gray-500">{{ label }}</span>
           <span
@@ -56,18 +56,13 @@
                     selected ? 'font-medium' : 'font-normal',
                     'block truncate',
                   ]"
-                  >{{ item.value }}</span
+                  >{{ item }}</span
                 >
                 <span
-                  v-if="item.icon"
+                  v-if="$slots.icon"
                   class="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600"
                 >
-                  <component
-                    :is="item.icon"
-                    class="w-5 h-5"
-                    aria-hidden="true"
-                    v-bind="item.iconProps || {}"
-                  />
+                  <slot name="icon" :item="item"></slot>
                 </span>
               </li>
             </ListboxOption>
@@ -131,13 +126,13 @@ export default {
 
   mounted() {
     if (this.selected) {
-      this.selectedOption = this.options.find(option => option.value === this.selected);
+      this.selectedOption = this.options.find(option => option === this.selected);
     }
   },
 
   watch: {
     selectedOption(newVal) {
-      this.$emit('change', newVal.value);
+      this.$emit('change', newVal);
     }
   }
 }

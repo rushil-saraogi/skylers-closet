@@ -41,7 +41,12 @@
                         :selected="form.color"
                         @change="(val) => setFormValue(val, 'color')"
                         :error="errors?.color"
-                    />
+                        :add-color-icons="true"
+                    >
+                        <template v-slot:icon="slotProps">
+                            <color-icon :color="slotProps.item" />
+                        </template>
+                    </list-box>
                 </div>
                 <div class="col-span-2 md:col-span-1">
                     <list-box
@@ -51,7 +56,12 @@
                         :selected="form.icon"
                         @change="(val) => setFormValue(val, 'icon')"
                         :error="errors?.icon"
-                    />
+                        :add-icons="true"
+                    >
+                        <template v-slot:icon="slotProps">
+                            <tile-icon :icon="slotProps.item" color="gray-800" class="h-5 w-5" />
+                        </template>
+                    </list-box>
                 </div>
                 <div class="col-span-2">
                     <label class="flex items-center">
@@ -60,7 +70,6 @@
                     </label>
                 </div>
             </form>
-
             <div class="mt-7 mb-3 flex justify-center">
                 <tile :data="form.data()" :in-preview-mode="true" />
             </div>
@@ -91,7 +100,10 @@
     import Loader from '@/Jetstream/Loader.vue';
     import Tile from './Tile.vue';
     import ListBox from '@/Jetstream/ListBox.vue';
-    import { TILE_COLORS, TILE_ICONS } from './constants';
+    import { TILE_COLORS } from './constants';
+    import { TILE_ICONS } from './TileIcon.vue';
+    import ColorIcon from '@/Jetstream/ColorIcon.vue';
+    import TileIcon from './TileIcon.vue';
 
     export default {
         components: {
@@ -105,6 +117,8 @@
             JetDropdown,
             Tile,
             ListBox,
+            ColorIcon,
+            TileIcon,
         },
 
         emits: ['click:close'],
@@ -149,7 +163,7 @@
                 loadingMetaData: false,
                 metaData: null,
                 TILE_COLORS,
-                TILE_ICONS
+                TILE_ICONS,
             }
         },
 
