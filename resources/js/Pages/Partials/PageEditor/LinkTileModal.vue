@@ -1,7 +1,7 @@
 <template>
     <dialog-modal :show="show" @close="$emit('click:close')">
         <template #title>
-            Edit Tile
+            Link Tile
         </template>
 
         <template #content>
@@ -71,7 +71,7 @@
                 </div>
             </form>
             <div class="mt-7 mb-3 flex justify-center">
-                <tile :data="form.data()" :in-preview-mode="true" />
+                <link-tile :data="form.data()" :in-preview-mode="true" />
             </div>
         </template>
 
@@ -98,9 +98,9 @@
     import { isValidURL } from '@/Util/Url';
     import LinksApi from '@/API/LinksApi';
     import Loader from '@/Jetstream/Loader.vue';
-    import Tile from './Tile.vue';
+    import LinkTile from './LinkTile.vue';
     import ListBox from '@/Jetstream/ListBox.vue';
-    import { TILE_COLORS } from './constants';
+    import { TILE_COLORS, TILE_TYPE_LINK } from './constants';
     import { TILE_ICONS } from './TileIcon.vue';
     import ColorIcon from '@/Jetstream/ColorIcon.vue';
     import TileIcon from './TileIcon.vue';
@@ -115,7 +115,7 @@
             Loader,
             JetSecondaryButton,
             JetDropdown,
-            Tile,
+            LinkTile,
             ListBox,
             ColorIcon,
             TileIcon,
@@ -180,11 +180,11 @@
                 this.form.reset();
 
                 if (this.selectedTile) {
-                    this.form.url = this.selectedTile.url;
-                    this.form.color = this.selectedTile.color;
-                    this.form.name = this.selectedTile.name;
-                    this.form.icon = this.selectedTile.icon;
-                    this.form.animated = !!this.selectedTile.animated;
+                    this.form.url = this.selectedTile.data.url;
+                    this.form.color = this.selectedTile.data.color;
+                    this.form.name = this.selectedTile.data.name;
+                    this.form.icon = this.selectedTile.data.icon;
+                    this.form.animated = !!this.selectedTile.data.animated;
                     this.handleURLInputChange();
                 }
             },
@@ -200,14 +200,14 @@
                 if (!this.validate()) return;
 
                 if (this.selectedTile) {
-                    this.form.put(this.route('update-link', [
+                    this.form.put(this.route('update-tile', [
                         this.pageId,
                         this.selectedTile.id
                     ]), { onFinish });
                     return;
                 }
 
-                this.form.post(this.route('create-link', this.pageId), { onFinish })
+                this.form.post(this.route('create-tile', [this.pageId, TILE_TYPE_LINK]), { onFinish })
             },
 
             handleURLInputChange() {

@@ -12,9 +12,9 @@ class PageService
     /**
      * PageService constructor.
      */
-    public function __construct(LinkService $linkService)
+    public function __construct(TileService $tileService)
     {
-        $this->linkService = $linkService;
+        $this->tileService = $tileService;
     }
 
     /**
@@ -58,7 +58,7 @@ class PageService
     }
 
     /**
-     * Delete a link
+     * Delete a tile
      *
      * @param string $pageId
      * @return array
@@ -66,7 +66,7 @@ class PageService
     public function delete(string $pageId)
     {
         $page = Page::find($pageId);
-        $page->links()->delete();
+        $page->tiles()->delete();
         $page->delete();
     }
 

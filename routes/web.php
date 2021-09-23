@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\LinkController;
+use App\Http\Controllers\TileController;
 use App\Http\Controllers\MetaDataController;
 use App\Http\Controllers\PageController;
 use Illuminate\Foundation\Application;
@@ -37,10 +37,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::put('/pages/{pageId}', [PageController::class, 'update'])->name('update-page');
     Route::delete('/pages/{pageId}', [PageController::class, 'delete'])->name('delete-page');
     
-    // Link Forms
-    Route::post('/pages/{pageId}/links', [LinkController::class, 'create'])->name('create-link');
-    Route::put('/pages/{pageId}/links/{linkId}', [LinkController::class, 'update'])->name('update-link');
-    Route::delete('/pages/{pageId}/links/{linkId}', [LinkController::class, 'delete'])->name('delete-link');
+    // Tile Forms
+    Route::post('/pages/{pageId}/tiles/{tileType}', [TileController::class, 'create'])->name('create-tile');
+    Route::put('/pages/{pageId}/tiles/{tileId}', [TileController::class, 'update'])->name('update-tile');
+    Route::delete('/pages/{pageId}/tiles/{tileId}', [TileController::class, 'delete'])->name('delete-tile');
     
     // Misc
     // Routes prefixed with API do not follow the inertia pattern

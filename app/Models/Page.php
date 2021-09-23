@@ -17,12 +17,15 @@ class Page extends Model
     protected $fillable = [
         'slug',
         'user_id',
-        'layout',
+        'layout_lg',
+        'layout_sm',
         'wallpaper',
+        'active'
     ];
 
     protected $casts = [
-        'layout' => 'array',
+        'layout_lg' => 'array',
+        'layout_sm' => 'array',
     ];
 
     public function user() {
@@ -30,10 +33,10 @@ class Page extends Model
     }
 
     /**
-     * Page links
+     * Page tiles
      */
-    public function links()
+    public function tiles()
     {
-        return $this->hasMany(Link::class);
+        return $this->hasMany(Tile::class);
     }
 }

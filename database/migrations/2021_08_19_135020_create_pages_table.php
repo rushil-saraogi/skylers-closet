@@ -15,10 +15,12 @@ class CreatePagesTable extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
-            $table->string('slug');
-            $table->string('wallpaper')->nullable();
+            $table->string('slug')->unique();
+            $table->string('wallpaper', 600)->nullable();
             $table->unsignedBigInteger('user_id');
-            $table->json('layout')->nullable();
+            $table->boolean('active')->default(true);
+            $table->json('layout_lg')->nullable();
+            $table->json('layout_sm')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')

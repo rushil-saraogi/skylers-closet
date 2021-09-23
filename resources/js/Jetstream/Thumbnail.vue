@@ -8,7 +8,7 @@
         @click="$emit('click')"
     >
         <div v-if="src" class="h-32 w-44 bg-center bg-cover bg-gray-100" :style="{'background-image':`url(${src})`}"></div>
-        <div v-else>Nothing here</div>
+        <div class="h-32 w-44 flex items-center justify-center bg-gray-100" v-else>{{ placeholder }}</div>
     </div>
 </template>
 <script>
@@ -24,6 +24,10 @@ export default {
         selected: {
             type: Boolean,
             default: false,
+        },
+        placeholder: {
+            type: String,
+            default: '',
         }
     }
 }

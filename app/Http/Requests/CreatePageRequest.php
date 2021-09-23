@@ -25,7 +25,7 @@ class CreatePageRequest extends FormRequest
     {
         return [
             'slug' => 'required|string',
-            'links' => 'array'
+            'tiles' => 'array'
         ];
     }
 }

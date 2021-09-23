@@ -43,7 +43,7 @@ class PageController extends Controller
      */
     public function pageEditor($id)
     {
-        $page = Page::with('links')->findOrFail($id)->toArray();
+        $page = Page::with('tiles')->findOrFail($id)->toArray();
 
         if (!$page) {
             return Inertia::render('Dashboard', [
@@ -95,7 +95,7 @@ class PageController extends Controller
     public function validateSlug(Request $request)
     {
         $slug = $request->get('slug');
-        $alreadyExists = Page::with('links')->where('slug', $slug)->exists();
+        $alreadyExists = Page::with('tiles')->where('slug', $slug)->exists();
         $validFormat = preg_match(self::SLUG_PATTERN, $slug);
         $valid = true;
 
@@ -108,7 +108,7 @@ class PageController extends Controller
 
     public function pubsite(string $slug)
     {
-        $page = Page::with('links')->where('slug', $slug)->first();
+        $page = Page::with('tiles')->where('slug', $slug)->first();
         
         return Inertia::render('Pubsite', [
             'page' => $page

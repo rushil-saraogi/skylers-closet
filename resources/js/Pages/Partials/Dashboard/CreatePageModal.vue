@@ -32,7 +32,7 @@
                         <XCircleIcon v-else class="h-6 w-6 text-gray-300"/>
                     </template>
                 </input-group>
-                <p class="text-sm text-gray-500 mt-3">Page slugs need to be atleast <b>3</b> characters long and can include <b>underscores and dashes</b></p>
+                <p class="text-sm text-gray-500 mt-3">Page slugs need to be atleast <b>3</b> characters long and can include <b>underscores</b> and <b>hyphens</b>. No spaces or caps.</p>
             </form>
 
             <div class="bg-gray-100 p-3 mt-4 rounded text-gray-600">
@@ -51,7 +51,6 @@
 import DialogModal from '@/Jetstream/DialogModal.vue';
 import JetButton from '@/Jetstream/Button.vue'
 import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue'
-import IconPageAdd from '@/icons/IconPageAdd'
 import InputGroup from '@/Jetstream/InputGroup.vue'
 import JetLabel from '@/Jetstream/Label.vue'
 import PagesApi from '@/API/PagesApi';
@@ -67,8 +66,6 @@ export default {
         DialogModal,
         JetButton,
         JetSecondaryButton,
-        IconPageAdd,
-        IconPageAdd,
         InputGroup,
         JetLabel,
         CheckCircleIcon,

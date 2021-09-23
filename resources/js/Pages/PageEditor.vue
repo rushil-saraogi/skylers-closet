@@ -2,39 +2,62 @@
     <app-layout title="Page Editor">
         <template #header>
             <div class="flex items-center justify-between">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ form.slug }}
-                </h2>
+                <div class="flex items-center hover:cursor-pointer hover:bg-gray-100 px-2 py-1 rounded" @click="openSite">
+                    <h2 class="font-semibold text-xl text-gray-800">
+                        {{ form.slug }}
+                    </h2>
+                    <span class="material-icons text-base text-gray-500 ml-2 mt-1">launch</span>
+                </div>
+                
                 <div>
-                    <jet-secondary-button @click="openSite" class="mr-3">Go to site</jet-secondary-button>
-                    <jet-button @click="savePage">Save</jet-button>
+                    <jet-secondary-button @click="toggleWallpaperModal(true)" class="mr-3">Change Wallpaper</jet-secondary-button>
+                    <!-- <jet-button @click="toggleEditTileModal(true)">Add Tile</jet-button> -->
                 </div>
             </div>
         </template>
 
-        <div class="w-full bg-center bg-cover p-10 bg-black" :style="pageContainerStyles">
-            <div class="max-w-3xl mx-auto">
-                <link-layout
-                    v-if="page.links"
-                    :links="page.links"
-                    :initial-layout="form.layout"
-                    @click:edit-tile="(selected) => toggleEditTileModal(true, selected)"
+        <div class="w-full bg-center bg-cover p-10" :style="pageContainerStyles">
+            <div class="mx-auto border border-red-400" :class="tileWrapperClasses">
+                <tile-layout
+                    v-if="page.tiles.length"
+                    :tiles="page.tiles"
+                    :initial-layout="form.layout_lg"
+                    @click:edit-tile="(selected) => toggleEditTile(true, selected)"
                     @click:delete-tile="deleteTile"
                     @update:layout="handleLayoutUpdate"
+                />
+                <zero-state
+                    v-else
+                    header="Get started"
+                    copy="Lets try creating your first tile"
+                    cta="Create Tile"
+                    @cta:click="toggleEditTile(true)"
                 />
             </div>
         </div>
 
         <floating-buttons>
-            <floating-button @click="toggleWallpaperModal(true)" icon="wallpaper" />
-            <floating-button @click="toggleEditTileModal(true)" icon="add" />
+            <floating-button
+                :tooltip="layoutButtonTooltip"
+                @click="toggleMobileMode(!mobileModeActive)"
+                :icon="layoutButtonIcon" 
+            />
+            <floating-button tooltip="Add Text" @click="toggleTextTileModal(true)" icon="title" />
+            <floating-button tooltip="Add Link" @click="toggleEditLinkTileModal(true)" icon="link" />
         </floating-buttons>
         
-        <edit-tile-modal
+        <link-tile-modal
             :show="shouldShowEditTileModal"
             :page-id="page.id"
             :selected-tile="selectedTile"
-            @click:close="toggleEditTileModal(false)"
+            @click:close="toggleEditLinkTileModal(false)"
+        />
+
+        <text-tile-modal
+            :show="shouldShowTextTileModal"
+            :page-id="page.id"
+            :selected-tile="selectedTile"
+            @click:close="toggleTextTileModal(false)"
         />
 
         <wallpaper-modal
@@ -56,9 +79,11 @@
     import FloatingButton from '@/Jetstream/FloatingButton.vue'
     import JetLabel from '@/Jetstream/Label.vue'
     import IconButton from '@/Jetstream/IconButton.vue'
-    import LinkLayout from './Partials/PubSite/LinkLayout.vue'
-    import EditTileModal from './Partials/PubSite/EditTileModal.vue'
-    import WallpaperModal from './Partials/PubSite/WallpaperModal.vue'
+    import TileLayout from './Partials/PageEditor/TileLayout.vue'
+    import ZeroState from '@/Jetstream/ZeroState.vue';
+    import LinkTileModal from './Partials/PageEditor/LinkTileModal.vue'
+    import TextTileModal from './Partials/PageEditor/TextTileModal.vue'
+    import WallpaperModal from './Partials/PageEditor/WallpaperModal.vue'
     import { updateQueryStringParameter } from '@/Util/Url'
 
     export default {
@@ -72,11 +97,13 @@
             JetCheckbox,
             JetLabel,
             IconButton,
-            LinkLayout,
-            EditTileModal,
+            TileLayout,
+            LinkTileModal,
+            TextTileModal,
             WallpaperModal,
             FloatingButtons,
             FloatingButton,
+            ZeroState,
         },
 
         data() {
@@ -84,12 +111,15 @@
                 form: this.$inertia.form({
                     id: this.page.id,
                     slug: this.page.slug,
-                    layout: this.page.layout,
+                    layout_lg: this.page.layout_lg,
+                    layout_sm: this.page.layout_sm,
                     wallpaper: this.page.wallpaper,
                 }),
                 shouldShowEditTileModal: false,
                 shouldShowWallpaperModal: false,
+                shouldShowTextTileModal: false,
                 selectedTile: null,
+                mobileModeActive: false,
             }
         },
 
@@ -105,26 +135,46 @@
                 }
                 
                 return {};
+            },
+
+            layoutButtonTooltip() {
+                return `${this.mobileModeActive ? 'Desktop' : 'Mobile'} mode`;
+            },
+
+            layoutButtonIcon() {
+                return this.mobileModeActive ? 'desktop_mac' : 'smartphone';
+            },
+
+            tileWrapperClasses() {
+                return {
+                    'max-w-3xl': !this.mobileModeActive,
+                    'max-w-lg': this.mobileModeActive
+                }
             }
         },
 
         methods: {
             deleteTile(id) {
                 this.form.put(this.route('update-page', this.page.id)); // Update the layout
-                this.form.delete(this.route('delete-link', [this.page.id, id])) // Then delete the tile
+                this.form.delete(this.route('delete-tile', [this.page.id, id])) // Then delete the tile
             },
 
-            shouldShowDeleteButton() {
-                return this.form.links.length > 1;
-            },
-
-            shouldShowAddButton(index) {
-                return index === this.form.links.length - 1;
-            },
-
-            toggleEditTileModal(show, data = null) {
-                this.selectedTile = data;
+            toggleEditLinkTileModal(show, selected = null) {
+                this.selectedTile = selected;
                 this.shouldShowEditTileModal = show;
+            },
+
+            toggleTextTileModal(show, selected = null) {
+                this.selectedTile = selected;
+                this.shouldShowTextTileModal = show;
+            },
+
+            toggleEditTile(show, selected) {
+                if (!selected || selected.type === 'link') {
+                    this.toggleEditLinkTileModal(show, selected);
+                } else if (selected.type === 'text') {
+                    this.toggleTextTileModal(show, selected);
+                }
             },
 
             toggleWallpaperModal(show) {
@@ -132,11 +182,8 @@
             },
 
             handleLayoutUpdate(newLayout) {
-                this.form.layout = newLayout;
-            },
-
-            savePage() {
-                this.form.put(this.route('update-page', this.page.id));
+                this.form.layout_lg = newLayout;
+                this.savePage();
             },
 
             handleWallpaperSelect(selected) {
@@ -144,9 +191,17 @@
                 this.savePage();
             },
 
+            savePage() {
+                this.form.put(this.route('update-page', this.page.id));
+            },
+
             openSite() {
                 window.open(`/${this.page.slug}`, '_blank');
             },
+
+            toggleMobileMode(active) {
+                this.mobileModeActive = active;
+            }
         }
     }
 </script>

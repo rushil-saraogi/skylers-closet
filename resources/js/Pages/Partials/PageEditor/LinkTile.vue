@@ -2,26 +2,28 @@
     <div
         class="h-full w-full transition-all duration-200"
         :class="containerClasses"
+        @click="handleTileClick"
         @mouseenter="isHovering = true"
         @mouseleave="isHovering = false"
     >
         <div v-if="data" class="h-full w-full relative overflow-y-hidden" ref="sliderContainer">
             <div
                 class="w-full flex flex-col transform transition-transform duration-300 ease-in-out"
-                :style="slidingContainerStyles"
+                :style="slidingWrapperStyles"
+                ref="sliderWrapper"
             >
                 <div
                     class="w-full flex flex-col justify-between p-4"
                     :style="tileScreenStyles"
                 >
                     <div>
-                        <tile-icon v-if="icon" :icon="icon" class="h-7 w-7" />
+                        <tile-icon v-if="icon" :icon="icon" class="h-6 w-6" />
                     </div>
                     <div class="flex justify-between items-center min-h-7">
                         <div class="text-white font-semibold">{{ name }}</div>
                         <transition
                             enter-active-class="transition ease-in duration-200"
-                            enter-from-class="-translate-x-2 opacity-0"
+                            enter-from-class="-translate-x-3 opacity-0"
                             enter-to-class="translate-0 opacity-100"
                         >
                             <ChevronRightIcon
@@ -31,13 +33,25 @@
                         </transition>
                     </div>
                 </div>
+
+                <!-- OG-Image screen -->
+                <div
+                    v-if="animated && image"
+                    class="h-full w-full"
+                    :style="{ ...tileScreenStyles, ...ogImageStyles }"
+                >   
+                </div>
+
+                <!-- Meta data screen -->
                 <div
                     v-if="animated"
-                    class="h-full w-full p-4"
+                    class="h-full w-full p-4 flex gap-3"
                     :style="tileScreenStyles"
-                >
-                    <div class="text-white font-semibold line-clamp-2">{{ ogTitle || title }}</div>
-                    <div class="text-white mt-1 text-sm line-clamp-2">{{ ogDescription || description }}</div>
+                >   
+                    <div>
+                        <div class="text-white font-semibold line-clamp-2">{{ ogTitle || title }}</div>
+                        <div class="text-white mt-1 text-sm line-clamp-2">{{ ogDescription || description }}</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -86,23 +100,25 @@
             gridPosition: {
                 type: Object,
                 default: {},
-            }
+            },
+            pubMode: {
+                type: Boolean,
+                default: false
+            },
         },
 
         data() {
             return {
                 ICON_MAPPING,
                 isHovering: false,
-                showSecondaryView: false,
-                secondaryViewTimeout: null,
+                activeScreen: 0,
+                animationTimeout: null,
             }
         },
 
 
         mounted() {
-            if (this.animated) {
-                this.toggleSecondaryView();
-            }
+            this.resetAnimation();
         },
 
         computed: {
@@ -123,7 +139,7 @@
             },
 
             image() {
-                return get(this, 'data.image', '');
+                return get(this, 'data.og_image', '');
             },
 
             name() {
@@ -148,7 +164,7 @@
             },
 
             shouldShowControls() {
-                return !this.inPreviewMode && this.isHovering;
+                return !this.inPreviewMode && this.isHovering && !this.pubMode;
             },
 
             containerClasses() {
@@ -156,13 +172,14 @@
                     'h-32': this.inPreviewMode,
                     'w-80': this.inPreviewMode,
                     [`bg-${this.color || DEFAULT_COLOR}`]: true,
-                    'scale-105': this.isHovering
+                    'scale-105': this.isHovering,
+                    'hover:cursor-pointer': this.pubMode
                 }
             },
 
-            slidingContainerStyles() {
-                const slideHeight = this.showSecondaryView
-                    ? this.$refs.sliderContainer.clientHeight
+            slidingWrapperStyles() {
+                const slideHeight = this.activeScreen > 0
+                    ? this.activeScreen * this.$refs.sliderContainer.clientHeight
                     : 0;
 
                 return {
@@ -179,32 +196,58 @@
                 return {
                     height: `${(GRID_CONSTANTS.rowHeight * this.gridPosition.h) + ((this.gridPosition.h - 1) * 10)}px`
                 }
+            },
+
+            ogImageStyles() {
+                if (!this.image) return {};
+
+                return { 
+                    background:`url(${this.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                };
             }
         },
 
         methods: {
-            toggleSecondaryView() {
-                this.secondaryViewTimeout = setInterval(() => {
-                    this.showSecondaryView = !this.showSecondaryView;
-                }, this.getRandomInt(5000, 8000));
+            resetAnimation() {
+                if (!this.animated) {
+                    this.stopAnimation();
+                    return;
+                }
+
+                this.startAnimation();
+            },
+
+            startAnimation() {
+                this.animationTimeout = setInterval(() => {
+                    this.activeScreen = (this.activeScreen + 1) % 3;
+                }, this.getRandomInt(5000, 10000));
+            },
+
+            stopAnimation() {
+                clearInterval(this.animationTimeout);
+                this.activeScreen = 0;
             },
 
             getRandomInt(min, max) {
                 min = Math.ceil(min);
                 max = Math.floor(max);
                 return Math.floor(Math.random() * (max - min) + min);
-            }
+            },
+
+            handleTileClick() {
+                if (!this.pubMode) return;
+                window.open(this.data.url, "_blank");
+            },
         },
 
         watch: {
-            animated(newVal) {
-                if (!newVal) {
-                    clearInterval(this.secondaryViewTimeout);
-                    this.showSecondaryView = false;
-                    return;
-                }
+            animated() {
+                this.resetAnimation();
+            },
 
-                this.toggleSecondaryView();
+            isHovering(value) {
             }
         }
     }

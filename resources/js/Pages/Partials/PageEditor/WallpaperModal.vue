@@ -10,6 +10,7 @@
                     v-for="(thumbnail, index) in thumbnails"
                     :key="index"
                     :src="thumbnail"
+                    :placeholder="'None'"
                     :selected="thumbnail === selected"
                     @click="handleThumbnailClick(thumbnail)"
                 />
@@ -72,6 +73,9 @@
          data() {
             return {
                 thumbnails: [
+                    '', // To remove wallpaper
+                    'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=3487&q=80',
+                    'https://images.unsplash.com/photo-1531736275454-adc48d079ce9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
                     'https://images.unsplash.com/photo-1586302836983-d1efb5eee221?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80',
                     'https://images.unsplash.com/photo-1612890837837-cb120add26f5?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80',
                     'https://images.unsplash.com/photo-1563366598-5d464ebe190a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&q=80',

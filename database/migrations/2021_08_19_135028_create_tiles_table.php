@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLinksTable extends Migration
+class CreateTilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,13 @@ class CreateLinksTable extends Migration
      */
     public function up()
     {
-        Schema::create('links', function (Blueprint $table) {
+        Schema::create('tiles', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('page_id');
-            $table->string('url');
-            $table->string('name');
-            $table->string('color');
-            $table->string('icon');
-            $table->boolean('animated')->default(false);
-            $table->string('title')->nullable();
-            $table->string('og_title')->nullable();
-            $table->string('description')->nullable();
-            $table->string('og_description')->nullable();
-            $table->string('og_image')->nullable();
-            $table->timestamps();
+            $table->string('type');
+            $table->json('data')->nullable();
 
+            $table->timestamps();
             $table->foreign('page_id')
                 ->references('id')
                 ->on('pages')

@@ -3,11 +3,10 @@
         <div v-if="data && data.length" class="grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
             <div v-for="page in data" :key="page.id">
                 <page-thumb
+                    :page="page"
                     @click="handlePageClick(page)"
                     @click:delete-page="toggleDeletePageModal(true, page.id)"
-                >
-                    /{{ page.slug }}
-                </page-thumb>
+                />
             </div>
         </div>
         <zero-state
