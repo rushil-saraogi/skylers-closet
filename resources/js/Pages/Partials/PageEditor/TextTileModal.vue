@@ -5,16 +5,44 @@
         </template>
 
         <template #content>
-            <form @submit.prevent="submit" class="grid gap-4 grid-cols-2">
+            <form @submit.prevent="submit" class="grid gap-2 grid-cols-2">
                 <div class="col-span-2">
                     <input-group
                         type="text"
                         class="mt-1 block w-full" 
-                        v-model="form.text"
+                        v-model="form.header"
                         required
-                        placeholder="Ex - Front end developer"
-                        :error="errors?.name"
+                        placeholder="Header"
+                        :error="errors?.header"
                     />
+                </div>
+                <div class="col-span-2">
+                    <input-group
+                        type="text"
+                        class="block w-full" 
+                        v-model="form.body"
+                        required
+                        placeholder="More text (optional)"
+                        :error="errors?.body"
+                    />
+                </div>
+                <div class="col-span-2">
+                    <jet-label value="Theme" />
+                    <div class="flex mt-2">
+                        <jet-radio
+                            name="theme"
+                            label="Light"
+                            class="mr-3"
+                            v-model="form.theme"
+                            :value="TEXT_TILE_THEMES.light"
+                        />
+                        <jet-radio
+                            name="theme"
+                            label="Dark"
+                            v-model="form.theme"
+                            :value="TEXT_TILE_THEMES.dark"
+                        />
+                    </div>
                 </div>
             </form>
             <div class="mt-7 mb-3 flex justify-center">
@@ -42,12 +70,10 @@
     import InputGroup from '@/Jetstream/InputGroup.vue'
     import JetSecondaryButton from '@/Jetstream/SecondaryButton';
     import JetLabel from '@/Jetstream/Label.vue'
+    import JetRadio from '@/Jetstream/RadioButton.vue'
     import Loader from '@/Jetstream/Loader.vue';
     import TextTile from './TextTile.vue';
-    import ListBox from '@/Jetstream/ListBox.vue';
-    import { TILE_COLORS, TILE_TYPE_TEXT } from './constants';
-    import ColorIcon from '@/Jetstream/ColorIcon.vue';
-    import TileIcon from './TileIcon.vue';
+    import { TILE_COLORS, TILE_TYPE_TEXT, TEXT_TILE_THEMES } from './constants';
 
     export default {
         components: {
@@ -60,9 +86,7 @@
             JetSecondaryButton,
             JetDropdown,
             TextTile,
-            ListBox,
-            ColorIcon,
-            TileIcon,
+            JetRadio,
         },
 
         emits: ['click:close'],
@@ -85,10 +109,13 @@
         data() {
             return {
                 form: this.$inertia.form({
-                    text: '',
+                    header: '',
+                    body: '',
+                    theme: TEXT_TILE_THEMES.dark
                 }),
                 errors: {},
                 TILE_COLORS,
+                TEXT_TILE_THEMES,
             }
         },
 
@@ -97,7 +124,8 @@
                 this.form.reset();
 
                 if (this.selectedTile) {
-                    this.form.text = this.selectedTile.data.text;
+                    this.form.header = this.selectedTile.data.header;
+                    this.form.body = this.selectedTile.data.body;
                 }
             },
         },
@@ -125,16 +153,12 @@
             validate() {
                 this.errors = {};
 
-                if (!this.form.text) {
-                    this.errors.url = "We'll need something here";
+                if (!this.form.header) {
+                    this.errors.header = "We'll need something here";
                 }
 
                 return Object.keys(this.errors).length === 0;
             },
-
-            setFormValue(value, field) {
-                this.form[field] = value;
-            }
         }
     }
 </script>

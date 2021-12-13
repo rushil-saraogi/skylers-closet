@@ -21,6 +21,9 @@
         <!-- Scripts -->
         @routes
         <script src="{{ mix('js/app.js') }}" defer></script>
+        <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDD4qem6lNixxQITK-ovEXNknSnoCyQbR8&libraries=places&callback=initGooglePlaceService">
+        </script>
     </head>
     <body class="font-sans antialiased">
         @inertia
@@ -28,5 +31,11 @@
         @env ('local')
             <script src="http://localhost:3000/browser-sync/browser-sync-client.js"></script>
         @endenv
+
+        <script>
+            function initGooglePlaceService() {
+                window.googlePlaceService = new window.google.maps.places.AutocompleteService();
+            }
+        </script>
     </body>
 </html>

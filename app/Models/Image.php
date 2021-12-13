@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Page extends Model
+class Image extends Model
 {
     use HasFactory;
 
@@ -15,27 +15,12 @@ class Page extends Model
      * @var array
      */
     protected $fillable = [
-        'slug',
-        'user_id',
-        'layout',
-        'title',
-        'wallpaper',
-        'active'
-    ];
-
-    protected $casts = [
-        'layout' => 'array',
+        'filename',
+        'url',
+        'user_id'
     ];
 
     public function user() {
         return $this->belongsTo(User::class);  
-    }
-
-    /**
-     * Page tiles
-     */
-    public function tiles()
-    {
-        return $this->hasMany(Tile::class);
     }
 }

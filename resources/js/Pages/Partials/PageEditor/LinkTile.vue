@@ -1,10 +1,11 @@
 <template>
-    <div
-        class="h-full w-full transition-all duration-200"
-        :class="containerClasses"
-        @click="handleTileClick"
-        @mouseenter="isHovering = true"
-        @mouseleave="isHovering = false"
+    <tile-wrapper
+        @click:edit="$emit('click:edit')"
+        @click:delete="$emit('click:delete')"
+        @click:tile="handleTileClick"
+        :inPreviewMode="inPreviewMode"
+        :pubMode="pubMode"
+        :isClickable="true"
     >
         <div v-if="data" class="h-full w-full relative overflow-y-hidden" ref="sliderContainer">
             <div
@@ -12,25 +13,25 @@
                 :style="slidingWrapperStyles"
                 ref="sliderWrapper"
             >
-                <div
-                    class="w-full flex flex-col justify-between p-4"
-                    :style="tileScreenStyles"
-                >
-                    <div>
-                        <tile-icon v-if="icon" :icon="icon" class="h-6 w-6" />
-                    </div>
-                    <div class="flex justify-between items-center min-h-7">
-                        <div class="text-white font-semibold">{{ name }}</div>
-                        <transition
-                            enter-active-class="transition ease-in duration-200"
-                            enter-from-class="-translate-x-3 opacity-0"
-                            enter-to-class="translate-0 opacity-100"
-                        >
-                            <ChevronRightIcon
-                                v-show="isHovering"
-                                class="h-7 w-7 text-white"
-                            />
-                        </transition>
+                <!-- Main screen -->
+                <div :style="ogImageStyles">
+                    <div :style="tileScreenStyles" class="w-full flex flex-col justify-between p-4">
+                        <div>
+                            <tile-icon v-if="icon" :icon="icon" class="h-6 w-6" />
+                        </div>
+                        <div class="flex justify-between items-center min-h-7">
+                            <div class="text-white font-bold text-lg">{{ name }}</div>
+                            <transition
+                                enter-active-class="transition ease-in duration-200"
+                                enter-from-class="-translate-x-3 opacity-0"
+                                enter-to-class="translate-0 opacity-100"
+                            >
+                                <ChevronRightIcon
+                                    v-show="isHovering"
+                                    class="h-7 w-7 text-white"
+                                />
+                            </transition>
+                        </div>
                     </div>
                 </div>
 
@@ -55,13 +56,7 @@
                 </div>
             </div>
         </div>
-        <quick-controls
-            :show="shouldShowControls"
-        >
-            <quick-controls-option icon="PencilIcon" @click="$emit('click:edit')" />
-            <quick-controls-option icon="TrashIcon" @click="$emit('click:delete')" />
-        </quick-controls>
-    </div>
+    </tile-wrapper>
 </template>
 
 <script>
@@ -71,6 +66,7 @@
     import IconGithub from '@/icons/IconGithub';
     import QuickControls from '@/Jetstream/QuickControls.vue';
     import TileIcon from './TileIcon.vue';
+    import TileWrapper from './TileWrapper.vue';
     import QuickControlsOption from '@/Jetstream/QuickControlsOption.vue';
     import { DEFAULT_COLOR, ICON_MAPPING, GRID_CONSTANTS } from './constants.js';
 
@@ -83,7 +79,8 @@
             TrashIcon,
             QuickControls,
             QuickControlsOption,
-            TileIcon
+            TileIcon,
+            TileWrapper
         },
 
         emit: ['click:edit', 'click:delete'],
@@ -151,16 +148,13 @@
             },
 
             animated() {
-                return get(this, 'data.animated', false);
+                // return get(this, 'data.animated', false);
+                // Temporarily turning off animation
+                return false;
             },
 
             icon() {
                 return get(this, 'data.icon');
-            },
-
-            isGithubLink() {
-                // Implement link checks
-                return false
             },
 
             shouldShowControls() {
@@ -169,11 +163,7 @@
 
             containerClasses() {
                 return {
-                    'h-32': this.inPreviewMode,
-                    'w-80': this.inPreviewMode,
                     [`bg-${this.color || DEFAULT_COLOR}`]: true,
-                    'scale-105': this.isHovering,
-                    'hover:cursor-pointer': this.pubMode
                 }
             },
 
@@ -188,14 +178,18 @@
             },
 
             tileScreenStyles() {
-                if (this.inPreviewMode) {
-                    return { height: '8rem' };
+                const styles = {};
+
+                if (this.image) {
+                    styles.backgroundImage = 'linear-gradient(to bottom, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.65))'
                 }
 
-                // I have NO idea where the extra height is coming from
-                return {
-                    height: `${(GRID_CONSTANTS.rowHeight * this.gridPosition.h) + ((this.gridPosition.h - 1) * 10)}px`
-                }
+                styles.height = this.inPreviewMode
+                    ? '12rem'
+                    // I have NO idea where the extra height is coming from
+                    : `${(GRID_CONSTANTS.rowHeight * this.gridPosition.h) + ((this.gridPosition.h - 1) * 10)}px`
+
+                return styles;
             },
 
             ogImageStyles() {
@@ -246,9 +240,6 @@
             animated() {
                 this.resetAnimation();
             },
-
-            isHovering(value) {
-            }
         }
     }
 </script>

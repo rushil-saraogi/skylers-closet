@@ -40,9 +40,18 @@
                     :gridPosition="item"
                     :pub-mode="pubMode"
                 />
+                <map-tile
+                    @click:edit="$emit('click:edit-tile', tiles[index])"
+                    @click:delete="toggleDeleteLinkModal(true, index)"
+                    v-if="tiles[index].type === TILE_TYPE_MAP"
+                    :data="tiles[index].data"
+                    :gridPosition="item"
+                    :pub-mode="pubMode"
+                />
             </div>
         </grid-item>
     </grid-layout>
+
     <delete-link-modal
         :show="shouldShowDeleteModal"
         @click:confirm="handleDeleteConfirm"
@@ -54,11 +63,12 @@
     import { breakpoints } from '@/constants.js';
     import LinkTile from './LinkTile';
     import TextTile from './TextTile';
+    import MapTile from './MapTile';
     import DeleteLinkModal from './DeleteLinkModal.vue';
-    import { GRID_CONSTANTS, TILE_TYPE_LINK, TILE_TYPE_TEXT, TILE_TYPE_IMAGE} from './constants';
+    import { GRID_CONSTANTS, TILE_TYPE_LINK, TILE_TYPE_TEXT, TILE_TYPE_MAP} from './constants';
 
     export default {
-        components: { LinkTile, DeleteLinkModal, TextTile },
+        components: { LinkTile, DeleteLinkModal, TextTile, MapTile },
 
         emits: ['click:edit-tile', 'update:layout', 'click:delete-tile'],
 
@@ -70,12 +80,13 @@
                 responsive: false,
                 index: 0,
                 breakpoints,
+                colNum: 2,
                 shouldShowDeleteModal: false,
                 selectedForDeletion: null,
                 GRID_CONSTANTS,
                 TILE_TYPE_LINK,
                 TILE_TYPE_TEXT,
-                TILE_TYPE_IMAGE
+                TILE_TYPE_MAP,
             }
         },
 
@@ -114,19 +125,15 @@
             }
         },
 
-        computed() {
-            return 3;
-        },
-
         methods: {
             addItems: function (n = 1) {
                 for (let i = 0; i < n; i++) {
                     this.layout.push({
-                        x: (this.layout.length * 2) % (this.colNum || 12),
-                        y: this.layout.length + (this.colNum || 12), // puts it at the bottom
-                        w: 2,
+                        x: (this.layout.length * 2) % (this.colNum),
+                        y: this.layout.length + this.colNum, // puts it at the bottom
+                        w: 1,
                         h: 4,
-                        i: this.layout.length - 1,
+                        i: this.layout.length,
                     });
                 }
             },

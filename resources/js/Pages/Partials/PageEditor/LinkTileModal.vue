@@ -34,8 +34,22 @@
                     />
                 </div>
                 <div class="col-span-2 md:col-span-1">
+                    <!-- Background -->
                     <list-box
                         class="w-full"
+                        label="Background"
+                        :options="Object.values(BG_TYPES)"
+                        :selected="form.background"
+                        @change="(val) => setFormValue(val, 'background')"
+                        :error="errors?.background"
+                    >
+                    </list-box>
+
+                    <!-- Different Background Options -->
+                    <!-- Solid color -->
+                    <list-box
+                        v-if="form.background === BG_TYPES.color"
+                        class="w-full mt-4"
                         label="Tile Color"
                         :options="TILE_COLORS"
                         :selected="form.color"
@@ -47,7 +61,32 @@
                             <color-icon :color="slotProps.item" />
                         </template>
                     </list-box>
+                    <!-- Gradient -->
+                    <list-box
+                        v-if="form.background === BG_TYPES.gradient"
+                        class="w-full mt-4"
+                        label="Gradient"
+                        :options="TILE_COLORS"
+                        :selected="form.color"
+                        @change="(val) => setFormValue(val, 'color')"
+                        :error="errors?.color"
+                        :add-color-icons="true"
+                    >
+                        <template v-slot:icon="slotProps">
+                            <color-icon :color="slotProps.item" />
+                        </template>
+                    </list-box>
+                    <!-- Uploaded image -->
+                    <input
+                        class="mt-4"
+                        v-if="form.background === BG_TYPES.upload"
+                        type="file"
+                        name="img"
+                        accept="image/*"
+                    >
                 </div>
+
+                <!-- Tile Icon -->
                 <div class="col-span-2 md:col-span-1">
                     <list-box
                         class="w-full"
@@ -63,12 +102,13 @@
                         </template>
                     </list-box>
                 </div>
-                <div class="col-span-2">
+                <!-- Animation turned off for now -->
+                <!-- <div class="col-span-2">
                     <label class="flex items-center">
                         <jet-checkbox name="animated" v-model:checked="form.animated" />
                         <span class="ml-2 text-sm text-gray-600">Animated</span>
                     </label>
-                </div>
+                </div> -->
             </form>
             <div class="mt-7 mb-3 flex justify-center">
                 <link-tile :data="form.data()" :in-preview-mode="true" />
@@ -100,7 +140,7 @@
     import Loader from '@/Jetstream/Loader.vue';
     import LinkTile from './LinkTile.vue';
     import ListBox from '@/Jetstream/ListBox.vue';
-    import { TILE_COLORS, TILE_TYPE_LINK } from './constants';
+    import { TILE_COLORS, TILE_TYPE_LINK, BG_TYPES } from './constants';
     import { TILE_ICONS } from './TileIcon.vue';
     import ColorIcon from '@/Jetstream/ColorIcon.vue';
     import TileIcon from './TileIcon.vue';
@@ -141,6 +181,12 @@
         computed: {
             isSubmitDisabled() {
                 return this.form.processing || this.loadingMetaData;
+            },
+
+            backgroundOptions() {
+                if (!this.form.og_image) {
+                    return BG
+                }
             }
         },
 
@@ -149,6 +195,7 @@
                 form: this.$inertia.form({
                     url: '',
                     name: '',
+                    background: '',
                     icon: '',
                     color: '',
                     title: '',
@@ -164,6 +211,7 @@
                 metaData: null,
                 TILE_COLORS,
                 TILE_ICONS,
+                BG_TYPES,
             }
         },
 

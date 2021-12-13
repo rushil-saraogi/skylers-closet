@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class PageController extends Controller
 {
-    const SLUG_PATTERN = '/^[a-z_-]+$/';
+    const SLUG_PATTERN = '/^[a-z0-9_-]+$/';
     const SLUG_MIN_LENGTH = 3;
 
     /**
@@ -103,7 +103,7 @@ class PageController extends Controller
             $valid = false;
         }
         
-        return response()->json([ 'isAvailable' => $valid ]);;
+        return response()->json([ 'isAvailable' => $valid ]);
     }
 
     public function pubsite(string $slug)

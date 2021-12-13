@@ -10,7 +10,7 @@
                 </div>
                 
                 <div>
-                    <jet-secondary-button @click="toggleWallpaperModal(true)" class="mr-3">Change Wallpaper</jet-secondary-button>
+                    <jet-secondary-button @click="openSite" class="mr-3">Go to site</jet-secondary-button>
                     <!-- <jet-button @click="toggleEditTileModal(true)">Add Tile</jet-button> -->
                 </div>
             </div>
@@ -21,7 +21,7 @@
                 <tile-layout
                     v-if="page.tiles.length"
                     :tiles="page.tiles"
-                    :initial-layout="form.layout_lg"
+                    :initial-layout="form.layout"
                     @click:edit-tile="(selected) => toggleEditTile(true, selected)"
                     @click:delete-tile="deleteTile"
                     @update:layout="handleLayoutUpdate"
@@ -37,11 +37,9 @@
         </div>
 
         <floating-buttons>
-            <floating-button
-                :tooltip="layoutButtonTooltip"
-                @click="toggleMobileMode(!mobileModeActive)"
-                :icon="layoutButtonIcon" 
-            />
+            <floating-button tooltip="Edit wallpaper" @click="toggleWallpaperModal(true)" icon="wallpaper" />
+            <floating-button :tooltip="layoutButtonTooltip" @click="toggleMobileMode(!mobileModeActive)" :icon="layoutButtonIcon" />
+            <floating-button tooltip="Add Location" @click="toggleMapModal(true)" icon="location_on" />
             <floating-button tooltip="Add Text" @click="toggleTextTileModal(true)" icon="title" />
             <floating-button tooltip="Add Link" @click="toggleEditLinkTileModal(true)" icon="link" />
         </floating-buttons>
@@ -66,6 +64,13 @@
             @click:close="toggleWallpaperModal(false)"
             @click:submit="handleWallpaperSelect"
         />
+
+        <map-tile-modal
+            :show="shouldShowMapModal"
+            :page-id="page.id"
+            :selected-tile="selectedTile"
+            @click:close="toggleMapModal(false)"
+        />
     </app-layout>
 </template>
 
@@ -83,6 +88,7 @@
     import ZeroState from '@/Jetstream/ZeroState.vue';
     import LinkTileModal from './Partials/PageEditor/LinkTileModal.vue'
     import TextTileModal from './Partials/PageEditor/TextTileModal.vue'
+    import MapTileModal from './Partials/PageEditor/MapTileModal.vue'
     import WallpaperModal from './Partials/PageEditor/WallpaperModal.vue'
     import { updateQueryStringParameter } from '@/Util/Url'
 
@@ -104,6 +110,7 @@
             FloatingButtons,
             FloatingButton,
             ZeroState,
+            MapTileModal
         },
 
         data() {
@@ -111,13 +118,14 @@
                 form: this.$inertia.form({
                     id: this.page.id,
                     slug: this.page.slug,
-                    layout_lg: this.page.layout_lg,
+                    layout: this.page.layout,
                     layout_sm: this.page.layout_sm,
                     wallpaper: this.page.wallpaper,
                 }),
                 shouldShowEditTileModal: false,
                 shouldShowWallpaperModal: false,
                 shouldShowTextTileModal: false,
+                shouldShowMapModal: false,
                 selectedTile: null,
                 mobileModeActive: false,
             }
@@ -174,6 +182,8 @@
                     this.toggleEditLinkTileModal(show, selected);
                 } else if (selected.type === 'text') {
                     this.toggleTextTileModal(show, selected);
+                } else if (selected.type === 'map') {
+                    this.toggleMapModal(show, selected);
                 }
             },
 
@@ -181,8 +191,13 @@
                 this.shouldShowWallpaperModal = show;
             },
 
+            toggleMapModal(show, selected) {
+                this.selectedTile = selected;
+                this.shouldShowMapModal = show;
+            },
+
             handleLayoutUpdate(newLayout) {
-                this.form.layout_lg = newLayout;
+                this.form.layout = newLayout;
                 this.savePage();
             },
 

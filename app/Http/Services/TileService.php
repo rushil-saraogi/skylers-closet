@@ -51,4 +51,24 @@ class TileService
     {
         $tile->delete();
     }
+
+    /**
+     *  Add initial tiles for a new page
+     *
+     * @param Page $page
+     * @return void
+     */
+    public function createInitialTiles(Page $page)
+    {
+        $introTile = Tile::create([
+            "page_id" => $page->id,
+            "type" => "text",
+            "data" => [
+                "body" => "Here's your first card. Try creating another one using the toolbar on the bottom right.",
+                "header" => "👋  Hi!",
+            ],
+        ]);
+
+        $introTile->save();
+    }
 }

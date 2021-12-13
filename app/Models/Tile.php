@@ -12,10 +12,12 @@ class Tile extends Model
     const TYPE_LINK = 'link';
     const TYPE_IMAGE = 'image';
     const TYPE_TEXT = 'text';
+    const TYPE_MAP = 'map';
 
     protected $fillable = [
         'data',
-        'type'
+        'type',
+        'page_id'
     ];
 
     protected $casts = [

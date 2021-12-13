@@ -12,7 +12,7 @@
             <tile-layout
                 v-if="page.tiles"
                 :tiles="page.tiles"
-                :initial-layout="page.layout_lg"
+                :initial-layout="page.layout"
                 :pub-mode="true"
             />
         </div>

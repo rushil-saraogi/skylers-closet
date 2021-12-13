@@ -1,11 +1,11 @@
 <template>
     <jet-confirmation-modal :show="show" @close="$emit('click:close')">
         <template #title>
-            Delete Link
+            Delete Tile
         </template>
 
         <template #content>
-            Are you sure you want to delete this link? This cannot be undone.
+            Are you sure you want to delete this tile? This cannot be undone.
         </template>
 
         <template #footer>

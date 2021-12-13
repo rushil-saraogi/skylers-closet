@@ -29,11 +29,12 @@ class PageService
         $page->fill(array_merge($data, [
             'user_id' => Auth::user()->id,
         ]));
-        $page->save();
 
         if (!$page->save()) {
             throw new Exception('Page could not be saved.');
         }
+
+        $this->tileService->createInitialTiles($page);
 
         return $page;
     }

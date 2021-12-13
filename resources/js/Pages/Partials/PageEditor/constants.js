@@ -1,7 +1,7 @@
 export const DEFAULT_COLOR = 'gray-800';
 
 export const GRID_CONSTANTS = {
-    rowHeight: 30
+    rowHeight: 50
 };
 
 export const TILE_COLORS = [
@@ -14,9 +14,16 @@ export const TILE_COLORS = [
     'green-500'
 ];
 
+export const BG_TYPES = {
+    color: 'Solid Color',
+    social: 'Social Image',
+    upload: 'Uploaded Image',
+    gradient: 'Gradient'
+}
+
 export const TILE_TYPE_LINK = 'link';
-export const TILE_TYPE_IMAGE = 'image';
 export const TILE_TYPE_TEXT = 'text';
+export const TILE_TYPE_MAP = 'map';
 
 export const TEXT_TILE_THEMES = {
     light: 'light',

@@ -33,11 +33,20 @@
                     </template>
                 </input-group>
                 <p class="text-sm text-gray-500 mt-3">Page slugs need to be atleast <b>3</b> characters long and can include <b>underscores</b> and <b>hyphens</b>. No spaces or caps.</p>
+
+                <div class="bg-gray-100 p-3 mt-4 rounded text-gray-600">
+                    <div class="font-mono text-sm text-gray-600">https://www.cover-story.com/{{form.slug}}</div>
+                </div>
+                <input-group
+                    type="text"
+                    class="mt-4 block w-full"
+                    v-model="form.title"
+                    placeholder="Page Title (Optional)"
+                    :error="error"
+                />
             </form>
 
-            <div class="bg-gray-100 p-3 mt-4 rounded text-gray-600">
-                <div class="font-mono text-sm text-gray-600">https://www.cover-story.com/{{form.slug}}</div>
-            </div>
+            
         </template>
 
         <template #footer>
@@ -76,6 +85,7 @@ export default {
         return {
             form: this.$inertia.form({
                 slug: '',
+                title: '',
             }),
             isSlugAvailable: false,
             isSlugValid: false,
@@ -105,26 +115,26 @@ export default {
         handleSlugInputChange() {
             clearTimeout(this.inputTimeoutRef);
     
-                this.inputTimeoutRef = setTimeout(async () => {
-                    try {
-                        this.error = '';
-                        this.isSlugValid = isValidSlug(this.form.slug)
+            this.inputTimeoutRef = setTimeout(async () => {
+                try {
+                    this.error = '';
+                    this.isSlugValid = isValidSlug(this.form.slug)
 
-                        if (!this.isSlugValid) return;
+                    if (!this.isSlugValid) return;
 
-                        this.checkingIfSlugIsAvailable = true;
-                        const { isAvailable } = await PagesApi.isSlugAvailable(this.form.slug);
-                        this.isSlugAvailable = isAvailable;
+                    this.checkingIfSlugIsAvailable = true;
+                    const { isAvailable } = await PagesApi.isSlugAvailable(this.form.slug);
+                    this.isSlugAvailable = isAvailable;
 
-                        if (!this.isSlugAvailable) {
-                            this.error = "Sorry! Look's like that one is taken!"
-                        }
-                    } catch(e) {
-                        console.error(e);
-                    } finally {
-                        this.checkingIfSlugIsAvailable = false;
+                    if (!this.isSlugAvailable) {
+                        this.error = "Sorry! Look's like that one is taken!"
                     }
-                }, 750);
+                } catch(e) {
+                    console.error(e);
+                } finally {
+                    this.checkingIfSlugIsAvailable = false;
+                }
+            }, 750);
         }
     }
 }

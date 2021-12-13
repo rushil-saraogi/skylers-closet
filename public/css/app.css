@@ -1108,8 +1108,8 @@ select {
 .top-0 {
 	top: 0px;
 }
-.bottom-20 {
-	bottom: 5rem;
+.bottom-10 {
+	bottom: 2.5rem;
 }
 .right-20 {
 	right: 5rem;
@@ -1278,6 +1278,9 @@ select {
 .h-20 {
 	height: 5rem;
 }
+.h-24 {
+	height: 6rem;
+}
 .h-full {
 	height: 100%;
 }
@@ -1301,6 +1304,9 @@ select {
 }
 .min-h-7 {
 	min-height: 1.75rem;
+}
+.min-h-48 {
+	min-height: 12rem;
 }
 .w-5 {
 	width: 1.25rem;
@@ -1491,14 +1497,14 @@ select {
 .gap-1 {
 	gap: 0.25rem;
 }
+.gap-2 {
+	gap: 0.5rem;
+}
 .gap-5 {
 	gap: 1.25rem;
 }
 .gap-3 {
 	gap: 0.75rem;
-}
-.gap-2 {
-	gap: 0.5rem;
 }
 .space-x-8 > :not([hidden]) ~ :not([hidden]) {
 	--tw-space-x-reverse: 0;
@@ -1722,6 +1728,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(17, 24, 39, var(--tw-bg-opacity));
 }
+.bg-indigo-400 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(129, 140, 248, var(--tw-bg-opacity));
+}
 .bg-opacity-25 {
 	--tw-bg-opacity: 0.25;
 }
@@ -1764,6 +1774,9 @@ select {
 }
 .p-3 {
 	padding: 0.75rem;
+}
+.p-5 {
+	padding: 1.25rem;
 }
 .px-4 {
 	padding-left: 1rem;
@@ -1927,6 +1940,10 @@ select {
 	font-size: 1.25rem;
 	line-height: 1.75rem;
 }
+.text-5xl {
+	font-size: 3rem;
+	line-height: 1;
+}
 .text-3xl {
 	font-size: 1.875rem;
 	line-height: 2.25rem;
@@ -1939,6 +1956,9 @@ select {
 }
 .font-normal {
 	font-weight: 400;
+}
+.font-bold {
+	font-weight: 700;
 }
 .font-extrabold {
 	font-weight: 800;
@@ -2466,10 +2486,6 @@ select {
 		margin-left: 1.5rem;
 	}
 
-	.sm\:ml-0 {
-		margin-left: 0px;
-	}
-
 	.sm\:block {
 		display: block;
 	}
@@ -2492,10 +2508,6 @@ select {
 
 	.sm\:h-screen {
 		height: 100vh;
-	}
-
-	.sm\:h-20 {
-		height: 5rem;
 	}
 
 	.sm\:w-10 {
@@ -2640,10 +2652,6 @@ select {
 
 	.sm\:text-left {
 		text-align: left;
-	}
-
-	.sm\:text-right {
-		text-align: right;
 	}
 
 	.sm\:align-middle {

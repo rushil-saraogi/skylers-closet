@@ -3,6 +3,7 @@
 use App\Http\Controllers\TileController;
 use App\Http\Controllers\MetaDataController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ImageController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -46,6 +47,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     // Routes prefixed with API do not follow the inertia pattern
     Route::get('/api/links/get-meta', [MetaDataController::class, 'getMetaData'])->name('get-meta');
     Route::get('/api/pages/valid-slug', [PageController::class, 'validateSlug'])->name('validate-slug');
+    Route::post('/api/images/upload', [ImageController::class, 'upload'])->name('upload-image');
 });
 
 // Catch all route for pubsites

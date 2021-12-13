@@ -69,8 +69,8 @@ class TileController extends Controller
     {
         if ($type === Tile::TYPE_LINK) {
             return $request->validate([
-                'url' => ['URL', 'nullable'],
-                'name' => ['string', 'nullable'],
+                'url' => ['URL'],
+                'name' => ['string'],
                 'color' => ['string', 'nullable'],
                 'icon' => ['string', 'nullable'],
                 'title' => ['string', 'nullable'],
@@ -83,7 +83,13 @@ class TileController extends Controller
         } elseif ($type === Tile::TYPE_TEXT) {
             return $request->validate([
                 'color' => ['string', 'nullable'],
-                'text' => ['string', 'nullable'],
+                'header' => ['string', 'required'],
+                'body' => ['string', 'nullable'],
+            ]);
+        } elseif ($type === Tile::TYPE_MAP) {
+            return $request->validate([
+                'location' => ['string', 'required'],
+                'name' => ['string', 'nullable'],
             ]);
         }
         
