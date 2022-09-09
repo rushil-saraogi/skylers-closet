@@ -4,11 +4,11 @@
             <slot></slot>
         </button>
 
-        <a :href="href" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition" v-else-if="as =='a'">
+        <a :href="href" :class="{ 'bg-gray-100': isActive }" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition" v-else-if="as =='a'">
             <slot></slot>
         </a>
 
-        <Link :href="href" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition" v-else>
+        <Link :class="{ 'bg-gray-100': isActive }" :href="href" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition" v-else>
             <slot></slot>
         </Link>
     </div>
@@ -21,6 +21,6 @@
         components: {
             Link,
         },
-        props: ['href', 'as']
+        props: ['href', 'as', 'isActive']
     }
 </script>

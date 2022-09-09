@@ -29,3 +29,21 @@ export const TEXT_TILE_THEMES = {
     light: 'light',
     dark: 'dark'
 }
+
+export const TILE_LIST = [
+    {
+        type: TILE_TYPE_LINK,
+        name: 'Link',
+        icon: 'link',
+    },
+    {
+        type: TILE_TYPE_TEXT,
+        name: 'Text',
+        icon: 'text_fields',
+    },
+    {
+        type: TILE_TYPE_MAP,
+        name: 'Map',
+        icon: 'map',
+    },
+]

@@ -20,7 +20,13 @@
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                    Your Closets
+                                </jet-nav-link>
+                                <jet-nav-link :href="route('explore')" :active="route().current('explore')">
+                                    Explore
+                                </jet-nav-link>
+                                <jet-nav-link :href="route('feed')" :active="route().current('feed')">
+                                    Feed
                                 </jet-nav-link>
                             </div>
                         </div>
@@ -145,6 +151,9 @@
                         <jet-responsive-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </jet-responsive-nav-link>
+                        <jet-responsive-nav-link :href="route('explore')" :active="route().current('explore')">
+                            Explore
+                        </jet-responsive-nav-link>
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -224,7 +233,7 @@
             </header>
 
             <!-- Page Content -->
-            <main class="flex-auto relative flex items-stretch justify-center">
+            <main class="flex-auto relative flex items-stretch max-w-7xl m-auto w-full">
                 <slot></slot>
             </main>
         </div>

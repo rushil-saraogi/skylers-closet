@@ -1,12 +1,14 @@
 <template>
     <div
-        class="h-full w-full transition-all duration-200 rounded-lg overflow-hidden relative"
+        class="bg-white transition-all duration-200 min-h-48 rounded-lg overflow-hidden relative shadow-sm hover:cursor-grab"
         :class="containerClasses"
         @click="$emit('click:tile')"
         @mouseenter="isHovering = true"
         @mouseleave="isHovering = false"
-    >
-        <slot />
+    >   
+        <div :class="contentWrapperStyles" class="h-full">
+            <slot />
+        </div>
 
         <quick-controls
             :show="shouldShowControls"
@@ -14,35 +16,37 @@
             <quick-controls-option icon="PencilIcon" @click="$emit('click:edit')" />
             <quick-controls-option icon="TrashIcon" @click="$emit('click:delete')" />
         </quick-controls>
+
+        <quick-controls
+            :show="inSaveMode"
+        >
+            <quick-controls-option
+                icon="CheckIcon"
+                text="Save Item"
+                @click="$emit('click:save-item')"
+            />
+        </quick-controls>
     </div>
 </template>
 
 <script>
-    import { get } from 'lodash';
-    import IconButton from '@/Jetstream/IconButton.vue';
-    import { ChevronRightIcon, PencilIcon, TrashIcon } from '@heroicons/vue/solid'
-    import IconGithub from '@/icons/IconGithub';
     import QuickControls from '@/Jetstream/QuickControls.vue';
-    import TileIcon from './TileIcon.vue';
     import QuickControlsOption from '@/Jetstream/QuickControlsOption.vue';
-    import { TEXT_TILE_THEMES } from './constants.js';
 
     export default {
         components: {
-            IconButton,
-            IconGithub,
-            ChevronRightIcon,
-            PencilIcon,
-            TrashIcon,
             QuickControls,
             QuickControlsOption,
-            TileIcon
         },
 
-        emit: ['click:edit', 'click:delete'],
+        emit: ['click:edit', 'click:delete', 'click:saveItem'],
 
         props: {
-            inPreviewMode: {
+            hideControls: {
+                type: Boolean,
+                default: false,
+            },
+            inSaveMode: {
                 type: Boolean,
                 default: false,
             },
@@ -65,17 +69,23 @@
         computed: {
             containerClasses() {
                 return {
-                    'min-h-48': this.inPreviewMode,
-                    'w-80': this.inPreviewMode,
-                    'bg-black bg-opacity-20': this.inPreviewMode || !this.pubMode,
-                    'scale-105': this.isHovering && this.isClickable,
+                    // 'scale-105': this.isHovering && this.isClickable,
                     'hover:cursor-pointer': this.isHovering && this.isClickable
                 }
             },
 
             shouldShowControls() {
-                return !this.inPreviewMode && this.isHovering && !this.pubMode;
+                return this.isHovering &&
+                    !this.pubMode &&
+                    !this.inSaveMode &&
+                    !this.hideControls;
             },
+
+            contentWrapperStyles() {
+                return {
+                    'opacity-50': this.inSaveMode
+                }
+            }
         },
     }
 </script>

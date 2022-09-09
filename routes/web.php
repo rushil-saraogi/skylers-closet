@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\TileController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MetaDataController;
-use App\Http\Controllers\PageController;
+use App\Http\Controllers\ClosetController;
 use App\Http\Controllers\ImageController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -30,23 +30,25 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     // Routing - 
-    Route::get('/dashboard', [PageController::class, 'list'])->name('dashboard');
-    Route::get('/page-editor/{id}', [PageController::class, 'pageEditor'])->name('page-editor');
+    Route::get('/dashboard', [ClosetController::class, 'dashboard'])->name('dashboard');
+    Route::get('/explore', [ClosetController::class, 'explore'])->name('explore');
+    Route::get('/feed', [ClosetController::class, 'feed'])->name('feed');
+    Route::get('/page-editor/{id}', [ClosetController::class, 'pageEditor'])->name('page-editor');
 
-    // Page Forms
-    Route::post('/pages', [PageController::class, 'create'])->name('create-page');
-    Route::put('/pages/{pageId}', [PageController::class, 'update'])->name('update-page');
-    Route::delete('/pages/{pageId}', [PageController::class, 'delete'])->name('delete-page');
+    // Closet Forms
+    Route::post('/closets', [ClosetController::class, 'create'])->name('create-closet');
+    Route::put('/closets/{closet}', [ClosetController::class, 'update'])->name('update-closet');
+    Route::delete('/closets/{closet}', [ClosetController::class, 'delete'])->name('delete-closet');
     
-    // Tile Forms
-    Route::post('/pages/{pageId}/tiles/{tileType}', [TileController::class, 'create'])->name('create-tile');
-    Route::put('/pages/{pageId}/tiles/{tileId}', [TileController::class, 'update'])->name('update-tile');
-    Route::delete('/pages/{pageId}/tiles/{tileId}', [TileController::class, 'delete'])->name('delete-tile');
+    // Item Forms
+    Route::post('/closets/{closet}/items', [ItemController::class, 'create'])->name('create-item');
+    Route::put('/closets/{closet}/items/{item}', [ItemController::class, 'update'])->name('update-item');
+    Route::delete('/closets/{closet}/items/{item}', [ItemController::class, 'delete'])->name('delete-item');
     
     // Misc
     // Routes prefixed with API do not follow the inertia pattern
     Route::get('/api/links/get-meta', [MetaDataController::class, 'getMetaData'])->name('get-meta');
-    Route::get('/api/pages/valid-slug', [PageController::class, 'validateSlug'])->name('validate-slug');
+    Route::get('/api/closets/valid-slug', [ClosetController::class, 'validateSlug'])->name('validate-slug');
     Route::post('/api/images/upload', [ImageController::class, 'upload'])->name('upload-image');
 });
 

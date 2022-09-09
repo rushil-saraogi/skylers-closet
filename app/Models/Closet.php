@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Page extends Model
+class Closet extends Model
 {
     use HasFactory;
 
@@ -15,16 +15,10 @@ class Page extends Model
      * @var array
      */
     protected $fillable = [
-        'slug',
+        'name',
         'user_id',
-        'layout',
-        'title',
         'wallpaper',
-        'active'
-    ];
-
-    protected $casts = [
-        'layout' => 'array',
+        'active',
     ];
 
     public function user() {
@@ -32,10 +26,18 @@ class Page extends Model
     }
 
     /**
-     * Page tiles
+     * Closet products
      */
-    public function tiles()
+    public function items()
     {
-        return $this->hasMany(Tile::class);
+        return $this->hasMany(Item::class)->orderByDesc('item_order');
+    }
+
+    /**
+     * Closet drawers
+     */
+    public function drawers()
+    {
+        return $this->hasMany(Drawer::class);
     }
 }

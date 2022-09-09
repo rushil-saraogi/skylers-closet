@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Goutte\Client;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Services\MetaDataService;
 
 class MetaDataController extends Controller
 {
+    protected $metaDataService;
+
     /**
      * MetaDataController constructor.
      *
      */
-    public function __construct() {
+    public function __construct(MetaDataService $metaDataService)
+    {
+        $this->metaDataService = $metaDataService;
     }
 
     /**
@@ -31,26 +35,7 @@ class MetaDataController extends Controller
         }
 
         $url = $request->url;
-        $client = new Client();
-        $crawler = $client->request('GET', $url);
 
-        return response()->json([
-            'title' => $this->getTitle($crawler),
-            'description' => $this->getMetaValue($crawler, "meta[name='description']"),
-            'og_title' => $this->getMetaValue($crawler, "meta[property='og:title']"),
-            'og_description' => $this->getMetaValue($crawler, "meta[property='og:description']"),
-            'og_image' => $this->getMetaValue($crawler, "meta[property='og:image']"),
-        ]);
-    }
-
-    private function getMetaValue($crawler, $selector)
-    {
-        $nodes = $crawler->filter($selector);
-        return count($nodes) > 0 ? $crawler->filter($selector)->eq(0)->attr('content') : '';
-    }
-
-    private function getTitle($crawler)
-    {
-        return $crawler->filter('title')->eq(0)->text();
+        return $this->metaDataService->getMetaData($url);
     }
 }

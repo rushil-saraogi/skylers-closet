@@ -1,13 +1,14 @@
 <template>
-    <Component :is="Icons[icon]"
-        class="h-5 w-5 hover:cursor-pointer opacity-50 hover:opacity-80"
-        :class="wrapperClasses"
-        :v-bind="$attrs"
-    />
+    <div class="hover:cursor-pointer opacity-80 hover:opacity-100 flex gap-2 items-center" :v-bind="$attrs">
+        <Component :is="Icons[icon]"
+            class="h-5 min-w-5 text-white"
+        />
+        <div v-if="text" class="text-white">{{ text }}</div>
+    </div>
+    
 </template>
 <script>
 import * as Icons from '@heroicons/vue/solid'
-import { themes } from './constants';
 
 export default {
     props: {
@@ -15,9 +16,9 @@ export default {
             type: String,
             required: true,
         },
-        theme: {
+        text: {
             type: String,
-            default: themes.light,
+            default: '',
         }
     },
 
@@ -26,11 +27,5 @@ export default {
             Icons,
         }
     },
-
-    computed: {
-        wrapperClasses() {
-            return this.theme === themes.light ? 'text-gray-800' : 'text-black';
-        }
-    }
 }
 </script>

@@ -2,7 +2,7 @@
 
 namespace App\Http\Services;
 
-use App\Models\Page;
+use App\Models\Closet;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 
@@ -22,9 +22,9 @@ class InstagramService
      * @param array $data
      * @return array
      */
-    public function create(array $data):Page
+    public function create(array $data):Closet
     {
-        $page = new Page();
+        $page = new Closet();
         $page->fill(array_merge($data, [
             'user_id' => Auth::user()->id,
         ]));
@@ -32,8 +32,6 @@ class InstagramService
         if (!$page->save()) {
             throw new Exception('Page could not be saved.');
         }
-
-        $this->tileService->createInitialTiles($page);
 
         return $page;
     }

@@ -2,10 +2,13 @@ require('./bootstrap');
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
+import { createPinia } from 'pinia'
 import { InertiaProgress } from '@inertiajs/progress';
-import VueGridLayout from 'vue-grid-layout';
+import VueShopifyDraggable from 'vue-shopify-draggable';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
+
+const pinia = createPinia()
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -13,7 +16,8 @@ createInertiaApp({
     setup({ el, app, props, plugin }) {
         return createApp({ render: () => h(app, props) })
             .use(plugin)
-            .use(VueGridLayout)
+            .use(pinia)
+            .use(VueShopifyDraggable)
             .mixin({ methods: { route } })
             .mount(el);
     },

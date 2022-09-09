@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -62,8 +61,8 @@ class User extends Authenticatable
     /**
      * User pages
      */
-    public function pages()
+    public function closets()
     {
-        return $this->hasMany(Page::class);
+        return $this->hasMany(Closet::class);
     }
 }

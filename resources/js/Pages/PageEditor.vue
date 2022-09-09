@@ -10,16 +10,17 @@
                 </div>
                 
                 <div>
-                    <jet-secondary-button @click="openSite" class="mr-3">Go to site</jet-secondary-button>
-                    <!-- <jet-button @click="toggleEditTileModal(true)">Add Tile</jet-button> -->
+                    <jet-secondary-button @click="openSite" class="mr-3">Preview</jet-secondary-button>
+                    <jet-button>Publish</jet-button>
                 </div>
             </div>
         </template>
 
         <div class="w-full bg-center bg-cover p-10" :style="pageContainerStyles">
-            <div class="mx-auto border border-red-400" :class="tileWrapperClasses">
+            <div class="mx-auto max-w-md phone overflow-scroll p-3">
                 <tile-layout
                     v-if="page.tiles.length"
+                    :title="page.title"
                     :tiles="page.tiles"
                     :initial-layout="form.layout"
                     @click:edit-tile="(selected) => toggleEditTile(true, selected)"
@@ -33,16 +34,25 @@
                     cta="Create Tile"
                     @cta:click="toggleEditTile(true)"
                 />
+                <div @click="toggleSelectTileModal(true)" class="h-40 bg-gray-300/80 rounded-lg w-full duration-200 mt-3 items-center flex justify-center hover:bg-gray-400/50 hover:cursor-pointer">
+                    <PlusIcon class="h-10 w-10 text-gray-600" />
+                </div>
             </div>
         </div>
 
         <floating-buttons>
             <floating-button tooltip="Edit wallpaper" @click="toggleWallpaperModal(true)" icon="wallpaper" />
-            <floating-button :tooltip="layoutButtonTooltip" @click="toggleMobileMode(!mobileModeActive)" :icon="layoutButtonIcon" />
             <floating-button tooltip="Add Location" @click="toggleMapModal(true)" icon="location_on" />
             <floating-button tooltip="Add Text" @click="toggleTextTileModal(true)" icon="title" />
             <floating-button tooltip="Add Link" @click="toggleEditLinkTileModal(true)" icon="link" />
         </floating-buttons>
+
+        <add-tile-modal
+            :show="shouldShowAddTileModal"
+            :page-id="page.id"
+            :selected-tile="selectedTile"
+            @click:close="toggleMapModal(false)"
+        />
         
         <link-tile-modal
             :show="shouldShowEditTileModal"
@@ -71,10 +81,16 @@
             :selected-tile="selectedTile"
             @click:close="toggleMapModal(false)"
         />
+
+        <select-tile-modal
+            :show="shouldShowSelectTileModal"
+            @click:close="toggleSelectTileModal(false)"
+        />
     </app-layout>
 </template>
 
 <script>
+    import { PlusIcon } from '@heroicons/vue/solid'
     import AppLayout from '@/Layouts/AppLayout.vue'
     import JetButton from '@/Jetstream/Button.vue'
     import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue'
@@ -83,13 +99,13 @@
     import FloatingButtons from '@/Jetstream/FloatingButtons.vue'
     import FloatingButton from '@/Jetstream/FloatingButton.vue'
     import JetLabel from '@/Jetstream/Label.vue'
-    import IconButton from '@/Jetstream/IconButton.vue'
-    import TileLayout from './Partials/PageEditor/TileLayout.vue'
+    import TileLayout from '../Common/Tiles/TileLayout.vue'
     import ZeroState from '@/Jetstream/ZeroState.vue';
-    import LinkTileModal from './Partials/PageEditor/LinkTileModal.vue'
-    import TextTileModal from './Partials/PageEditor/TextTileModal.vue'
-    import MapTileModal from './Partials/PageEditor/MapTileModal.vue'
-    import WallpaperModal from './Partials/PageEditor/WallpaperModal.vue'
+    import LinkTileModal from '@/Common/Tiles/LinkTileModal.vue'
+    import TextTileModal from '@/Common/Tiles/TextTileModal.vue'
+    import MapTileModal from '@/Common/Tiles/MapTileModal.vue'
+    import WallpaperModal from '@/Common/Tiles/WallpaperModal.vue'
+    import SelectTileModal from '@/Common/Tiles/SelectTileModal.vue'
     import { updateQueryStringParameter } from '@/Util/Url'
 
     export default {
@@ -102,15 +118,16 @@
             JetInput,
             JetCheckbox,
             JetLabel,
-            IconButton,
             TileLayout,
             LinkTileModal,
             TextTileModal,
             WallpaperModal,
+            SelectTileModal,
             FloatingButtons,
             FloatingButton,
             ZeroState,
-            MapTileModal
+            MapTileModal,
+            PlusIcon
         },
 
         data() {
@@ -126,8 +143,9 @@
                 shouldShowWallpaperModal: false,
                 shouldShowTextTileModal: false,
                 shouldShowMapModal: false,
+                shouldShowSelectTileModal: false,
+                shouldShowAddTileModal: false,
                 selectedTile: null,
-                mobileModeActive: false,
             }
         },
 
@@ -144,21 +162,6 @@
                 
                 return {};
             },
-
-            layoutButtonTooltip() {
-                return `${this.mobileModeActive ? 'Desktop' : 'Mobile'} mode`;
-            },
-
-            layoutButtonIcon() {
-                return this.mobileModeActive ? 'desktop_mac' : 'smartphone';
-            },
-
-            tileWrapperClasses() {
-                return {
-                    'max-w-3xl': !this.mobileModeActive,
-                    'max-w-lg': this.mobileModeActive
-                }
-            }
         },
 
         methods: {
@@ -175,6 +178,10 @@
             toggleTextTileModal(show, selected = null) {
                 this.selectedTile = selected;
                 this.shouldShowTextTileModal = show;
+            },
+
+            toggleSelectTileModal(show) {
+                this.shouldShowSelectTileModal = show;
             },
 
             toggleEditTile(show, selected) {
@@ -213,10 +220,14 @@
             openSite() {
                 window.open(`/${this.page.slug}`, '_blank');
             },
-
-            toggleMobileMode(active) {
-                this.mobileModeActive = active;
-            }
         }
     }
 </script>
+
+<style scoped>
+.phone {
+    border: 20px solid black;
+    border-radius: 40px;
+    height: 800px;
+}
+</style>

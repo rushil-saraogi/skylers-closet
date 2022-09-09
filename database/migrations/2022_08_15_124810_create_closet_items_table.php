@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTilesTable extends Migration
+class CreateClosetItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,20 @@ class CreateTilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tiles', function (Blueprint $table) {
+        Schema::create('closet_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('page_id');
-            $table->string('type');
-            $table->json('data')->nullable();
-
+            $table->unsignedBigInteger('closet_id');
+            $table->unsignedBigInteger('item_id');
             $table->timestamps();
-            $table->foreign('page_id')
+
+            $table->foreign('closet_id')
                 ->references('id')
-                ->on('pages')
+                ->on('closets')
+                ->onDelete('cascade');
+
+            $table->foreign('item_id')
+                ->references('id')
+                ->on('items')
                 ->onDelete('cascade');
         });
     }
@@ -34,6 +38,6 @@ class CreateTilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('links');
+        Schema::dropIfExists('closet_items');
     }
 }

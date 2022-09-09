@@ -170,7 +170,7 @@
             },
             pageId: {
                 type: Number,
-                required: true,
+                required: false,
             },
             selectedTile: {
                 type: Object,

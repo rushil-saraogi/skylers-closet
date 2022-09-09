@@ -11,6 +11,7 @@
                 class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-9 pr-12 sm:text-sm border-gray-300 rounded-md"
                 :class="inputClasses"
                 :value="modelValue"
+                ref="input"
                 @input="$emit('update:modelValue', $event.target.value)"
             >
             <div class="absolute inset-y-0 right-0 flex items-center">

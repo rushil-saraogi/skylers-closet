@@ -30,7 +30,10 @@
     "dependencies": {
         "@headlessui/vue": "^1.4.0",
         "@heroicons/vue": "^1.0.4",
+        "@shopify/draggable": "^1.0.0-beta.8",
         "@tailwindcss/line-clamp": "^0.2.1",
-        "vue-grid-layout": "^3.0.0-beta1"
+        "pinia": "^2.0.21",
+        "vue-grid-layout": "^3.0.0-beta1",
+        "vue-shopify-draggable": "0.0.3"
     }
 }

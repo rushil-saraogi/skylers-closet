@@ -36,7 +36,7 @@ class ImageController extends Controller
 
 
     public function uploadFile(
-        UploadedFile $uploadedFile,
+        UploadedFile $uploadedFile
     )
     {
         $prefix = Str::random(15) . '_' . time();

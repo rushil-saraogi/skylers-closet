@@ -8,7 +8,7 @@
             </div>
         </transition>
         
-        <div class="max-w-3xl mx-auto z-10 pt-20">
+        <div class="max-w-md mx-auto z-10 pt-20">
             <tile-layout
                 v-if="page.tiles"
                 :tiles="page.tiles"
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-    import TileLayout from './Partials/PageEditor/TileLayout.vue';
+    import TileLayout from '../Common/Tiles/TileLayout.vue';
     import { updateQueryStringParameter } from '@/Util/Url'
 
     export default {
