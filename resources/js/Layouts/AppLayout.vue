@@ -12,21 +12,21 @@
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex-shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
+                                <Link :href="route('explore')">
                                     <jet-application-mark class="block h-9 w-auto" />
                                 </Link>
                             </div>
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Your Closets
-                                </jet-nav-link>
                                 <jet-nav-link :href="route('explore')" :active="route().current('explore')">
                                     Explore
                                 </jet-nav-link>
                                 <jet-nav-link :href="route('feed')" :active="route().current('feed')">
                                     Feed
+                                </jet-nav-link>
+                                <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
+                                    Your Closets
                                 </jet-nav-link>
                             </div>
                         </div>
@@ -154,6 +154,9 @@
                         <jet-responsive-nav-link :href="route('explore')" :active="route().current('explore')">
                             Explore
                         </jet-responsive-nav-link>
+                        <jet-responsive-nav-link :href="route('feed')" :active="route().current('feed')">
+                            Feed
+                        </jet-responsive-nav-link>
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -233,7 +236,7 @@
             </header>
 
             <!-- Page Content -->
-            <main class="flex-auto relative flex items-stretch max-w-7xl m-auto w-full">
+            <main class="flex-auto relative flex items-stretch max-w-7xl m-auto w-full py-8 px-4 sm:px-6 lg:px-8">
                 <slot></slot>
             </main>
         </div>

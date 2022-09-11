@@ -11,25 +11,30 @@
             </div>
         </template>
 
-        <div class="py-12 px-4">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
-                <h1>Here we feed</h1>
+        <div class="w-full">
+            <div>
+                <ImageHeader
+                    :headerText="user.name"
+                    subHeaderText="Lets give them taglines?"
+                    :image="user.profile_photo_url"
+                />
             </div>
         </div>
-
     </app-layout>
 </template>
 
 <script>
     import AppLayout from '@/Layouts/AppLayout.vue'
     import JetButton from '@/Jetstream/Button';
+    import ImageHeader from '@/Jetstream/ImageHeader.vue';
 
     export default {
-        props: ['closets'],
+        props: ['user'],
 
         components: {
             AppLayout,
             JetButton,
+            ImageHeader
         },
 
         mounted() {

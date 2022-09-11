@@ -1,27 +1,21 @@
 <template>
-    <div
-        v-if="show"
-        class="h-full w-full flex justify-center items-center absolute top-0 left-0"
-    >   
-        <div class="bg-gray-800 bg-opacity-80 rounded-full flex gap-6 p-3">
-            <slot></slot>
-        </div>
+    <div v-if="show" class="flex w-full items-center border-solid border-0 border-t border-gray-200">
+        <slot></slot>
     </div>
 </template>
 <script>
-
-import { themes } from './constants';
+import { themes } from "./constants";
 
 export default {
     props: {
         show: {
             type: Boolean,
-            default: false
+            default: false,
         },
         theme: {
             type: String,
-            default: themes.light
-        }
+            default: themes.light,
+        },
     },
-}
+};
 </script>

@@ -27,9 +27,7 @@
             </div>
         </template>
 
-        <div class="w-full py-12 px-4 sm:px-6 lg:px-8">
-            <closet v-bind="selectedCloset" />
-        </div>
+        <closet-editor v-bind="selectedCloset" />
 
         <create-closet-modal
             :show="shouldShowCreateClosetModal"
@@ -43,7 +41,7 @@
 import { mapActions } from "pinia";
 import { useStore } from "@/store";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import Closet from "./Partials/Dashboard/Closet.vue";
+import ClosetEditor from "./Partials/Dashboard/ClosetEditor.vue";
 import ClosetDropdown from "./Partials/Dashboard/ClosetDropdown.vue";
 import CreateClosetModal from "./Partials/Dashboard/CreateClosetModal.vue";
 import JetButton from "@/Jetstream/Button";
@@ -53,11 +51,11 @@ import SelectTileModal from "@/Common/Tiles/SelectTileModal.vue";
 import IconButton from "../Jetstream/IconButton.vue";
 
 export default {
-    props: ["closets", "selected"],
+    props: ["closets", "selected", "categories"],
 
     components: {
         AppLayout,
-        Closet,
+        ClosetEditor,
         CreateClosetModal,
         JetButton,
         LinkTileModal,
@@ -69,6 +67,7 @@ export default {
 
     mounted() {
         this.setClosets(this.closets);
+        this.setCategories(this.categories);
         this.selectCloset(this.selectedCloset);
     },
 
@@ -85,8 +84,18 @@ export default {
         },
     },
 
+    watch: {
+        selectedCloset(newVal) {
+            this.selectCloset(newVal);
+        }
+    },
+
     methods: {
-        ...mapActions(useStore, ["selectCloset", "setClosets"]),
+        ...mapActions(useStore, [
+            "selectCloset",
+            "setClosets",
+            "setCategories",
+        ]),
 
         toggleCreateClosetModal(show, selected = null) {
             this.selectedClosetToEdit = selected;

@@ -32,4 +32,13 @@ class Item extends Model
     public function globalItem() {
         return $this->belongsTo(GlobalItem::class);  
     }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    public function category() {
+        return $this->belongsTo(Category::class);  
+    }
 }

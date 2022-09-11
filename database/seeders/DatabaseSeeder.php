@@ -14,23 +14,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $tech = DB::table('categories')->insertGetId([
+        DB::table('categories')->insertGetId([
+            'name' => 'Mixed Bag',
+        ]);
+
+        DB::table('categories')->insertGetId([
             'name' => 'Tech',
         ]);
 
-        $home = DB::table('categories')->insertGetId([
+        DB::table('categories')->insertGetId([
             'name' => 'Home',
         ]);
 
-        $books = DB::table('categories')->insertGetId([
+        DB::table('categories')->insertGetId([
             'name' => 'Books',
         ]);
 
-        $fashion = DB::table('categories')->insertGetId([
+        DB::table('categories')->insertGetId([
             'name' => 'Fashion',
         ]);
 
-        $watches = DB::table('categories')->insertGetId([
+        DB::table('categories')->insertGetId([
             'name' => 'Watches',
         ]);
 
@@ -40,7 +44,6 @@ class DatabaseSeeder extends Seeder
             'price' => 32,
             'url' => 'https://www.amazon.com/dp/B001G8N95I',
             'asin' => 'B001G8N95I',
-            'category_id' => $fashion
         ]);
 
         DB::table('global_items')->insert([
@@ -49,7 +52,6 @@ class DatabaseSeeder extends Seeder
             'price' => 35.99,
             'url' => 'https://www.amazon.com/dp/B07SJ77C8V',
             'asin' => 'B07SJ77C8V',
-            'category_id' => $fashion
         ]);
 
         DB::table('global_items')->insert([
@@ -58,7 +60,6 @@ class DatabaseSeeder extends Seeder
             'price' => 12.99,
             'url' => 'https://www.amazon.com/dp/B07WTVQ171',
             'asin' => 'B07WTVQ171',
-            'category_id' => $home
         ]);
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePostsTable extends Migration
+class CreateMessagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,23 @@ class CreatePostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->string('message_body')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('closet_id');
-            $table->unsignedBigInteger('parent_post_id');
+            $table->unsignedBigInteger('item_id')->nullable();
+            $table->unsignedBigInteger('parent_message_id')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
+                ->onDelete('cascade');
+            
+            $table->foreign('item_id')
+                ->references('id')
+                ->on('items')
                 ->onDelete('cascade');
 
             $table->foreign('closet_id')
@@ -31,9 +37,9 @@ class CreatePostsTable extends Migration
                 ->on('closets')
                 ->onDelete('cascade');
             
-            $table->foreign('parent_post_id')
+            $table->foreign('parent_message_id')
                 ->references('id')
-                ->on('posts')
+                ->on('messages')
                 ->onDelete('cascade');
         });
     }
@@ -45,6 +51,6 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('messages');
     }
 }

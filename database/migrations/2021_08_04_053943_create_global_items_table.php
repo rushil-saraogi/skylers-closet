@@ -28,6 +28,8 @@ class CreateGlobalItemsTable extends Migration
             $table->string('video_url')->nullable();
             $table->timestamps();
 
+            $table->unique('model', 'brand');
+
             $table->foreign('category_id')
                 ->references('id')
                 ->on('categories')

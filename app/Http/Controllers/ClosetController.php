@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateClosetRequest;
 use App\Http\Services\ClosetService;
 use App\Models\Closet;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Message;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -26,30 +27,20 @@ class ClosetController extends Controller
     }
 
     /**
-     * Get the current user's pages
+     * Render closet
      *
+     * @param Request $request
      */
-    public function dashboard(Request $request)
+    public function show(Request $request, Closet $closet)
     {
-        return Inertia::render('Dashboard', $this->getDashProps($request));
-    }
-
-    /**
-     * Return the explore component
-     *
-     */
-    public function explore()
-    {
-        return Inertia::render('Explore', []);
-    }
-
-    /**
-     * Return the feed component
-     *
-     */
-    public function feed()
-    {
-        return Inertia::render('Feed', []);
+        return Inertia::render('Closet', [
+            'closet' => $closet
+                ->load('items', 'user'),
+            'messages' => Message::where('closet_id', $closet->id)
+                ->whereNull('parent_message_id')
+                ->with('replies.user', 'user', 'item')
+                ->get()
+        ]);
     }
 
     /**
@@ -66,10 +57,7 @@ class ClosetController extends Controller
             )
         );
 
-        return Inertia::render('Dashboard', array_merge(
-            $this->getDashProps($request),
-            [ 'selected' => $closet ]
-        ));
+        return Redirect::route('dashboard', [ 'closet' => $closet->id ]);
     }
 
     /**
@@ -94,29 +82,5 @@ class ClosetController extends Controller
         $this->pageService->delete($pageId);
 
         return Redirect::route('dashboard');
-    }
-
-    private function getDashProps(Request $request)
-    {
-        $props = [
-            'closets' => Closet::with('items')
-                ->where('user_id', Auth::user()->id)
-                ->get()
-        ];
-
-        if ($request->query('closet')) {
-            $props['selected'] = $props['closets']->firstWhere('id', $request->query('closet'));
-        }
-
-        return $props;
-    }
-
-    public function pubsite(string $slug)
-    {
-        $page = Page::with('tiles')->where('slug', $slug)->first();
-        
-        return Inertia::render('Pubsite', [
-            'page' => $page
-        ]);
     }
 }

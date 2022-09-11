@@ -1,7 +1,7 @@
 <template>
     <jet-confirmation-modal :show="show" @close="$emit('click:close')">
         <template #title>
-            Delete Page
+            Delete Item
         </template>
 
         <template #content>

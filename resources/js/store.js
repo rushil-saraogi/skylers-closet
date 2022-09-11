@@ -5,45 +5,26 @@ export const useStore = defineStore("main", {
         return {
             closets: [],
             selectedCloset: {},
-            saveModeItem: null,
-            isLoadingItem: false,
+            categories: [],
+            selectedCategory: {},
         };
     },
 
     actions: {
-        addSaveModeItemToCloset(item, index) {
-            this.selectedCloset.items.unshift(item);
-            this.updateCloset(this.selectedCloset);
-        },
-
-        removeItemFromSelectedCloset(index) {
-            this.selectedCloset.items.splice(index, 1);
-        },
-
-        updateCloset(updatedCloset) {
-            this.closets = this.closets.map(closet => closet.id === updatedCloset.id
-                ? { ...updatedCloset }
-                : closet
-            );
-        },
-
-        setSaveModeItem(item) {
-            this.saveModeItem = {
-                ...item,
-                inSaveMode: true,
-            };
-        },
-
-        removeSaveModeItem() {
-            this.saveModeItem = null;
-        },
-
         selectCloset(closet) {
             this.selectedCloset = { ...closet };
         },
 
         setClosets(closets) {
-            this.closets = [...closets];
+            this.closets = [ ...closets ];
         },
+
+        setCategories(categories) {
+            this.categories = [ ...categories ];
+        },
+
+        selectCategory(category) {
+            this.selectedCategory = category;
+        }
     },
 });

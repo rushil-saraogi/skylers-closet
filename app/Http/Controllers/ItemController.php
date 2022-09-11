@@ -6,8 +6,6 @@ use App\Http\Services\ItemService;
 use App\Models\Item;
 use App\Models\Closet;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
-use Inertia\Inertia;
 
 class ItemController extends Controller
 {
@@ -47,13 +45,25 @@ class ItemController extends Controller
     }
 
     /**
+     * Update a single item
+     *
+     * @param Request $request
+     */
+    public function updateWithoutIntertia(Request $request, Closet $closet, Item $item)
+    {
+        $validated = $this->validateItem($request);
+        $item = $this->itemService->update($validated, $closet, $item);
+        return response()->json($item);;
+    }
+
+    /**
      * Delete a single Tile for a page
      *
      * @param Request $request
      */
     public function delete(Request $request, Closet $closet, Item $item)
     {
-        $this->itemService->delete($item);
+        $this->itemService->delete($closet, $item);
         return redirect()->back();
     }
 

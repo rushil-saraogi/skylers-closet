@@ -1,10 +1,13 @@
 <template>
     <tile-wrapper
-        @click:tile="handleProductClick"
+        :hide-controls="hideControls"
         :pub-mode="pubMode"
-        :in-save-mode="inSaveMode"
     >
-        <div class="flex flex-col items-center p-6">
+        <div
+            class="flex flex-col items-center p-6"
+            :class="{ 'hover:cursor-pointer': pubMode }"
+            @click="handleItemClick"
+        >
             <div
                 v-if="price"
                 class="bg-green-300 font-bold flex items-center justify-center rounded-md absolute top-3 right-3 px-2 py-1"
@@ -19,29 +22,17 @@
                 >
                     {{ title }}
                 </div>
-                <transition
-                    enter-active-class="transition ease-in duration-200"
-                    enter-from-class="-translate-x-3 opacity-0"
-                    enter-to-class="translate-0 opacity-100"
-                >
-                    <ChevronRightIcon
-                        v-show="isHovering"
-                        class="h-7 w-7 text-black"
-                    />
-                </transition>
             </div>
         </div>
     </tile-wrapper>
 </template>
 
 <script>
-import { ChevronRightIcon } from "@heroicons/vue/solid";
 import TileWrapper from "./TileWrapper.vue";
 
 export default {
     components: {
         TileWrapper,
-        ChevronRightIcon,
     },
 
     emit: ["click:edit", "click:delete"],
@@ -55,11 +46,15 @@ export default {
             type: String,
             default: "",
         },
+        url: {
+            type: String,
+            default: "",
+        },
         price: {
             type: Number,
             default: 0,
         },
-        inSaveMode: {
+        hideControls: {
             type: Boolean,
             default: false,
         },
@@ -75,14 +70,10 @@ export default {
         };
     },
 
-    mounted() {},
-
-    computed: {},
-
     methods: {
-        handleProductClick() {
-            if (!this.pubMode) return;
-            window.open(this.data.url, "_blank");
+        handleItemClick() {
+            if (!this.pubMode || !this.url) return;
+            window.open(this.url, "_blank");
         },
     },
 };

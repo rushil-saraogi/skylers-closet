@@ -1,20 +1,21 @@
 <template>
     <div class="w-full" :style="pageContainerStyles">
         <div>
-            <product-input
-                @response:meta="setSaveModeItem"
-                @change:itemUrl="handleUrlChange"
-            />
+            <div
+                class="p-3 bg-gray-200 border border-gray-300 text-gray-600 hover:shadow-inner transition font-semibold flex items-center justify-center rounded border hover:cursor-pointer"
+                @click="toggleAddItemModal(true)"
+            >
+                Add an item to your closet
+            </div>
         </div>
         <div class="mt-7">
-            <div v-if="fullItemList.length === 0">
+            <div v-if="items.length === 0">
                 <smiley-with-message message="This closet looks pretty empty" />
             </div>
             <tile-layout
                 :title="name"
-                :items="fullItemList"
+                :items="items"
                 :pub-mode="false"
-                @click:edit-item="(selected) => toggleEditItem(true, selected)"
                 @click:delete="toggleDeleteItemModal"
                 @update:layout="handleLayoutUpdate"
                 @click:edit="toggleEditItemModal"
@@ -35,6 +36,11 @@
             :show="shouldShowEditItemModal"
             :selected="selectedForEditing"
             @click:close="toggleEditItemModal(false)"
+        />
+
+        <add-item-modal
+            :show="shouldShowAddItemModal"
+            @click:close="toggleAddItemModal(false)"
         />
 
         <wallpaper-modal
@@ -58,10 +64,23 @@ import TileLayout from "@/Common/Tiles/TileLayout.vue";
 import { updateQueryStringParameter } from '@/Util/Url'
 import DeleteItemModal from "./DeleteItemModal.vue";
 import WallpaperModal from '@/Common/Tiles/WallpaperModal.vue'
-import ProductInput from "./ProductInput.vue";
 import EditItemModal from './EditItemModal.vue';
+import AddItemModal from './AddItemModal.vue';
 
 export default {
+    components: {
+        AddItemModal,
+        Link,
+        ZeroState,
+        DeleteItemModal,
+        TileLayout,
+        FloatingButtons,
+        FloatingButton,
+        WallpaperModal,
+        EditItemModal,
+        SmileyWithMessage,
+    },
+
     props: {
         id: {
             type: String,
@@ -96,6 +115,7 @@ export default {
             shouldShowDeleteModal: false,
             shouldShowWallpaperModal: false,
             shouldShowEditItemModal: false,
+            shouldShowAddItemModal: false,
             selectedForDeletion: null,
             selectedForEditing: null,
             newItem: null,
@@ -112,13 +132,7 @@ export default {
     },
 
     computed: {
-        ...mapState(useStore, ['saveModeItem']),
-
-        fullItemList() {
-            return this.saveModeItem
-                ? [this.saveModeItem, ...this.items]
-                : this.items;
-        },
+        ...mapState(useStore, []),
 
         pageContainerStyles() {
             if (this.wallpaper) {
@@ -132,19 +146,6 @@ export default {
             
             return {};
         },
-    },
-
-    components: {
-        Link,
-        ZeroState,
-        DeleteItemModal,
-        TileLayout,
-        FloatingButtons,
-        FloatingButton,
-        ProductInput,
-        WallpaperModal,
-        EditItemModal,
-        SmileyWithMessage,
     },
 
     methods: {
@@ -172,6 +173,10 @@ export default {
             this.selectedForEditing = selected;
         },
 
+        toggleAddItemModal(show) {
+            this.shouldShowAddItemModal = show;
+        },
+
         toggleWallpaperModal(show) {
                 this.shouldShowWallpaperModal = show;
         },
@@ -193,12 +198,6 @@ export default {
         saveCloset() {
             this.form.put(this.route('update-closet', this.id));
         },
-
-        handleUrlChange(url) {
-            if (!url) {
-                this.removeSaveModeItem();
-            }
-        }
     },
 };
 </script>

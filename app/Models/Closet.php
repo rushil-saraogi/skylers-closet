@@ -17,6 +17,7 @@ class Closet extends Model
     protected $fillable = [
         'name',
         'user_id',
+        'category_id',
         'wallpaper',
         'active',
     ];
@@ -26,7 +27,7 @@ class Closet extends Model
     }
 
     /**
-     * Closet products
+     * Closet items
      */
     public function items()
     {
@@ -39,5 +40,14 @@ class Closet extends Model
     public function drawers()
     {
         return $this->hasMany(Drawer::class);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class)->orderByDesc('created_at');
+    }
+
+    public function category() {
+        return $this->belongsTo(Category::class);  
     }
 }

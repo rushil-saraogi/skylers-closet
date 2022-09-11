@@ -1,5 +1,5 @@
 <template>
-    <app-layout title="Dashboard">
+    <app-layout title="Explore">
         <template #header>
             <div class="flex items-center justify-between">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -11,38 +11,51 @@
             </div>
         </template>
 
-        <div class="py-12 px-4">
-            <h3 class="font-semibold text-lg text-gray-800 leading-tight">What's hot</h3>
+        <div class="w-full">
+            <CategorySelect
+                :selected="selected.id"
+                as="link"
+            />
+            <div class="mt-10 grid gap-6 md:grid-cols-3 sm:grid-cols-2 grid-col-1">
+                <ClosetTile
+                    v-for="closet in closets"
+                    :key="closet.id"
+                    v-bind="closet"
+                />
+            </div>
         </div>
-
     </app-layout>
 </template>
 
 <script>
-    import AppLayout from '@/Layouts/AppLayout.vue'
-    import JetButton from '@/Jetstream/Button';
+import { mapActions } from "pinia";
+import { useStore } from "@/store";
+import AppLayout from "@/Layouts/AppLayout.vue";
+import JetButton from "@/Jetstream/Button";
+import CategorySelect from './Partials/Dashboard/CategorySelect.vue';
+import ClosetTile from '@/Common/Tiles/ClosetTile.vue';
 
-    export default {
-        props: ['closets'],
+export default {
+    props: ["categories", "selected", "closets"],
 
-        components: {
-            AppLayout,
-            JetButton,
-        },
+    components: {
+        AppLayout,
+        JetButton,
+        CategorySelect,
+        ClosetTile,
+    },
 
-        mounted() {
-            // this.setClosets(this.closets);
-        },
+    mounted() {
+        this.setCategories(this.categories);
+        this.selectCategory(this.selected);
+    },
 
-        data() {
-            return { }
-        },
+    data() {
+        return {};
+    },
 
-        computed: {
-        },
-
-        methods: {
-            // ...mapActions(useStore, ['selectCloset', 'setClosets']),
-        }
-    }
+    methods: {
+        ...mapActions(useStore, ['selectCategory', 'setCategories']),
+    },
+};
 </script>

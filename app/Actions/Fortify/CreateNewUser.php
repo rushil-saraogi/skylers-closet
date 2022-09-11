@@ -52,19 +52,17 @@ class CreateNewUser implements CreatesNewUsers
         $closet = $this->closetService->create([
             'name' => $user->name . "'s closet",
             'user_id' => $user->id,
+            'category_id' => 1
         ]);
 
         // The first 3 are seeded with random items, grabbing one
-        $randomGlobalItem = GlobalItem::take(3)->get()->random(1)->first();
+        $randomGlobalItem = GlobalItem::take(3)
+            ->get()
+            ->random(1)
+            ->first()
+            ->toArray();
 
-        $this->itemService->create([
-            'title' => $randomGlobalItem->title,
-            'image' => $randomGlobalItem->image,
-            'price' => $randomGlobalItem->price,
-            'url' => $randomGlobalItem->url,
-            'asin' => $randomGlobalItem->asin,
-            'closet_id' => $closet->id,
-        ], $closet);
+        $this->itemService->create($randomGlobalItem, $closet);
 
         return $user;
     }

@@ -4,7 +4,7 @@ namespace App\Http\Services;
 
 use App\Models\Item;
 use App\Models\Closet;
-use Ramsey\Uuid\Type\Integer;
+use Illuminate\Support\Facades\DB;
 
 class ItemService
 {
@@ -43,25 +43,33 @@ class ItemService
      * @param Item $item
      * @return Item
      */
-    public function update(array $data, Item $item): Item
+    public function update(array $data, Closet $closet, Item $item): Item
     {
-        // If the order is changing swap order values with the other item
-        if (array_key_exists('item_order', $data) && $item->item_order !== $data['item_order']) {
-            $originalItemInOrder = $item
-                ->closet->items
-                ->where('item_order', $data['item_order'])
-                ->first();
-            
-            if (!$originalItemInOrder) {
-                throw new \Exception('Invalid order value');
+        DB::transaction(function () use ($data, $item, $closet) {
+            // If the order is being changed update all other items to reflect
+            if (array_key_exists('item_order', $data) && $data['item_order'] !== $item->item_order) {
+                $newPosition = $data['item_order'];
+                $oldPosition = $item->item_order;
+
+                if ($newPosition < $oldPosition) {
+                    Item::where('item_order', '>=', $newPosition)
+                        ->where('item_order', '<=', $oldPosition)
+                        ->where('id', '!=', $item->id)
+                        ->where('closet_id', $closet->id)
+                        ->increment('item_order', 1);
+                } else {
+                    Item::where('item_order', '>=', $oldPosition)
+                        ->where('item_order', '<=', $newPosition)
+                        ->where('id', '!=', $item->id)
+                        ->where('closet_id', $closet->id)
+                        ->decrement('item_order', 1);
+                }
             }
-
-            $originalItemInOrder->item_order = $item->item_order;
-            $originalItemInOrder->save();
-        }
-
-        $item->fill($data);
-        $item->save();
+    
+            $item->fill($data);
+            $item->save();
+        });
+        
         return $item;
     }
 
@@ -71,9 +79,14 @@ class ItemService
      * @param Item $item
      * @return void
      */
-    public function delete(Item $item): void
+    public function delete(Closet $closet, Item $item): void
     {
         $item->delete();
+
+        // Fix the item order after a deletion
+        Item::where('item_order', '>', $item->item_order)
+            ->where('closet_id', $closet->id)
+            ->decrement('item_order', 1);
     }
 
     /**
