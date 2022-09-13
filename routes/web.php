@@ -51,6 +51,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
     // Message Forms
     Route::post('/closets/{closet}/messages', [MessageController::class, 'create'])->name('create-message');
+
+    // User Froms
+    Route::post('/users/{user}/follow', [UserController::class, 'follow'])->name('follow');
     
     // Misc
     // Routes prefixed with API do not follow the inertia pattern

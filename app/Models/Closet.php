@@ -20,6 +20,7 @@ class Closet extends Model
         'category_id',
         'wallpaper',
         'active',
+        'public'
     ];
 
     public function user() {
@@ -47,7 +48,13 @@ class Closet extends Model
         return $this->hasMany(Message::class)->orderByDesc('created_at');
     }
 
-    public function category() {
+    public function category()
+    {
         return $this->belongsTo(Category::class);  
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'closet_followers', 'closet_id', 'follower_id');
     }
 }

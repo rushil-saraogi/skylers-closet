@@ -13,7 +13,7 @@
         </transition>
         
         <div
-            class="bg-white py-3 px-4 rounded fixed bottom-0 mx-auto inset-x-0 max-w-4xl w-full shadow"
+            class="bg-white py-3 px-4 rounded fixed bottom-0 mx-auto inset-x-0 max-w-4xl w-full shadow flex flex-col"
             :style="messageBoardStyles"
             @click="toggleBoard(true)"
         >
@@ -23,7 +23,7 @@
                 />
             </div>
 
-            <div class="mt-3">
+            <div class="mt-3 flex-1">
                 <!-- Create a new post -->
                 <div class="bg-indigo-100 p-4 rounded">
                     <ItemMessageCard
@@ -57,7 +57,7 @@
                 </div>
 
                 <div
-                    v-if="closet && messages"
+                    v-if="closet && messages.length"
                     class="mt-6 flex flex-col gap-5 overflow-scroll message-scroll"
                 >
                     <MessageBlock
@@ -65,6 +65,9 @@
                         :key="message.id"
                         v-bind="message"
                     />
+                </div>
+                <div v-else class="w-full h-full flex items-center justify-center">
+                    <EmptyIllustration />
                 </div>
             </div>
         </div>
@@ -77,6 +80,7 @@ import InputGroup from "@/Jetstream/InputGroup.vue";
 import ItemMessageCard from "./ItemMessageCard.vue";
 import IconButton from "@/Jetstream/IconButton.vue";
 import MessageBlock from "./Message.vue";
+import EmptyIllustration from '@/Illustrations/Empty.vue';
 
 export default {
     props: {
@@ -100,6 +104,7 @@ export default {
         ItemMessageCard,
         IconButton,
         MessageBlock,
+        EmptyIllustration
     },
 
     mounted() {},
@@ -137,7 +142,7 @@ export default {
 
     computed: {
         messageBoardStyles() {
-            const top = this.show ? "15%" : "calc(100vh - 150px)";
+            const top = this.show ? "15%" : "calc(100vh - 120px)";
 
             return {
                 top,

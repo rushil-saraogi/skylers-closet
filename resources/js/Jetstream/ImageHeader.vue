@@ -6,21 +6,23 @@
                 class="h-28 w-28 rounded-full border border-2 border-gray-100 hover:border-indigo-200"
             />
         </Link>
-        <img
-            v-else-if="image"
-            :src="image"
-            class="h-28 w-28 rounded-full"
-        />
-        <div class="text-4xl mt-5">{{ headerText }}</div>
-        <div class="mt-1.5 text-gray-600">{{ subHeaderText }}</div>
+        <img v-else-if="image" :src="image" class="h-28 w-28 rounded-full" />
+        <div class="text-4xl font-bold mt-5">{{ headerText }}</div>
+        <div v-if="subHeaderText" class="mt-2 text-gray-600">
+            {{ subHeaderText }}
+        </div>
+        <button-vue v-if="cta" @click="$emit('click:cta')" class="mt-4">{{
+            cta
+        }}</button-vue>
     </div>
 </template>
 
 <script>
 import { Link } from "@inertiajs/inertia-vue3";
+import ButtonVue from "./Button.vue";
 
 export default {
-    components: { Link },
+    components: { Link, ButtonVue },
 
     props: {
         headerText: {
@@ -30,19 +32,23 @@ export default {
         subHeaderText: {
             type: String,
             required: false,
-            default: ''
+            default: "",
         },
         image: {
             type: String,
             required: false,
-            default: ''
+            default: "",
         },
         link: {
             type: String,
             required: false,
-            default: ''
+            default: "",
         },
-        classes: String
+        cta: {
+            type: String,
+            default: "",
+        },
+        classes: String,
     },
-}
+};
 </script>

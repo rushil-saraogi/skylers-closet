@@ -1,13 +1,13 @@
 <template>
     <app-layout title="Closet">
-        <div class="relative">
+        <div class="relative flex flex-col w-full">
             <ImageHeader
                 :headerText="closet.name"
                 :subHeaderText="authorName"
                 :image="userProfileImage"
                 :link="route('user-profile', [closet.user.id])"
             />
-            <ul class="grid gap-6 md:grid-cols-3 sm:grid-cols-2 grid-col-1 mt-8">
+            <ul class="grid gap-6 md:grid-cols-3 sm:grid-cols-2 grid-col-1 mt-10">
                 <li v-for="(item, index) in closet.items" :key="index">
                     <item-tile
                         v-bind="item"

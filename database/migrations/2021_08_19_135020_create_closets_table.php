@@ -19,7 +19,7 @@ class CreateClosetsTable extends Migration
             $table->string('wallpaper', 600)->nullable();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id');
-            $table->boolean('active')->default(true);
+            $table->boolean('public')->default(true);
             $table->timestamps();
 
             $table->foreign('user_id')

@@ -14,11 +14,11 @@
             >
                 ${{ price }}
             </div>
-            <img v-if="image" class="max-h-40 max-w-40" :src="image" />
+            <img v-if="image" class="h-40 max-w-40" :src="image" />
             <div class="flex justify-between">
                 <div
                     v-if="title"
-                    class="text-gray-600 font-semibold text-lg mt-4"
+                    class="text-gray-600 font-semibold mt-5 line-clamp-1"
                 >
                     {{ title }}
                 </div>
