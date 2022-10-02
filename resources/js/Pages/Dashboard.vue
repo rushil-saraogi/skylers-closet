@@ -1,22 +1,26 @@
 <template>
     <app-layout title="Dashboard">
-        <template #header>
+        <template #header v-if="selected">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <closet-dropdown
                         v-if="this.closets.length > 1"
-                        :selected="selectedCloset"
+                        :selected="selected"
                         :list="closets"
                         :align="'left'"
                     />
-                    <div v-else class="text-lg text-gray-800 leading-tight">
-                        {{ selectedCloset.name }}
+                    <div
+                        v-else
+                        class="text-md font-semibold text-gray-800 leading-tight"
+                    >
+                        {{ selected.name }}
                     </div>
                     <icon-button
-                        class="ml-2"
-                        icon="edit"
-                        @click="toggleCreateClosetModal(true, selectedCloset)"
-                    />
+                        class="ml-1.5"
+                        @click="toggleCreateClosetModal(true, selected)"
+                    >
+                        <PencilIcon class="h-5 w-5 text-gray-400" />
+                    </icon-button>
                 </div>
 
                 <div>
@@ -27,17 +31,37 @@
             </div>
         </template>
 
-        <closet-editor v-bind="selectedCloset" />
+        <div class="w-full">
+            <closet-editor v-if="selected" v-bind="selected" />
+
+            <div v-else>
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold">Your closets</h2>
+                    <div>
+                        <jet-button @click="toggleCreateClosetModal(true)"
+                            >Create new closet</jet-button
+                        >
+                    </div>
+                </div>
+
+                <closet-list
+                    :closets="closets"
+                    class="mt-3 shadow-3xl"
+                    @click:closet="handleClosetClick"
+                />
+            </div>
+        </div>
 
         <create-closet-modal
             :show="shouldShowCreateClosetModal"
-            :selected="selectedClosetToEdit"
+            :selected="selectedToEdit"
             @click:close="toggleCreateClosetModal(false)"
         />
     </app-layout>
 </template>
 
 <script>
+import { ChartSquareBarIcon, PencilIcon } from '@heroicons/vue/24/outline'
 import { mapActions } from "pinia";
 import { useStore } from "@/store";
 import AppLayout from "@/Layouts/AppLayout.vue";
@@ -45,10 +69,10 @@ import ClosetEditor from "./Partials/Dashboard/ClosetEditor.vue";
 import ClosetDropdown from "./Partials/Dashboard/ClosetDropdown.vue";
 import CreateClosetModal from "./Partials/Dashboard/CreateClosetModal.vue";
 import JetButton from "@/Jetstream/Button";
-import LinkTileModal from "@/Common/Tiles/LinkTileModal.vue";
 import TextTileModal from "@/Common/Tiles/TextTileModal.vue";
 import SelectTileModal from "@/Common/Tiles/SelectTileModal.vue";
-import IconButton from "../Jetstream/IconButton.vue";
+import IconButton from "@/Jetstream/IconButton.vue";
+import ClosetList from "./Partials/Dashboard/ClosetList.vue";
 
 export default {
     props: ["closets", "selected", "categories"],
@@ -58,36 +82,32 @@ export default {
         ClosetEditor,
         CreateClosetModal,
         JetButton,
-        LinkTileModal,
         TextTileModal,
         SelectTileModal,
         ClosetDropdown,
         IconButton,
+        ClosetList,
+        PencilIcon
     },
 
     mounted() {
         this.setClosets(this.closets);
         this.setCategories(this.categories);
-        this.selectCloset(this.selectedCloset);
+        this.selectCloset(this.selected);
     },
 
     data() {
         return {
             shouldShowCreateClosetModal: false,
-            selectedClosetToEdit: null,
+            selectedToEdit: null,
+            tabs: [
+                {
+                    icon: ChartSquareBarIcon,
+                    tooltip: "Closets",
+                    onClick: () => console.log('Poo')
+                }
+            ]
         };
-    },
-
-    computed: {
-        selectedCloset() {
-            return this.selected || this.closets[0];
-        },
-    },
-
-    watch: {
-        selectedCloset(newVal) {
-            this.selectCloset(newVal);
-        }
     },
 
     methods: {
@@ -98,13 +118,17 @@ export default {
         ]),
 
         toggleCreateClosetModal(show, selected = null) {
-            this.selectedClosetToEdit = selected;
+            this.selectedToEdit = selected;
             this.shouldShowCreateClosetModal = show;
         },
 
         deleteCloset(id) {
             this.$inertia.delete(this.route("delete-closet", id));
         },
+
+        handleClosetClick(closet) {
+            this.$inertia.visit(route('dashboard', {'closet': closet.id}), { method: 'get' });
+        }
     },
 };
 </script>

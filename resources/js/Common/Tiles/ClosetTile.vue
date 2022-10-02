@@ -1,31 +1,41 @@
 <template>
-    <!-- TODO: Looks too much like the item tile! -->
     <Link
-        class="bg-white min-h-48 rounded-lg overflow-hidden relative shadow-sm"
+        class="bg-white min-h-48 rounded-lg overflow-hidden relative border shadow-3xl hover:shadow-4xl transition"
         :key="category.id"
         :href="route('show-closet', { closet: id })"
     >
-        <div class="flex flex-col items-center p-6">
-            <img class="max-h-40 max-w-40" :src="getClosetImage()" />
-            <div v-if="name" class="text-gray-600 font-semibold text-left text-xl mt-5 line-clamp-2">
+        <div class="flex flex-col items-center p-5">
+            <img v-if="getClosetImage()" class="max-h-40 max-w-40" :src="getClosetImage()" />
+            <div v-else class="h-40 w-full flex items-center rounded-sm justify-center bg-gray-100 text-gray-600">
+                😕 <span class="ml-1.5">Empty Closet</span>
+            </div>
+
+            <div v-if="name" class="text-gray-600 font-semibold text-xl mt-5 line-clamp-1">
                 {{ name }}
             </div>
-            <div
+            <div v-if="name" class="text-gray-400 text-sm mt-0.5 line-clamp-1">
+                By {{ user.name }}
+            </div>
+            <Badge
                 v-if="category.name"
-                class="bg-blue-300 text-sm mt-3 font-bold flex items-center justify-center rounded-md px-2 py-1"
+                class="mt-2.5"
             >
                 {{ category.name }}
-            </div>
+            </Badge>
         </div>
     </Link>
 </template>
 
 <script>
+import { InboxIcon } from '@heroicons/vue/20/solid'
 import { Link } from "@inertiajs/inertia-vue3";
+import Badge from '@/Jetstream/Badge.vue';
 
 export default {
     components: {
         Link,
+        Badge,
+        InboxIcon
     },
 
     emit: ["click:edit", "click:delete"],
@@ -44,6 +54,10 @@ export default {
             default: [],
         },
         category: {
+            type: Object,
+            default: {},
+        },
+        user: {
             type: Object,
             default: {},
         },

@@ -4,6 +4,8 @@ namespace App\Http\Services;
 
 use App\Models\Item;
 use App\Models\Closet;
+use App\Http\Services\ImageService;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class ItemService
@@ -12,12 +14,13 @@ class ItemService
     /**
      * ItemService constructor.
      */
-    public function __construct()
+    public function __construct(ImageService $imageService)
     {
+        $this->imageService = $imageService;
     }
 
     /**
-     * Create a tile
+     * Create a new item
      *
      * @param array $data
      * @return array
@@ -28,16 +31,24 @@ class ItemService
             $data['item_order'] = $this->getHighestOrder($closet);
         }
 
-        $closet->items()->create(
+        if ($closet->items->where('url', $data['url'])->count() > 0) {
+            throw new Exception('Closet already contains url');
+        }
+
+        $item = Item::create(
             array_merge(
                 $data,
                 [ 'closet_id' => $closet->id ]
             )
         );
+
+        if (isset($data['custom_image'])) {
+            $this->imageService->addCustomImageToItem($item, $data['custom_image']);
+        }
     }
 
     /**
-     * Update a tile
+     * Update an item
      *
      * @param array $data
      * @param Item $item
@@ -74,13 +85,34 @@ class ItemService
     }
 
     /**
-     * Delete a link
+     * Delete an item
      *
+     * @param Closet $closet
      * @param Item $item
      * @return void
      */
     public function delete(Closet $closet, Item $item): void
     {
+        $item->delete();
+
+        // Fix the item order after a deletion
+        Item::where('item_order', '>', $item->item_order)
+            ->where('closet_id', $closet->id)
+            ->decrement('item_order', 1);
+    }
+
+    /**
+     * Delete from closet by URL
+     *
+     * @param Closet $closet
+     * @param string $url
+     * @return void
+     */
+    public function deleteByUrl(Closet $closet, string $url): void
+    {
+        $item = Item::where('url', $url)
+            ->where('closet_id', $closet->id)
+            ->get()->first();
         $item->delete();
 
         // Fix the item order after a deletion

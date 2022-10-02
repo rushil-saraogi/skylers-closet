@@ -34,7 +34,7 @@ import {
     CurrencyEuroIcon,
     HeartIcon,
     MailIcon
-} from '@heroicons/vue/solid'
+} from '@heroicons/vue/20/solid'
 import IconGithub from '@/icons/IconGithub.vue';
 import IconFacebook from '@/icons/IconFacebook.vue';
 import IconLinkedin from '@/icons/IconLinkedin.vue';

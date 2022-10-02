@@ -33,6 +33,30 @@ class ItemController extends Controller
     }
 
     /**
+     * Copy an item and add to closet
+     *
+     * @param Request $request
+     */
+    public function copy(Request $request, Closet $closet, Item $item)
+    {
+        $this->itemService->create($item->toArray(), $closet);
+        $request->session()->flash('flash.banner', 'Saved to ' . $closet->name . '!');
+        $request->session()->flash('flash.bannerStyle', 'success');
+        return response(true, 200);
+    }
+
+    /**
+     * Removes item from closet by URL
+     *
+     * @param Request $request
+     */
+    public function removeByUrl(Request $request, Closet $closet, Item $item)
+    {
+        $this->itemService->deleteByUrl($closet, $item->url);
+        return response(true, 200);
+    }
+
+    /**
      * Update a single Tile for a page
      *
      * @param Request $request
@@ -53,7 +77,7 @@ class ItemController extends Controller
     {
         $validated = $this->validateItem($request);
         $item = $this->itemService->update($validated, $closet, $item);
-        return response()->json($item);;
+        return response()->json($item);
     }
 
     /**
@@ -83,6 +107,7 @@ class ItemController extends Controller
             'brand' => ['string', 'nullable'],
             'model' => ['string', 'nullable'],
             'asin' => ['string', 'nullable'],
+            'custom_image' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
         ]);
     }
 }

@@ -14,6 +14,13 @@ export function put(url, data) {
     });
 }
 
+export function del(url) {
+    return fetch(url, {
+        method: 'DELETE',
+        headers: getHeaders(),
+    });
+}
+
 function getHeaders() {
     return {
         'Content-Type': 'application/json'

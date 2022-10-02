@@ -82,7 +82,7 @@ import {
   ListboxOptions,
   ListboxOption,
 } from '@headlessui/vue'
-import { CheckIcon, SelectorIcon } from '@heroicons/vue/solid'
+import { CheckIcon, SelectorIcon } from '@heroicons/vue/20/solid'
 
 export default {
   components: {

@@ -23,6 +23,11 @@ class UserService
      */
     public function follow(User $user)
     {
+        if ($user->followers->contains(Auth::user())) {
+            $this->unfollow($user);
+            return;
+        }
+
         $user->followers()->attach(Auth::user());
     }
 

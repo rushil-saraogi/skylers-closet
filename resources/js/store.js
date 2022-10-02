@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import ClosetsApi from './API/ClosetsApi';
 
 export const useStore = defineStore("main", {
     state: () => {
@@ -25,6 +26,16 @@ export const useStore = defineStore("main", {
 
         selectCategory(category) {
             this.selectedCategory = category;
-        }
+        },
+
+        // async getClosets() {
+        //     if (this.closets.length) {
+        //         return this.closets;
+        //     }
+
+        //     const closets = await ClosetsApi.getCurrentUsersClosets();
+        //     this.setClosets(closets);
+        //     return closets;
+        // }
     },
 });

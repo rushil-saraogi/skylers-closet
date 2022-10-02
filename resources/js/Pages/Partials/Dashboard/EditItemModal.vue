@@ -78,7 +78,7 @@ import InputGroup from "@/Jetstream/InputGroup.vue";
 import JetLabel from "@/Jetstream/Label.vue";
 import JetButton from "@/JetStream/Button.vue";
 import JetSecondaryButton from "@/JetStream/SecondaryButton.vue";
-import { CurrencyDollarIcon } from "@heroicons/vue/solid";
+import { CurrencyDollarIcon } from "@heroicons/vue/20/solid";
 
 export default {
     components: {

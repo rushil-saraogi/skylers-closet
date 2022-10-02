@@ -2,8 +2,8 @@
     <Tooltip
         :text="tooltip"
     >
-        <button class="p-2 flex justify-center items-center h-12 w-12 rounded-full" :class="classes">
-            <span class="material-icons text-2xl">{{ icon }}</span>
+        <button class="p-2 flex justify-center items-center h-12 w-12 rounded-lg bg-white border" :class="classes">
+            <span class="material-icons text-2xl text-gray-600">{{ icon }}</span>
         </button>
     </Tooltip>
 </template>
@@ -35,7 +35,7 @@
             classes() {
                 return {
                     'bg-white': this.type === 'default',
-                    'hover:bg-gray-200': this.type === 'default',
+                    'hover:bg-gray-300': this.type === 'default',
                     'text-gray-500': this.type === 'default',
                     'bg-gray-700': this.type === 'primary',
                     'hover:bg-gray-900': this.type === 'primary',

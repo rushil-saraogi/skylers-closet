@@ -2,30 +2,36 @@
     <div>
         <!-- background overlay -->
         <transition
-            enter-active-class="transition ease-in duration-200"
+            enter-active-class="transition-opacity ease-in duration-200"
             enter-from-class="opacity-0"
             enter-to-class="opacity-100"
+            leave-active-class="transition-opacity ease-in duration-200"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
         >
             <div
-                v-if="show" class="bg-black fixed top-0 left-0 h-full w-full opacity-50"
-                @click="toggleBoard(false)"
-            />
+                class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                v-if="show"
+                @click="$emit('toggle', false)"
+            ></div>
         </transition>
         
+        <!-- Start of board -->
         <div
-            class="bg-white py-3 px-4 rounded fixed bottom-0 mx-auto inset-x-0 max-w-4xl w-full shadow flex flex-col"
+            class="bg-white py-3 px-4 rounded max-w-4xl w-full shadow-3xl border flex flex-col z-10"
             :style="messageBoardStyles"
-            @click="toggleBoard(true)"
+            :class="{ [classes]: classes }"
         >
             <div class="w-full">
                 <div
                     class="h-1.5 w-8 bg-gray-300 hover:bg-gray-400 hover:cursor-pointer rounded-full m-auto"
+                    @click="$emit('toggle', !show)"
                 />
             </div>
 
             <div class="mt-3 flex-1">
-                <!-- Create a new post -->
-                <div class="bg-indigo-100 p-4 rounded">
+                <div class="bg-indigo-50 p-4 rounded">
+                     <!-- Tagged item preview -->
                     <ItemMessageCard
                         v-if="taggedItem"
                         :item="taggedItem"
@@ -35,7 +41,8 @@
                     />
 
                     <div class="flex items-center">
-                        <div class="flex-1">
+                        <div class="flex-1" @click="$emit('toggle', true)">
+                            <!-- Message input -->
                             <input-group
                                 type="text"
                                 v-model="postForm.message_body"
@@ -49,10 +56,11 @@
 
                         <IconButton
                             @click="submit"
-                            icon="send"
+                            icon="PaperAirplaneIcon"
                             class="mt-1 ml-3 z-10 relative"
-                            variant="filled"
-                        />
+                        >
+                            <PaperAirplaneIcon class="h-6 w-6 -mr-1 text-gray-600" />
+                        </IconButton>
                     </div>
                 </div>
 
@@ -66,8 +74,9 @@
                         v-bind="message"
                     />
                 </div>
-                <div v-else class="w-full h-full flex items-center justify-center">
+                <div v-else class="w-full h-full flex flex-col items-center justify-center">
                     <EmptyIllustration />
+                    <div class="font-semibold mt-4">No comments yet</div>
                 </div>
             </div>
         </div>
@@ -81,6 +90,7 @@ import ItemMessageCard from "./ItemMessageCard.vue";
 import IconButton from "@/Jetstream/IconButton.vue";
 import MessageBlock from "./Message.vue";
 import EmptyIllustration from '@/Illustrations/Empty.vue';
+import { PaperAirplaneIcon } from '@heroicons/vue/24/outline';
 
 export default {
     props: {
@@ -96,6 +106,14 @@ export default {
             type: Object,
             default: {},
         },
+        classes: {
+            type: String,
+            defualt: '',
+        },
+        show: {
+            type: Boolean,
+            default: false,
+        }
     },
 
     components: {
@@ -104,7 +122,8 @@ export default {
         ItemMessageCard,
         IconButton,
         MessageBlock,
-        EmptyIllustration
+        EmptyIllustration,
+        PaperAirplaneIcon
     },
 
     mounted() {},
@@ -115,24 +134,21 @@ export default {
                 message_body: "",
                 item_id: "",
             }),
-
-            show: false,
         };
     },
 
     watch: {
         taggedItem(newVal) {
-            if (newVal) {
+            if (newVal && newVal.id) {
                 this.postForm.item_id = newVal.id;
-                this.toggleBoard(true);
                 return;
             }
 
             this.postForm.item_id = "";
         },
 
-        show(neVal) {
-            if (neVal) {
+        show(newVal) {
+            if (newVal) {
                 this.$nextTick(() => {
                     document.getElementById("messageInput").focus();
                 });
@@ -141,6 +157,10 @@ export default {
     },
 
     computed: {
+        shouldShowBoard() {
+            return this.showBoard || this.forceShow;
+        },
+
         messageBoardStyles() {
             const top = this.show ? "15%" : "calc(100vh - 120px)";
 
@@ -153,12 +173,6 @@ export default {
     },
 
     methods: {
-        // ...mapActions(useStore, ['selectCloset', 'setClosets']),
-
-        toggleBoard(show) {
-            this.show = show;
-        },
-
         submit() {
             if (!this.postForm.message_body) {
                 return;

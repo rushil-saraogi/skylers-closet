@@ -58,4 +58,11 @@ export default {
     margin-right: 10px;
 }
 
+.bottom {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 10px;
+}
+
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div class="py-2 px-6 border rounded bg-gray-50 relative">
         <div v-if="dismissable" class="absolute top-1 right-1">
-            <XIcon @click="$emit('click:dismiss')" class="h-4 w-4 text-gray-500 hover:cursor-pointer hover:text-gray-600" />
+            <XMarkIcon @click="$emit('click:dismiss')" class="h-4 w-4 text-gray-500 hover:cursor-pointer hover:text-gray-600" />
         </div>
         <div class="flex items-center">
             <img class="h-8 mr-4" v-if="item.image" :src="item.image" />
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { XIcon} from '@heroicons/vue/solid'
+import { XMarkIcon } from '@heroicons/vue/20/solid'
 
 export default {
     props: {
@@ -31,7 +31,7 @@ export default {
     },
 
     components: {
-        XIcon
+        XMarkIcon
     }
 };
 </script>

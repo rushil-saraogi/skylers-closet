@@ -76,7 +76,7 @@ class MetaDataService
         
         $response = preg_replace('/(\x{200e}|\x{200f})/u', '', $response);
 
-        Cache::put($url, $response, now()->addMinutes(60 * 24)); // Cache Amazon responses for 24 hours
+        Cache::put($url, $response, now()->addMinutes(60 * 24 * 10)); // Cache Amazon responses for 10 days
         
         $productData = json_decode($response)->result[0];
 

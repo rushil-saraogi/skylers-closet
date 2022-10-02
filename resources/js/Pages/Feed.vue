@@ -1,50 +1,80 @@
 <template>
     <app-layout title="Feed">
-        <template #header>
-            <div class="flex items-center justify-between">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Feed
-                </h2>
-                <!-- <div>
-                    <jet-button @click="toggleCreateClosetModal(true)">Create new closet</jet-button>
-                </div> -->
-            </div>
-        </template>
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4 md:mt-6">
+                <div class="grid gap-3 md:gap-6 md:grid-cols-5 sm:grid-cols-3 grid-cols-2 justify-items-center w-full">
+                    <item-tile
+                        v-for="item in items.data"
+                        v-bind="item"
+                        class="w-full"
+                        :key="item.id"
+                        :pub-mode="true"
+                        :with-closet-link="true"
+                        :closet-link="route('show-closet', item.closet.id)"
+                        @click:save="saveItemClick(item)"
+                    />
+                </div>
 
-        <div class="py-12 px-4">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
-                <h1>Here we feed</h1>
+                <save-item-modal
+                    :show="showSaveItemModal"
+                    :selected="savingItem"
+                    :closets="user_closets"
+                    @click:close="toggleSaveItemModal(false)"
+                    @save:item="saveItem"
+                    @remove:item="undoSave"
+                />
             </div>
-        </div>
-
     </app-layout>
 </template>
 
 <script>
+    import { Inertia } from '@inertiajs/inertia'
     import AppLayout from '@/Layouts/AppLayout.vue'
     import JetButton from '@/Jetstream/Button';
+    import ItemTile from '@/Common/Tiles/ItemTile.vue';
+    import SaveItemModal from './Partials/Closet/SaveItemModal.vue';
+    import ItemsApi from '../API/ItemsApi';
 
     export default {
-        props: ['closets'],
+        props: ['items', 'user_closets'],
 
         components: {
             AppLayout,
             JetButton,
+            ItemTile,
+            SaveItemModal
         },
 
         mounted() {
-            // this.setClosets(this.closets);
         },
 
         data() {
-            return { }
-        },
-
-        computed: {
+            return {
+                showSaveItemModal: false,
+                savingItem: null,
+            }
         },
 
         methods: {
             // ...mapActions(useStore, ['selectCloset', 'setClosets']),
+
+            async saveItem(closet) {
+                await ItemsApi.saveItem(closet.id, this.savingItem.id);
+                Inertia.reload({ only: ['user_closets'] });
+            },
+
+            toggleSaveItemModal(show) {
+                this.showSaveItemModal = show;
+            },
+
+            async undoSave(closet) {
+                await ItemsApi.deleteByUrl(closet.id, this.savingItem.id);
+                Inertia.reload({ only: ['user_closets'] });
+            },
+
+            saveItemClick(item) {
+                this.savingItem = item;
+                this.toggleSaveItemModal(true);
+            },
         }
     }
 </script>

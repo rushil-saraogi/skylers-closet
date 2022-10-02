@@ -1,16 +1,5 @@
 <template>
     <app-layout title="Explore">
-        <template #header>
-            <div class="flex items-center justify-between">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Explore
-                </h2>
-                <!-- <div>
-                    <jet-button @click="toggleCreateClosetModal(true)">Create new closet</jet-button>
-                </div> -->
-            </div>
-        </template>
-
         <div class="w-full">
             <CategorySelect
                 :selected="selected.id"

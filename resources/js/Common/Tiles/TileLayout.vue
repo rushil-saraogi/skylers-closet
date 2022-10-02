@@ -5,13 +5,13 @@
     >
         <vue-draggable-container
             tag="ul"
-            class="grid gap-6 md:grid-cols-3 sm:grid-cols-2 grid-col-1"
+            class="grid gap-6 md:grid-cols-5 sm:grid-cols-3 grid-col-2 justify-items-center w-full"
         >
             <li 
                 v-for="(item, index) in items"
                 ref="item"
                 :key="index"
-                class="item"
+                class="item w-full"
                 @mousedown="setActiveItem(item)"
             >
                 <item-tile
@@ -98,7 +98,7 @@ export default {
 
 <style>
 .item {
-    max-width: 380px;
+    max-width: 222px;
 }
 
 .item:hover {

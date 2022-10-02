@@ -1,24 +1,32 @@
 <template>
     <tile-wrapper
-        :hide-controls="hideControls"
-        :pub-mode="pubMode"
+        v-bind="$props"
     >
         <div
-            class="flex flex-col items-center p-6"
-            :class="{ 'hover:cursor-pointer': pubMode }"
-            @click="handleItemClick"
+            class="flex flex-col items-center justify-between h-full p-4"
         >
-            <div
+            <Badge
                 v-if="price"
-                class="bg-green-300 font-bold flex items-center justify-center rounded-md absolute top-3 right-3 px-2 py-1"
+                variant="teal"
+                class="absolute top-3 right-3"
             >
                 ${{ price }}
-            </div>
-            <img v-if="image" class="h-40 max-w-40" :src="image" />
+            </Badge>
+
+            <!-- Item image -->
+            <a :href="url" v-if="image" target="_blank" class="flex-1 flex items-center justify-center w-full">
+                <img v-if="image" class="max-h-32" :src="image" />
+            </a>
+            <slot v-else-if="$slots.placeholder" name="placeholder"></slot>
+            <a :href="url" v-else target="_blank" class="flex flex-col w-full items-center justify-center h-full bg-gray-100">
+                <PhotoIcon class="h-8 w-8 text-gray-400" />
+            </a>
+            <!-- / Item Image -->
+
             <div class="flex justify-between">
                 <div
                     v-if="title"
-                    class="text-gray-600 font-semibold mt-5 line-clamp-1"
+                    class="text-gray-600 mt-5 line-clamp-1 text-sm"
                 >
                     {{ title }}
                 </div>
@@ -28,11 +36,15 @@
 </template>
 
 <script>
+import Badge from '@/Jetstream/Badge.vue';
 import TileWrapper from "./TileWrapper.vue";
+import { PhotoIcon } from '@heroicons/vue/24/outline';
 
 export default {
     components: {
         TileWrapper,
+        Badge,
+        PhotoIcon,
     },
 
     emit: ["click:edit", "click:delete"],
@@ -54,10 +66,6 @@ export default {
             type: Number,
             default: 0,
         },
-        hideControls: {
-            type: Boolean,
-            default: false,
-        },
         pubMode: {
             type: Boolean,
             default: false,
@@ -68,13 +76,6 @@ export default {
         return {
             isHovering: false,
         };
-    },
-
-    methods: {
-        handleItemClick() {
-            if (!this.pubMode || !this.url) return;
-            window.open(this.url, "_blank");
-        },
     },
 };
 </script>

@@ -2,7 +2,7 @@
     <div class="w-full" :style="pageContainerStyles">
         <div>
             <div
-                class="p-3 bg-gray-200 border border-gray-300 text-gray-600 hover:shadow-inner transition font-semibold flex items-center justify-center rounded border hover:cursor-pointer"
+                class="p-3 bg-blue-100 text-gray-600 hover:shadow-inner transition font-semibold flex items-center justify-center rounded hover:cursor-pointer"
                 @click="toggleAddItemModal(true)"
             >
                 Add an item to your closet
@@ -10,7 +10,7 @@
         </div>
         <div class="mt-7">
             <div v-if="items.length === 0">
-                <smiley-with-message message="This closet looks pretty empty" />
+                <empty-state message="Let's try adding an item" />
             </div>
             <tile-layout
                 :title="name"
@@ -58,7 +58,7 @@ import { useStore } from '@/store';
 import { Link } from "@inertiajs/inertia-vue3";
 import ZeroState from "@/Jetstream/ZeroState.vue";
 import FloatingButtons from '@/Jetstream/FloatingButtons.vue'
-import SmileyWithMessage from '@/Jetstream/SmileyWithMessage.vue';
+import EmptyState from '@/Jetstream/EmptyState.vue';
 import FloatingButton from '@/Jetstream/FloatingButton.vue'
 import TileLayout from "@/Common/Tiles/TileLayout.vue";
 import { updateQueryStringParameter } from '@/Util/Url'
@@ -78,7 +78,7 @@ export default {
         FloatingButton,
         WallpaperModal,
         EditItemModal,
-        SmileyWithMessage,
+        EmptyState,
     },
 
     props: {
@@ -150,10 +150,6 @@ export default {
 
     methods: {
         ...mapActions(useStore, ['setSaveModeItem', 'removeSaveModeItem']),
-
-        handlePageClick(page) {
-            this.$inertia.visit(route("page-editor", page.id));
-        },
 
         setForm() {
             this.form.id = this.id;

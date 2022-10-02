@@ -31,7 +31,9 @@ class UserController extends Controller
     public function UserProfile(Request $request, User $user)
     {
         return Inertia::render('UserProfile', [
-            'user' => $user->load('closets.items', 'followers', 'follows'),
+            'user' => $user->load('closets.items', 'closets.user'),
+            'isFollowingUser' => $user->followers->contains(Auth::user()),
+            'followerCount' => $user->followers->count()
         ]);
     }
 

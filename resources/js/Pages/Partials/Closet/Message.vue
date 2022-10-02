@@ -18,7 +18,7 @@
             <!-- Right side -->
             <div class="flex-1">
                 <div
-                    class="p-3 bg-gray-100 flex flex-col justify-start rounded-lg"
+                    class="p-3 bg-indigo-50 flex flex-col justify-start rounded-lg"
                 >
                     <div class="text-sm">
                         <span class="text-gray-700">{{

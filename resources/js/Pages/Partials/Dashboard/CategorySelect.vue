@@ -36,7 +36,7 @@ export default {
     data() {
         return {
             gridContainerClasses: "grid gap-4 w-full md:grid-cols-4 sm:grid-cols-3 grid-col-2",
-            gridItemClasses: "bg-gray-200 p-4 rounded-lg font-semibold hover:bg-gray-300 hover:cursor-pointer transition",
+            gridItemClasses: "bg-gray-100 p-4 rounded-lg font-semibold hover:bg-red-100 hover:cursor-pointer transition",
         }
     },
 
@@ -61,7 +61,6 @@ export default {
 
             return {
                 "bg-red-200": isSelected,
-                "hover:bg-red-300": isSelected,
             };
         },
     }

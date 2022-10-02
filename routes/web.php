@@ -4,10 +4,8 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MetaDataController;
 use App\Http\Controllers\ClosetController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ImageController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,14 +20,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', [DashboardController::class, 'welcome'])->name('welcome');
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     // Routing - 
@@ -43,6 +34,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/closets', [ClosetController::class, 'create'])->name('create-closet');
     Route::put('/closets/{closet}', [ClosetController::class, 'update'])->name('update-closet');
     Route::delete('/closets/{closet}', [ClosetController::class, 'delete'])->name('delete-closet');
+    Route::post('/closets/{closet}/follow', [ClosetController::class, 'follow'])->name('follow-closet');
     
     // Item Forms
     Route::post('/closets/{closet}/items', [ItemController::class, 'create'])->name('create-item');
@@ -57,8 +49,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     
     // Misc
     // Routes prefixed with API do not follow the inertia pattern
+    Route::delete('/api/closets/{closet}/items/{item}/remove-by-url', [ItemController::class, 'removeByUrl'])->name('remove-item-by-url');
+    Route::post('/api/closets/{closet}/items/{item}/copy', [ItemController::class, 'copy'])->name('copy-item');
     Route::get('/api/links/get-meta', [MetaDataController::class, 'getMetaData'])->name('get-meta');
-    Route::post('/api/images/upload', [ImageController::class, 'upload'])->name('upload-image');
+    Route::get('/api/closets/current-user', [ClosetController::class, 'currentUser'])->name('current-user-closets');
     Route::put('/api/closets/{closet}/items/{item}', [ItemController::class, 'updateWithoutIntertia'])->name('api-update-item');
 });
 

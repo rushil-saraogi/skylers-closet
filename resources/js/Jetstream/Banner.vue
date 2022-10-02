@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div :class="{ 'bg-indigo-500': style == 'success', 'bg-red-700': style == 'danger' }" v-if="show && message">
-            <div class="max-w-screen-xl mx-auto py-2 px-3 sm:px-6 lg:px-8">
+        <div :class="{ 'bg-indigo-500': style == 'success', 'bg-red-700': style == 'danger' }" class="z-50 fixed bottom-5 w-full md:w-96 rounded mx-auto inset-x-0" v-if="show && message">
+            <div class="mx-auto py-2 px-3 sm:px-6 lg:px-2">
                 <div class="flex items-center justify-between flex-wrap">
                     <div class="w-0 flex-1 flex items-center min-w-0">
                         <span class="flex p-2 rounded-lg" :class="{ 'bg-indigo-600': style == 'success', 'bg-red-600': style == 'danger' }">

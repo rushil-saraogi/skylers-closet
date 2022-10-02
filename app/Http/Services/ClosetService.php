@@ -69,13 +69,29 @@ class ClosetService
     }
 
     /**
-     * Get all pages for user
+     * Follow closet
      *
-     * @param array $data
+     * @param Closet $closet
      * @return array
      */
-    public function list()
+    public function follow(Closet $closet)
     {
-        
+        if ($closet->followers->contains(Auth::user())) {
+            $this->unfollow($closet);
+            return;
+        }
+
+        $closet->followers()->attach(Auth::user());
+    }
+
+    /**
+     * Unfollow closet
+     *
+     * @param User $user
+     * @return array
+     */
+    public function unfollow(Closet $closet)
+    {
+        $closet->followers()->detach(Auth::user());
     }
 }

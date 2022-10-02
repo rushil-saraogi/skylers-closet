@@ -39,8 +39,20 @@ class ClosetController extends Controller
             'messages' => Message::where('closet_id', $closet->id)
                 ->whereNull('parent_message_id')
                 ->with('replies.user', 'user', 'item')
-                ->get()
+                ->get(),
+            'isFollowing' => $closet->followers->contains(Auth::user()),
+            'user_closets' => Auth::user()->closets->load('items', 'category')
         ]);
+    }
+
+    /**
+     * Get current user's closets
+     *
+     * @param Request $request
+     */
+    public function currentUser(Request $request)
+    {
+        return Auth::user()->closets->load('items', 'category');
     }
 
     /**
@@ -82,5 +94,27 @@ class ClosetController extends Controller
         $this->pageService->delete($pageId);
 
         return Redirect::route('dashboard');
+    }
+
+    /**
+     * Follow closet
+     *
+     * @param Closet $closet
+     */
+    public function follow(Request $request, Closet $closet)
+    {
+        $this->closetService->follow($closet);
+        return redirect()->back();
+    }
+
+    /**
+     * Unfollow closet
+     *
+     * @param Closet $closet
+     */
+    public function unfollow(Request $request, Closet $closet)
+    {
+        $this->closetService->unfollow($closet);
+        return redirect()->back();
     }
 }

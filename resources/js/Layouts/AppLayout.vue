@@ -4,7 +4,7 @@
 
         <jet-banner />
 
-        <div class="min-h-screen bg-gray-100 flex flex-col">
+        <div class="min-h-screen flex flex-col">
             <nav class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,7 +26,7 @@
                                     Feed
                                 </jet-nav-link>
                                 <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Your Closets
+                                    Your Stuff
                                 </jet-nav-link>
                             </div>
                         </div>
@@ -149,12 +149,12 @@
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <jet-responsive-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                            Your Stuff
                         </jet-responsive-nav-link>
                         <jet-responsive-nav-link :href="route('explore')" :active="route().current('explore')">
                             Explore
                         </jet-responsive-nav-link>
-                        <jet-responsive-nav-link :href="route('feed')" :active="route().current('feed')">
+                        <jet-responsive-nav-link :href="route('feed')" :active="route().current('feed')" :only="['items', 'user_closets']">
                             Feed
                         </jet-responsive-nav-link>
                     </div>
@@ -229,7 +229,7 @@
             </nav>
 
             <!-- Page Heading -->
-            <header class="bg-white shadow" v-if="$slots.header">
+            <header class="bg-white border border-t-0" v-if="$slots.header">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header"></slot>
                 </div>

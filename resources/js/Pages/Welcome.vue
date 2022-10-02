@@ -3,9 +3,7 @@
 
     <div class="relative flex justify-center min-h-screen bg-white items-center">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 text-gray-800 text-center">
-            <img src="images/LinkLogo.png" class="h-16 m-auto" />
-            <h1 class="text-5xl font-bold mt-8">The Closet</h1>
-            <p class="mt-3 text-lg">Your personal online closet</p>
+            <img src="images/logo.svg" class="h-44 m-auto" />
             <div class="mt-4 flex gap-2 justify-center">
                 <Link :href="route('login')">
                     <jet-button>Login</jet-button>
