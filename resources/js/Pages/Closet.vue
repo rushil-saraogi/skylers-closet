@@ -35,11 +35,13 @@
                     </SecondaryButton>
                 </div>
 
+                <CoverImage v-if="closet.wallpaper" :url="closet.wallpaper"  class="mt-6" />
+
                 <div v-if="!closet.items.length">
                     <empty-state message="Nothing here yet, check back again later" />
                 </div>
                 <ul
-                    class="grid gap-6 md:grid-cols-5 sm:grid-cols-4 grid-col-2 mt-10 w-full"
+                    class="grid gap-6 md:grid-cols-5 sm:grid-cols-4 grid-col-2 mt-8 w-full"
                 >
                     <li v-for="(item, index) in closet.items" :key="index">
                         <item-tile
@@ -94,6 +96,7 @@ import { HeartIcon as HeartIconOutline } from "@heroicons/vue/24/outline";
 import { HeartIcon as HeartIconFilled } from "@heroicons/vue/20/solid";
 import SaveItemModal from './Partials/Closet/SaveItemModal.vue';
 import ItemsApi from '../API/ItemsApi';
+import CoverImage from '../Common/CoverImage.vue';
 
 export default {
     props: ["closet", "messages", "auth", "user_closets"],
@@ -111,7 +114,8 @@ export default {
         HeartIconOutline,
         HeartIconFilled,
         EmptyState,
-        SaveItemModal
+        SaveItemModal,
+        CoverImage
     },
 
     mounted() {},
@@ -121,7 +125,15 @@ export default {
             return this.closet?.user?.name;
         },
 
+        isLoggedIn() {
+            return this.auth?.user;
+        },
+
         isFollowingCloset() {
+            if (!this.isLoggedIn) {
+                return false;
+            }
+
             const followers = this.closet?.followers || [];
 
             return followers
@@ -133,7 +145,7 @@ export default {
             return this.user_closets.reduce((acc, closet) => {
                 return [...acc, ...closet.items];
             }, []);
-        }
+        },
     },
 
     data() {

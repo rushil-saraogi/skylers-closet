@@ -7,7 +7,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,17 +19,18 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', [DashboardController::class, 'welcome'])->name('welcome');
+// Public routes
+Route::get('/', [DashboardController::class, 'explore'])->name('welcome');
+Route::get('/explore', [DashboardController::class, 'explore'])->name('explore');
+Route::get('/closets/{closet}', [ClosetController::class, 'show'])->name('show-closet');
+Route::get('/user/{user}', [UserController::class, 'UserProfile'])->name('user-profile');
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     // Routing - 
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-    Route::get('/explore', [DashboardController::class, 'explore'])->name('explore');
     Route::get('/feed', [DashboardController::class, 'feed'])->name('feed');
-    Route::get('/user/{user}', [UserController::class, 'UserProfile'])->name('user-profile');
 
     // Closet Forms
-    Route::get('/closets/{closet}', [ClosetController::class, 'show'])->name('show-closet');
     Route::post('/closets', [ClosetController::class, 'create'])->name('create-closet');
     Route::put('/closets/{closet}', [ClosetController::class, 'update'])->name('update-closet');
     Route::delete('/closets/{closet}', [ClosetController::class, 'delete'])->name('delete-closet');

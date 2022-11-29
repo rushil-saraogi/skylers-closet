@@ -22,16 +22,19 @@
                                 <jet-nav-link :href="route('explore')" :active="route().current('explore')">
                                     Explore
                                 </jet-nav-link>
-                                <jet-nav-link :href="route('feed')" :active="route().current('feed')">
+                                <jet-nav-link v-if="isLoggedIn" :href="route('feed')" :active="route().current('feed')">
                                     Feed
                                 </jet-nav-link>
-                                <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
+                                <jet-nav-link v-if="isLoggedIn" :href="route('dashboard')" :active="route().current('dashboard')">
                                     Your Stuff
+                                </jet-nav-link>
+                                <jet-nav-link v-if="!isLoggedIn" :href="route('login')" :active="route().current('login')">
+                                    Log in
                                 </jet-nav-link>
                             </div>
                         </div>
 
-                        <div class="hidden sm:flex sm:items-center sm:ml-6">
+                        <div class="hidden sm:flex sm:items-center sm:ml-6" v-if="isLoggedIn">
                             <div class="ml-3 relative">
                                 <!-- Teams Dropdown -->
                                 <jet-dropdown align="right" width="60" v-if="$page.props.jetstream.hasTeamFeatures">
@@ -88,7 +91,7 @@
                             </div>
 
                             <!-- Settings Dropdown -->
-                            <div class="ml-3 relative">
+                            <div v-if="isLoggedIn" class="ml-3 relative">
                                 <jet-dropdown align="right" width="48">
                                     <template #trigger>
                                         <button v-if="$page.props.jetstream.managesProfilePhotos" class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
@@ -148,19 +151,22 @@
                 <!-- Responsive Navigation Menu -->
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <jet-responsive-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
+                        <jet-responsive-nav-link v-if="isLoggedIn" :href="route('dashboard')" :active="route().current('dashboard')">
                             Your Stuff
                         </jet-responsive-nav-link>
                         <jet-responsive-nav-link :href="route('explore')" :active="route().current('explore')">
                             Explore
                         </jet-responsive-nav-link>
-                        <jet-responsive-nav-link :href="route('feed')" :active="route().current('feed')" :only="['items', 'user_closets']">
+                        <jet-responsive-nav-link v-if="isLoggedIn" :href="route('feed')" :active="route().current('feed')" :only="['items', 'user_closets']">
                             Feed
+                        </jet-responsive-nav-link>
+                        <jet-responsive-nav-link v-if="!isLoggedIn" :href="route('login')" :active="route().current('login')">
+                            Log in
                         </jet-responsive-nav-link>
                     </div>
 
                     <!-- Responsive Settings Options -->
-                    <div class="pt-4 pb-1 border-t border-gray-200">
+                    <div v-if="isLoggedIn" class="pt-4 pb-1 border-t border-gray-200">
                         <div class="flex items-center px-4">
                             <div v-if="$page.props.jetstream.managesProfilePhotos" class="flex-shrink-0 mr-3" >
                                 <img class="h-10 w-10 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
@@ -244,12 +250,14 @@
 </template>
 
 <script>
+    import { computed } from 'vue'
     import JetApplicationMark from '@/Jetstream/ApplicationMark.vue'
     import JetBanner from '@/Jetstream/Banner.vue'
     import JetDropdown from '@/Jetstream/Dropdown.vue'
     import JetDropdownLink from '@/Jetstream/DropdownLink.vue'
     import JetNavLink from '@/Jetstream/NavLink.vue'
-    import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink.vue'
+    import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink.vue'    
+    import { usePage } from '@inertiajs/inertia-vue3'
     import { Head, Link } from '@inertiajs/inertia-vue3';
 
     export default {
@@ -266,6 +274,17 @@
             JetNavLink,
             JetResponsiveNavLink,
             Link,
+        },
+
+        setup() {
+            const user = computed(() => usePage().props.value.auth.user)
+            return { user }
+        },
+
+        computed: {
+            isLoggedIn() {
+                return !!this.user;
+            }
         },
 
         data() {

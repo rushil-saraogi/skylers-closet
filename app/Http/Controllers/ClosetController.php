@@ -33,15 +33,17 @@ class ClosetController extends Controller
      */
     public function show(Request $request, Closet $closet)
     {
+        $closet = $closet->load('items', 'user');
+        $owner = $closet->user;
+
         return Inertia::render('Closet', [
-            'closet' => $closet
-                ->load('items', 'user'),
+            'closet' => $closet,
             'messages' => Message::where('closet_id', $closet->id)
                 ->whereNull('parent_message_id')
                 ->with('replies.user', 'user', 'item')
                 ->get(),
-            'isFollowing' => $closet->followers->contains(Auth::user()),
-            'user_closets' => Auth::user()->closets->load('items', 'category')
+            'isFollowing' => $closet->followers->contains($owner),
+            'user_closets' => $owner->closets->load('items', 'category')
         ]);
     }
 

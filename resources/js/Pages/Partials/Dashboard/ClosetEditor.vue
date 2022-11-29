@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full" :style="pageContainerStyles">
+    <div class="w-full">
         <div>
             <div
                 class="p-3 bg-blue-100 text-gray-600 hover:shadow-inner transition font-semibold flex items-center justify-center rounded hover:cursor-pointer"
@@ -9,9 +9,12 @@
             </div>
         </div>
         <div class="mt-7">
+            <CoverImage v-if="wallpaper" :url="wallpaper" class="mt-6 mb-6" />
+
             <div v-if="items.length === 0">
                 <empty-state message="Let's try adding an item" />
             </div>
+
             <tile-layout
                 :title="name"
                 :items="items"
@@ -23,7 +26,7 @@
         </div>
 
         <floating-buttons>
-            <floating-button tooltip="Edit wallpaper" @click="toggleWallpaperModal(true)" icon="wallpaper" />
+            <floating-button tooltip="Add cover image" @click="toggleWallpaperModal(true)" icon="wallpaper" />
         </floating-buttons>
 
         <delete-item-modal
@@ -60,6 +63,7 @@ import ZeroState from "@/Jetstream/ZeroState.vue";
 import FloatingButtons from '@/Jetstream/FloatingButtons.vue'
 import EmptyState from '@/Jetstream/EmptyState.vue';
 import FloatingButton from '@/Jetstream/FloatingButton.vue'
+import CoverImage from "@/Common/CoverImage.vue";
 import TileLayout from "@/Common/Tiles/TileLayout.vue";
 import { updateQueryStringParameter } from '@/Util/Url'
 import DeleteItemModal from "./DeleteItemModal.vue";
@@ -79,6 +83,7 @@ export default {
         WallpaperModal,
         EditItemModal,
         EmptyState,
+        CoverImage
     },
 
     props: {
@@ -98,7 +103,7 @@ export default {
             type: String,
             default: "",
         },
-        active: {
+        public: {
             type: Boolean,
             default: true
         },
@@ -125,7 +130,7 @@ export default {
                 id: this.id,
                 name: this.name,
                 user_id: this.user_id,
-                active: this.active,
+                public: this.public,
                 wallpaper: this.wallpaper,
             }),
         };
@@ -134,7 +139,7 @@ export default {
     computed: {
         ...mapState(useStore, []),
 
-        pageContainerStyles() {
+        coverImageStyles() {
             if (this.wallpaper) {
                 // Change width of wallpaper image to match viewport
                 const wallpaperUrl = updateQueryStringParameter(this.wallpaper, 'w', window.innerWidth);
@@ -156,7 +161,7 @@ export default {
             this.form.user_id = this.user_id;
             this.form.wallpaper = this.wallpaper;
             this.form.name = this.name;
-            this.form.active = this.active;
+            this.form.public = this.public;
         },
 
         toggleDeleteItemModal(show, selected = null) {
