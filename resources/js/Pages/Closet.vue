@@ -41,7 +41,7 @@
                     <empty-state message="Nothing here yet, check back again later" />
                 </div>
                 <ul
-                    class="grid gap-6 md:grid-cols-5 sm:grid-cols-4 grid-col-2 mt-8 w-full"
+                    class="grid gap-6 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-col-1 mt-8 w-full"
                 >
                     <li v-for="(item, index) in closet.items" :key="index">
                         <item-tile

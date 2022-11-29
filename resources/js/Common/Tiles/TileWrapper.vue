@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-white border shadow-3xl hover:shadow-4xl transition-all max-w-xs flex flex-col justify-between duration-200 rounded-lg relative hover:cursor-grab h-full"
+        class="bg-white border shadow-3xl hover:shadow-4xl transition-all md:max-w-xs flex flex-col justify-between duration-200 rounded-lg relative hover:cursor-grab h-full"
         :class="containerClasses"
         @mouseenter="isHovering = true"
         @mouseleave="isHovering = false"

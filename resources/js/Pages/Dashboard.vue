@@ -35,20 +35,22 @@
             <closet-editor v-if="selected" v-bind="selected" />
 
             <div v-else>
-                <div class="flex items-center justify-between">
-                    <h2 class="text-lg font-semibold">Your closets</h2>
-                    <div>
-                        <jet-button @click="toggleCreateClosetModal(true)"
-                            >Create new closet</jet-button
-                        >
+                <div>
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-semibold">Your closets</h2>
+                        <div>
+                            <jet-button @click="toggleCreateClosetModal(true)"
+                                >Create new closet</jet-button
+                            >
+                        </div>
                     </div>
-                </div>
 
-                <closet-list
-                    :closets="closets"
-                    class="mt-3 shadow-3xl"
-                    @click:closet="handleClosetClick"
-                />
+                    <closet-list
+                        :closets="closets"
+                        class="mt-3 shadow-3xl"
+                        @click:closet="handleClosetClick"
+                    />
+                </div>
             </div>
         </div>
 
@@ -75,7 +77,7 @@ import IconButton from "@/Jetstream/IconButton.vue";
 import ClosetList from "./Partials/Dashboard/ClosetList.vue";
 
 export default {
-    props: ["closets", "selected", "categories"],
+    props: ["closets", "selected", "categories", "followed_closets"],
 
     components: {
         AppLayout,
