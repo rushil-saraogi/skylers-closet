@@ -26,10 +26,13 @@
                                     Feed
                                 </jet-nav-link>
                                 <jet-nav-link v-if="isLoggedIn" :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Your Stuff
+                                    You
                                 </jet-nav-link>
                                 <jet-nav-link v-if="!isLoggedIn" :href="route('login')" :active="route().current('login')">
                                     Log in
+                                </jet-nav-link>
+                                <jet-nav-link v-if="!isLoggedIn" :href="route('register')" :active="route().current('register')">
+                                    Register
                                 </jet-nav-link>
                             </div>
                         </div>
@@ -152,7 +155,7 @@
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <jet-responsive-nav-link v-if="isLoggedIn" :href="route('dashboard')" :active="route().current('dashboard')">
-                            Your Stuff
+                            You
                         </jet-responsive-nav-link>
                         <jet-responsive-nav-link :href="route('explore')" :active="route().current('explore')">
                             Explore
@@ -162,6 +165,9 @@
                         </jet-responsive-nav-link>
                         <jet-responsive-nav-link v-if="!isLoggedIn" :href="route('login')" :active="route().current('login')">
                             Log in
+                        </jet-responsive-nav-link>
+                        <jet-responsive-nav-link v-if="!isLoggedIn" :href="route('register')" :active="route().current('register')">
+                            Register
                         </jet-responsive-nav-link>
                     </div>
 

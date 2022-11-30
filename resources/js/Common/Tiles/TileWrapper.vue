@@ -39,7 +39,7 @@
             />
             <Link v-if="closetLink" :href="closetLink" class="flex-1 flex justify-center items-center">
                 <quick-controls-option
-                    icon="PuzzlePieceIcon"
+                    icon="ArrowSmallRightIcon"
                     :outlined="true"
                     tooltip="View Closet"
                 />

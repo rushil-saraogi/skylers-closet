@@ -5,7 +5,7 @@
         </template>
 
         <template #content>
-            <div class="p-1">
+            <div>
                 <closet-list
                     :closets="closets"
                     @click:closet="(closet) => {

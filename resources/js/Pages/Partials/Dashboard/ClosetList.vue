@@ -8,7 +8,7 @@
             <div>
                 <div class="flex">
                     <div class="font-semibold">{{ closet.name }}</div>
-                    <Badge class="ml-2">{{ closet.category.name }}</Badge>
+                    <Badge class="ml-2 hidden md:block">{{ closet.category.name }}</Badge>
                 </div>
                 <div class="text-gray-500">{{ closet.items.length }} Items</div>
             </div>
