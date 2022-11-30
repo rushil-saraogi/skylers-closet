@@ -56,15 +56,13 @@ class ClosetService
     }
 
     /**
-     * Delete a tile
+     * Delete a closet
      *
-     * @param string $pageId
+     * @param Closet $closer
      * @return array
      */
-    public function delete(string $closetId)
+    public function delete(Closet $closet)
     {
-        $closet = Closet::find($closetId);
-        $closet->tiles()->delete();
         $closet->delete();
     }
 

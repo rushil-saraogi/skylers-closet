@@ -31,10 +31,16 @@ class MetaDataService
             $metaData = $this->getAmazonData($strippedUrl);
         } else {
             $crawler = $this->client->request('GET', $strippedUrl);
+            $og_title = $this->getMetaValue($crawler, "meta[property='og:title']");
+            $og_image = $this->getMetaValue($crawler, "meta[property='og:image']");
+            $twitter_image = $this->getMetaValue($crawler, "meta[name='twitter:image']");
+            $title = $this->getTitle($crawler);
+            $price = $this->getMetaValue($crawler, "meta[property='product:price:amount']");
 
             $metaData = [
-                'title' => $this->getTitle($crawler),
-                'image' => $this->getMetaValue($crawler, "meta[property='og:image']"),
+                'title' => $og_title ?? $title,
+                'image' => $og_image ?? $twitter_image ?? '',
+                'price' => $price ?? null,
             ];
         }
 

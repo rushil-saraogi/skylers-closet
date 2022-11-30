@@ -2049,6 +2049,9 @@ select {
 .p-5 {
   padding: 1.25rem;
 }
+.p-2\.5 {
+  padding: 0.625rem;
+}
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -2895,6 +2898,14 @@ select {
     height: 100vh;
   }
 
+  .sm\:h-1\.5 {
+    height: 0.375rem;
+  }
+
+  .sm\:h-1 {
+    height: 0.25rem;
+  }
+
   .sm\:w-10 {
     width: 2.5rem;
   }
@@ -2980,6 +2991,14 @@ select {
     justify-content: space-between;
   }
 
+  .sm\:gap-3 {
+    gap: 0.75rem;
+  }
+
+  .sm\:gap-5 {
+    gap: 1.25rem;
+  }
+
   .sm\:rounded-lg {
     border-radius: 0.5rem;
   }
@@ -3012,6 +3031,10 @@ select {
     padding: 0px;
   }
 
+  .sm\:p-4 {
+    padding: 1rem;
+  }
+
   .sm\:px-6 {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
@@ -3025,6 +3048,16 @@ select {
   .sm\:px-20 {
     padding-left: 5rem;
     padding-right: 5rem;
+  }
+
+  .sm\:py-3 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .sm\:px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .sm\:pt-0 {

@@ -18,19 +18,19 @@
         
         <!-- Start of board -->
         <div
-            class="bg-white py-3 px-4 rounded max-w-4xl w-full shadow-3xl border flex flex-col z-10"
+            class="bg-white py-2 px-3 sm:py-3 sm:px-4 rounded max-w-4xl w-full shadow-3xl border flex flex-col z-10"
             :style="messageBoardStyles"
             :class="{ [classes]: classes }"
         >
             <div class="w-full">
                 <div
-                    class="h-1.5 w-8 bg-gray-300 hover:bg-gray-400 hover:cursor-pointer rounded-full m-auto"
+                    class="h-1 sm:h-1.5 w-8 bg-gray-300 hover:bg-gray-400 hover:cursor-pointer rounded-full m-auto"
                     @click="$emit('toggle', !show)"
                 />
             </div>
 
             <div class="mt-3 flex-1">
-                <div class="bg-indigo-50 p-4 rounded">
+                <div class="bg-indigo-50 p-2.5 sm:p-4 rounded">
                      <!-- Tagged item preview -->
                     <ItemMessageCard
                         v-if="taggedItem"
@@ -56,17 +56,16 @@
 
                         <IconButton
                             @click="submit"
-                            icon="PaperAirplaneIcon"
                             class="mt-1 ml-3 z-10 relative"
                         >
-                            <PaperAirplaneIcon class="h-6 w-6 -mr-1 text-gray-600" />
+                            <PaperAirplaneIcon class="h-5 w-5 -mr-1 text-gray-600" />
                         </IconButton>
                     </div>
                 </div>
 
                 <div
                     v-if="closet && messages.length"
-                    class="mt-6 flex flex-col gap-5 overflow-scroll message-scroll"
+                    class="mt-6 flex flex-col gap-3 sm:gap-5 overflow-scroll message-scroll"
                 >
                     <MessageBlock
                         v-for="message in messages"

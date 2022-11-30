@@ -1,37 +1,55 @@
 <template>
     <dialog-modal :show="show" @close="$emit('click:close')">
         <template #title>
-            <div v-if="selected">Edit closet</div>
-            <div v-else>Create a new closet</div>
+            <div class="flex justify-between">
+                <div>
+                    <div v-if="selected">Edit closet</div>
+                    <div v-else>Create a new closet</div>
+                </div>
+                <div v-if="selected">
+                    <IconButton
+                        @click="toggleDeleteClosetModal"
+                    >
+                        <TrashIcon class="h-5 w-5 text-gray-600" />
+                    </IconButton>
+                </div>
+            </div>
         </template>
 
         <template #content>
-            <form class="mt-3">
-                <jet-label for="closetNameInput" value="Name" />
-                <input-group
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    placeholder="Name"
-                    id="closetNameInput"
-                    :error="error"
-                />
-                <p class="text-sm text-gray-500 mt-2 ml-1">
-                    Needs to be atleast 3 characters long
-                </p>
+            <div>
+                <form class="mt-3">
+                    <jet-label for="closetNameInput" value="Name" />
+                    <input-group
+                        type="text"
+                        class="mt-1 block w-full"
+                        v-model="form.name"
+                        placeholder="Name"
+                        id="closetNameInput"
+                        :error="error"
+                    />
+                    <p class="text-sm text-gray-500 mt-2 ml-1">
+                        Needs to be atleast 3 characters long
+                    </p>
 
-                <jet-label class="mt-4" for="closetCategoryDropdown" value="Category" />
-                <CategorySelect
-                    :selected="form.category_id"
-                    class="mt-2"
-                    @click:item="handleCategorySelect"
+                    <jet-label class="mt-4" for="closetCategoryDropdown" value="Category" />
+                    <CategorySelect
+                        :selected="form.category_id"
+                        class="mt-2"
+                        @click:item="handleCategorySelect"
+                    />
+                </form>
+                <delete-closet-modal
+                    :show="shouldShowDeleteModal"
+                    @click:confirm="deleteCloset"
+                    @click:close="toggleDeleteClosetModal(false)"
                 />
-            </form>
+            </div>
         </template>
 
         <template #footer>
             <jet-secondary-button @click="$emit('click:close')" class="mt-3 sm:mt-0 sm:ml-3">Nevermind</jet-secondary-button>
-            <jet-button @click="submit" :disabled="isSubmitDisabled" class="sm:ml-3">
+            <jet-button @click="submit" :disabled="isSubmitDisabled" class="sm:ml-3 mt-3 sm:mt-0">
                 {{ selected ? 'Save' : 'Create' }}
             </jet-button>
         </template>
@@ -43,9 +61,12 @@ import DialogModal from '@/Jetstream/DialogModal.vue';
 import JetButton from '@/Jetstream/Button.vue'
 import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue'
 import InputGroup from '@/Jetstream/InputGroup.vue'
+import DeleteClosetModal from './DeleteClosetModal.vue'
 import JetLabel from '@/Jetstream/Label.vue'
 import JetDropdown from '@/Jetstream/Dropdown.vue';
 import CategorySelect from './CategorySelect.vue';
+import IconButton from '@/Jetstream/IconButton.vue';
+import { TrashIcon } from '@heroicons/vue/24/outline';
 
 export default {
     props: ['show', 'selected'],
@@ -59,7 +80,10 @@ export default {
         InputGroup,
         JetLabel,
         JetDropdown,
-        CategorySelect
+        CategorySelect,
+        IconButton,
+        TrashIcon,
+        DeleteClosetModal
     },
 
     data() {
@@ -69,6 +93,7 @@ export default {
                 category_id: '',
             }),
             error: null,
+            shouldShowDeleteModal: false,
         }
     },
 
@@ -100,6 +125,24 @@ export default {
             }
 
             this.form.post(this.route('create-closet'), { onFinish });
+        },
+
+        deleteCloset() {
+            this.toggleDeleteClosetModal(false);
+
+            if (!this.selected) {
+                return;
+            }
+
+            this.$emit('click:close');
+
+            this.$inertia.delete(
+                this.route('delete-closet', [this.selected.id])
+            );
+        },
+
+        toggleDeleteClosetModal(value) {
+            this.shouldShowDeleteModal = value || !this.shouldShowDeleteModal;
         },
 
         handleCategorySelect(selected) {

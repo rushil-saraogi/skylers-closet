@@ -7,7 +7,7 @@
             class="-mb-4 opacity-50"
         />
 
-        <div class="flex gap-3 z-10 relative">
+        <div class="flex gap-2 sm:gap-3 z-10 relative">
             <!-- Left side -->
             <img
                 v-if="user.profile_photo_url"

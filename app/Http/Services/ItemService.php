@@ -42,6 +42,8 @@ class ItemService
             )
         );
 
+        $closet->touch();
+
         if (isset($data['custom_image'])) {
             $this->imageService->addCustomImageToItem($item, $data['custom_image']);
         }
@@ -79,6 +81,7 @@ class ItemService
     
             $item->fill($data);
             $item->save();
+            $closet->touch();
         });
         
         return $item;
@@ -94,6 +97,7 @@ class ItemService
     public function delete(Closet $closet, Item $item): void
     {
         $item->delete();
+        $closet->touch();
 
         // Fix the item order after a deletion
         Item::where('item_order', '>', $item->item_order)

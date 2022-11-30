@@ -87,13 +87,14 @@ class ClosetController extends Controller
     }
 
     /**
-     * Delete a page
+     * Delete a Closet
      *
      * @param Request $request
+     * @param Closet $closet
      */
-    public function delete(string $pageId)
+    public function delete(Request $request, Closet $closet)
     {
-        $this->pageService->delete($pageId);
+        $this->closetService->delete($closet);
 
         return Redirect::route('dashboard');
     }
