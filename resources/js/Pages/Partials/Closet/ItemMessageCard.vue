@@ -6,7 +6,7 @@
         <div class="flex items-center">
             <img class="h-8 mr-4" v-if="item.image" :src="item.image" />
             <div>
-                <div class="font-semibold text-md">
+                <div class="font-semibold text-md line-clamp-2">
                     {{ item.title }}
                 </div>
                 <div>${{ item.price }}</div>
