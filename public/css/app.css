@@ -2169,6 +2169,18 @@ select {
 .pt-20 {
   padding-top: 5rem;
 }
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
+.pb-8 {
+  padding-bottom: 2rem;
+}
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+.pb-12 {
+  padding-bottom: 3rem;
+}
 .text-left {
   text-align: left;
 }
@@ -3066,6 +3078,10 @@ select {
 
   .sm\:pb-4 {
     padding-bottom: 1rem;
+  }
+
+  .sm\:pb-0 {
+    padding-bottom: 0px;
   }
 
   .sm\:text-left {

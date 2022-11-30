@@ -150,6 +150,7 @@ export default {
             const onSuccess = () => {
                 this.replyForm.reset();
                 this.$emit("submit:reply");
+                this.shouldShowReplies = true;
             };
 
             this.replyForm.parent_message_id = this.id;

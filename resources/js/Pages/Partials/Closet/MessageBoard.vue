@@ -65,7 +65,7 @@
 
                 <div
                     v-if="closet && messages.length"
-                    class="mt-6 flex flex-col gap-3 sm:gap-5 overflow-scroll message-scroll"
+                    class="mt-6 flex flex-col gap-3 sm:gap-5 pb-12 sm:pb-0 overflow-scroll message-scroll"
                 >
                     <MessageBlock
                         v-for="message in messages"
