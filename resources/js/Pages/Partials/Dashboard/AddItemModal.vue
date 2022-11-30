@@ -76,13 +76,13 @@
         <template #footer>
             <jet-secondary-button
                 @click="$emit('click:close')"
-                class="mt-3 sm:mt-0 sm:ml-3"
+                class="sm:ml-3"
                 >Nevermind</jet-secondary-button
             >
             <jet-button
                 @click="saveItem"
                 :disabled="!isMetaDataAvailable"
-                class="sm:ml-3"
+                class="mt-3 sm:mt-0 sm:ml-3"
             >
                 Save
             </jet-button>

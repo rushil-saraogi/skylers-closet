@@ -15,17 +15,15 @@
                         </Link>
                     </div>
 
-                    <SecondaryButton v-if="isFollowingCloset" class="mt-4" @click="followCloset">
-                        <div class="flex items-center">
+                    <SecondaryButton :flush="false"  class="mt-4" @click="followCloset">
+                        <div class="flex items-center" v-if="isFollowingCloset">
                             <HeartIconFilled
                                 class="h-5 w-5 text-red-400"
                                 @click="likeCloset"
                             />
                             <span class="ml-1.5 font-semibold">Liked</span>
                         </div>
-                    </SecondaryButton>
-                    <SecondaryButton v-else class="mt-4" @click="followCloset">
-                        <div class="flex items-center">
+                        <div class="flex items-center" v-else>
                             <HeartIconOutline
                                 class="h-5 w-5 text-red-400"
                                 @click="likeCloset"
