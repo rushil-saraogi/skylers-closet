@@ -64,7 +64,7 @@ class ItemController extends Controller
     public function update(Request $request, Closet $closet, Item $item)
     {
         $validated = $this->validateItem($request);
-        $this->itemService->update($validated, $item);
+        $this->itemService->update($validated, $closet, $item);
         return redirect()->back();
     }
 

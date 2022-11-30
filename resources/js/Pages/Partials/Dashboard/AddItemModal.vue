@@ -176,7 +176,7 @@ export default {
 
         setFromData(data) {
             this.form.title = data.title;
-            this.form.url = data.url;
+            this.form.url = data.url || this.itemUrl;
             this.form.brand = data.brand;
             this.form.price = data.price;
             this.form.asin = data.asin;

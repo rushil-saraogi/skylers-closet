@@ -12,7 +12,7 @@
             <img
                 v-if="user.profile_photo_url"
                 :src="user.profile_photo_url"
-                class="h-10 w-10 rounded-full"
+                class="h-8 w-8 rounded-full object-cover"
             />
 
             <!-- Right side -->
