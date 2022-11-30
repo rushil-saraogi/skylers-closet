@@ -31,6 +31,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('categories')->insertGetId([
+            'name' => 'Movies',
+        ]);
+
+        DB::table('categories')->insertGetId([
             'name' => 'Fashion',
         ]);
 

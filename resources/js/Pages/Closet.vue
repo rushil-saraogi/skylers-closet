@@ -38,7 +38,7 @@
                 <CoverImage v-if="closet.wallpaper" :url="closet.wallpaper"  class="mt-6" />
 
                 <div v-if="!closet.items.length">
-                    <empty-state message="Nothing here yet, check back again later" />
+                    <empty-state message="Nothing here yet" />
                 </div>
                 <ul
                     class="grid gap-6 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-col-1 mt-8 w-full"

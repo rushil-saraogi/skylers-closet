@@ -12,7 +12,7 @@
                     v-bind="closet"
                 />
             </div>
-            <empty-state v-else message="Nothing here yet :(" />
+            <empty-state v-else message="Nothing here yet" />
         </div>
     </app-layout>
 </template>

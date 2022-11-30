@@ -1240,6 +1240,9 @@ select {
 .right-1 {
   right: 0.25rem;
 }
+.right-5 {
+  right: 1.25rem;
+}
 .z-0 {
   z-index: 0;
 }

@@ -82,7 +82,7 @@ export default {
 
     computed: {
         isSubmitDisabled() {
-            return this.form.name.length < 3 || !this.form.category_id;
+            return this.form.name.length < 3 || !this.form.category_id || !this.form.category_id;
         }
     },
 
