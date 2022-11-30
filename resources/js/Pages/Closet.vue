@@ -56,6 +56,16 @@
                 </ul>
             </div>
 
+            <floating-buttons>
+                <floating-button
+                    tooltip="Comments"
+                    @click="toggleMessageBoard"
+                    :notification-text="(messages.length || '0')"
+                    icon="comment"
+                    type="primary" 
+                /> 
+            </floating-buttons>
+
             <save-item-modal
                 :show="showSaveItemModal"
                 :selected="savingItem"
@@ -88,6 +98,8 @@ import JetButton from "@/Jetstream/Button";
 import EmptyState from '@/Jetstream/EmptyState.vue';
 import ItemTile from "@/Common/Tiles/ItemTile.vue";
 import MessageBoard from "./Partials/Closet/MessageBoard.vue";
+import FloatingButtons from '@/Jetstream/FloatingButtons.vue'
+import FloatingButton from '@/Jetstream/FloatingButton.vue'
 import ImageHeader from "@/Jetstream/ImageHeader.vue";
 import ButtonVue from "@/Jetstream/Button.vue";
 import SecondaryButton from "@/Jetstream/SecondaryButton.vue";
@@ -108,6 +120,8 @@ export default {
         ItemTile,
         MessageBoard,
         ImageHeader,
+        FloatingButtons,
+        FloatingButton,
         ButtonVue,
         SecondaryButton,
         IconButton,

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="show" class="flex w-full items-center border-solid border-0 border-t border-gray-200">
+    <div v-if="show" class="flex w-full items-center border-solid border-0 border-t border-gray-100">
         <slot></slot>
     </div>
 </template>

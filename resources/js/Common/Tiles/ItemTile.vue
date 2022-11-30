@@ -5,13 +5,13 @@
         <div
             class="flex flex-col items-center justify-between h-full p-4"
         >
-            <Badge
+            <!-- <Badge
                 v-if="price"
                 variant="teal"
                 class="absolute top-3 right-3"
             >
                 ${{ price }}
-            </Badge>
+            </Badge> -->
 
             <!-- Item image -->
             <a :href="url" v-if="image" target="_blank" class="flex-1 flex items-center justify-center w-full">
@@ -23,12 +23,15 @@
             </a>
             <!-- / Item Image -->
 
-            <div class="flex justify-between">
+            <div class="flex justify-center flex-col items-center w-full">
                 <div
                     v-if="title"
                     class="text-gray-600 mt-5 line-clamp-1 text-sm"
                 >
                     {{ title }}
+                </div>
+                <div v-if="price" class="font-bold text-xl text-zinc-700">
+                    ${{ price }}
                 </div>
             </div>
         </div>

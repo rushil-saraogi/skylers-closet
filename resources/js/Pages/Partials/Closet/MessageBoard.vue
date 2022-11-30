@@ -151,7 +151,10 @@ export default {
             if (newVal) {
                 this.$nextTick(() => {
                     document.getElementById("messageInput").focus();
+                    document.body.style.overflow = 'hidden';
                 });
+            } else {
+                document.body.style.overflow = null
             }
         }
     },
@@ -162,7 +165,7 @@ export default {
         },
 
         messageBoardStyles() {
-            const top = this.show ? "15%" : "calc(100vh - 120px)";
+            const top = this.show ? "10%" : "100vh";
 
             return {
                 top,

@@ -14,7 +14,7 @@
         computed: {
             badgeClasses() {
                 const colors = {
-                    info: 'bg-blue-200 text-blue-900',
+                    info: 'bg-indigo-100 text-indigo-900',
                     success: 'bg-green-200 text-green-900',
                     danger: 'bg-red-200 text-red-900',
                     teal: 'bg-teal-200 text-teal-900',

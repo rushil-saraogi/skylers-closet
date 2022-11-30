@@ -41,7 +41,6 @@ export default {
     },
 
     data() {
-        console.log(OutlinedIcons);
         return {
             SolidIcons,
             OutlinedIcons,
