@@ -2,6 +2,7 @@
   <div class="tooltip-box">
     <slot />
     <div
+      v-if="text"
       :class="['tooltip', position]"
     >
       <span

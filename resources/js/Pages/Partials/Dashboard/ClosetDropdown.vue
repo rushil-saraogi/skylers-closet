@@ -1,5 +1,5 @@
 <template>
-    <jet-dropdown align="right" width="48">
+    <jet-dropdown align="right">
         <template #trigger>
             <button
                 v-if="selected.name"

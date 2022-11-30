@@ -26,6 +26,7 @@
         </div>
 
         <floating-buttons>
+            <floating-button tooltip="Add Item" @click="toggleAddItemModal(true)" icon="add" />
             <floating-button tooltip="Add cover image" @click="toggleWallpaperModal(true)" icon="wallpaper" />
         </floating-buttons>
 

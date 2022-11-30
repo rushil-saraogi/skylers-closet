@@ -15,34 +15,35 @@
                     >
                         {{ selected.name }}
                     </div>
-                    <icon-button
-                        class="ml-1.5"
-                        @click="toggleCreateClosetModal(true, selected)"
-                    >
-                        <PencilIcon class="h-5 w-5 text-gray-400" />
-                    </icon-button>
                 </div>
 
-                <div>
-                    <jet-button @click="toggleCreateClosetModal(true)"
-                        >Create new closet</jet-button
-                    >
-                </div>
+                <icon-button
+                    variant="filled"
+                    tooltip="Edit Closet"
+                    @click="toggleCreateClosetModal(true, selected)"
+                >
+                    <PencilIcon class="h-5 w-5 text-gray-500" />
+                </icon-button>
             </div>
         </template>
 
         <div class="w-full">
-            <closet-editor v-if="selected" v-bind="selected" />
+            <closet-editor
+                v-if="selected"
+                v-bind="selected"
+            />
 
             <div v-else>
                 <div>
                     <div class="flex items-center justify-between">
                         <h2 class="text-lg font-semibold">Your closets</h2>
-                        <div>
-                            <jet-button @click="toggleCreateClosetModal(true)"
-                                >Create new closet</jet-button
-                            >
-                        </div>
+                        <icon-button
+                            variant="filled"
+                            tooltip="Add Closet"
+                            @click="toggleCreateClosetModal(true)"
+                        >
+                            <PlusIcon class="h-5 w-5 text-gray-500" />
+                        </icon-button>
                     </div>
 
                     <closet-list
@@ -63,7 +64,7 @@
 </template>
 
 <script>
-import { ChartSquareBarIcon, PencilIcon } from '@heroicons/vue/24/outline'
+import { ChartSquareBarIcon, PlusIcon, PencilIcon } from '@heroicons/vue/24/outline'
 import { mapActions } from "pinia";
 import { useStore } from "@/store";
 import AppLayout from "@/Layouts/AppLayout.vue";
@@ -71,9 +72,9 @@ import ClosetEditor from "./Partials/Dashboard/ClosetEditor.vue";
 import ClosetDropdown from "./Partials/Dashboard/ClosetDropdown.vue";
 import CreateClosetModal from "./Partials/Dashboard/CreateClosetModal.vue";
 import JetButton from "@/Jetstream/Button";
+import IconButton from "@/Jetstream/IconButton";
 import TextTileModal from "@/Common/Tiles/TextTileModal.vue";
 import SelectTileModal from "@/Common/Tiles/SelectTileModal.vue";
-import IconButton from "@/Jetstream/IconButton.vue";
 import ClosetList from "./Partials/Dashboard/ClosetList.vue";
 
 export default {
@@ -89,7 +90,8 @@ export default {
         ClosetDropdown,
         IconButton,
         ClosetList,
-        PencilIcon
+        PencilIcon,
+        PlusIcon
     },
 
     mounted() {
