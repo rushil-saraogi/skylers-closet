@@ -5,13 +5,14 @@
                 :selected="selected.id"
                 as="link"
             />
-            <div class="mt-10 grid gap-6 md:grid-cols-3 sm:grid-cols-2 grid-col-1">
+            <div v-if="(closets && closets.length)" class="mt-10 grid gap-6 md:grid-cols-3 sm:grid-cols-2 grid-col-1">
                 <ClosetTile
                     v-for="closet in closets"
                     :key="closet.id"
                     v-bind="closet"
                 />
             </div>
+            <empty-state v-else message="Nothing here yet :(" />
         </div>
     </app-layout>
 </template>
@@ -23,6 +24,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import JetButton from "@/Jetstream/Button";
 import CategorySelect from './Partials/Dashboard/CategorySelect.vue';
 import ClosetTile from '@/Common/Tiles/ClosetTile.vue';
+import EmptyState from '../Jetstream/EmptyState.vue';
 
 export default {
     props: ["categories", "selected", "closets"],
@@ -32,6 +34,7 @@ export default {
         JetButton,
         CategorySelect,
         ClosetTile,
+        EmptyState
     },
 
     mounted() {
