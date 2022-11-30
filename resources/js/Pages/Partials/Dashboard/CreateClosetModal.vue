@@ -9,6 +9,7 @@
                 <div v-if="selected">
                     <IconButton
                         @click="toggleDeleteClosetModal"
+                        variant="filled"
                     >
                         <TrashIcon class="h-5 w-5 text-gray-600" />
                     </IconButton>

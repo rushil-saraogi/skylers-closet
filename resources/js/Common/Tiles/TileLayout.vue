@@ -98,7 +98,9 @@ export default {
 
 <style>
 .item {
-    max-width: 222px;
+    @media (max-width: 640px) {
+        max-width: 222px;
+    }
 }
 
 .item:hover {
