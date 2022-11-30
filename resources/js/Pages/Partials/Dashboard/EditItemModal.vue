@@ -54,12 +54,12 @@
         </template>
 
         <template #footer>
-            <jet-secondary-button @click="$emit('click:close')">
+            <jet-secondary-button @click="$emit('click:close')" class="mb-3 sm:mb-0">
                 Nevermind
             </jet-secondary-button>
 
             <jet-button
-                class="ml-2"
+                class="sm:ml-2"
                 @click="submit"
                 :class="{ 'opacity-25': loading }"
                 :disabled="loading"

@@ -9,11 +9,11 @@
         </template>
 
         <template #footer>
-            <jet-secondary-button @click="$emit('click:close')">
+            <jet-secondary-button class="mb-3 sm:mb-0" @click="$emit('click:close')">
                 Nevermind
             </jet-secondary-button>
 
-            <jet-danger-button class="ml-2" @click="$emit('click:confirm')" :class="{ 'opacity-25': loading }" :disabled="loading">
+            <jet-danger-button class="sm:ml-2" @click="$emit('click:confirm')" :class="{ 'opacity-25': loading }" :disabled="loading">
                 Delete Item
             </jet-danger-button>
         </template>
