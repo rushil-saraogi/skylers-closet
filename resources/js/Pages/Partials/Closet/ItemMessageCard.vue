@@ -1,5 +1,5 @@
 <template>
-    <div class="py-2 px-6 border rounded bg-gray-50 relative">
+    <div class="py-2 px-6 border rounded bg-white relative">
         <div v-if="dismissable" class="absolute top-1 right-1">
             <XMarkIcon @click="$emit('click:dismiss')" class="h-4 w-4 text-gray-500 hover:cursor-pointer hover:text-gray-600" />
         </div>

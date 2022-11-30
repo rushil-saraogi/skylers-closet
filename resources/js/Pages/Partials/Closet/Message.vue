@@ -4,7 +4,7 @@
         <ItemMessageCard
             v-if="item"
             :item="item"
-            class="-mb-4 opacity-50"
+            class="-mb-4 opacity-70"
         />
 
         <div class="flex gap-2 sm:gap-3 z-10 relative">
@@ -18,7 +18,7 @@
             <!-- Right side -->
             <div class="flex-1">
                 <div
-                    class="p-3 bg-indigo-50 flex flex-col justify-start rounded-lg"
+                    class="p-3 border border-indigo-200 bg-indigo-50 flex flex-col justify-start rounded-lg"
                 >
                     <div class="text-sm">
                         <span class="text-gray-700">{{
