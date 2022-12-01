@@ -1368,6 +1368,12 @@ select {
 .-mb-4 {
   margin-bottom: -1rem;
 }
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mt-3\.5 {
+  margin-top: 0.875rem;
+}
 .block {
   display: block;
 }
@@ -1961,6 +1967,10 @@ select {
 .bg-blue-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(219 234 254 / var(--tw-bg-opacity));
+}
+.bg-slate-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity));
 }
 .bg-opacity-25 {
   --tw-bg-opacity: 0.25;
@@ -2830,6 +2840,30 @@ select {
     margin-left: 0.5rem;
   }
 
+  .sm\:mb-4 {
+    margin-bottom: 1rem;
+  }
+
+  .sm\:mb-3 {
+    margin-bottom: 0.75rem;
+  }
+
+  .sm\:mt-6 {
+    margin-top: 1.5rem;
+  }
+
+  .sm\:mb-6 {
+    margin-bottom: 1.5rem;
+  }
+
+  .sm\:mt-7 {
+    margin-top: 1.75rem;
+  }
+
+  .sm\:mt-8 {
+    margin-top: 2rem;
+  }
+
   .sm\:block {
     display: block;
   }
@@ -2955,6 +2989,14 @@ select {
     gap: 1.25rem;
   }
 
+  .sm\:gap-6 {
+    gap: 1.5rem;
+  }
+
+  .sm\:gap-4 {
+    gap: 1rem;
+  }
+
   .sm\:rounded-lg {
     border-radius: 0.5rem;
   }
@@ -3019,6 +3061,16 @@ select {
   .sm\:py-4 {
     padding-top: 1rem;
     padding-bottom: 1rem;
+  }
+
+  .sm\:py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .sm\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 
   .sm\:pt-0 {

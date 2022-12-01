@@ -35,7 +35,7 @@ export default {
 
     data() {
         return {
-            gridContainerClasses: "grid gap-4 w-full grid-col-2 sm:grid-cols-3 md:grid-cols-4",
+            gridContainerClasses: "grid gap-3 sm:gap-4 w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-4",
             gridItemClasses: "bg-gray-100 p-4 rounded-lg font-semibold hover:bg-indigo-100 hover:cursor-pointer transition",
         }
     },

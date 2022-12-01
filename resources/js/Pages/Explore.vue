@@ -5,7 +5,7 @@
                 :selected="selected.id"
                 as="link"
             />
-            <div v-if="(closets && closets.length)" class="mt-10 grid gap-6 md:grid-cols-3 sm:grid-cols-2 grid-col-1">
+            <div v-if="(closets && closets.length)" class="mt-4 sm:mt-8 grid gap-6 md:grid-cols-3 sm:grid-cols-2 grid-col-1">
                 <ClosetTile
                     v-for="closet in closets"
                     :key="closet.id"

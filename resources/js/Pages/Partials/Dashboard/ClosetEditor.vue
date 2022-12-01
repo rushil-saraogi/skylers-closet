@@ -2,14 +2,21 @@
     <div class="w-full">
         <div>
             <div
+                v-if="items.length !== 0"
+                class="p-3 bg-gray-100 mb-2 sm:mb-3 text-gray-600 font-semibold flex items-center justify-center rounded hover:cursor-pointer"
+            >
+                <HandRaisedIcon class="h-4 w-4 text-gray-600 mr-2" />
+                Drag and drop items to reorder!
+            </div>
+            <div
                 class="p-3 bg-blue-100 text-gray-600 hover:shadow-inner transition font-semibold flex items-center justify-center rounded hover:cursor-pointer"
                 @click="toggleAddItemModal(true)"
             >
                 Add an item to your closet
             </div>
         </div>
-        <div class="mt-7">
-            <CoverImage v-if="wallpaper" :url="wallpaper" class="mt-6 mb-6" />
+        <div class="mt-3 sm:mt-6">
+            <CoverImage v-if="wallpaper" :url="wallpaper" class="mt-3 mb-3 sm:mt-6 sm:mb-6" />
 
             <div v-if="items.length === 0">
                 <empty-state message="Let's try adding an item" />
@@ -59,6 +66,7 @@
 <script>
 import { mapActions, mapState } from 'pinia';
 import { useStore } from '@/store';
+import { HandRaisedIcon } from '@heroicons/vue/24/outline';
 import { Link } from "@inertiajs/inertia-vue3";
 import ZeroState from "@/Jetstream/ZeroState.vue";
 import FloatingButtons from '@/Jetstream/FloatingButtons.vue'
@@ -84,7 +92,8 @@ export default {
         WallpaperModal,
         EditItemModal,
         EmptyState,
-        CoverImage
+        CoverImage,
+        HandRaisedIcon
     },
 
     props: {

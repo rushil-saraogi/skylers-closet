@@ -248,7 +248,7 @@
             </header>
 
             <!-- Page Content -->
-            <main class="flex-auto relative flex items-stretch max-w-7xl m-auto w-full py-8 px-4 sm:px-6 lg:px-8">
+            <main class="flex-auto relative flex items-stretch max-w-7xl m-auto w-full py-4 px-4 sm:py-6 sm:px-6 lg:px-8">
                 <slot></slot>
             </main>
         </div>
