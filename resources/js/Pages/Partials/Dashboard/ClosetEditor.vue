@@ -2,7 +2,7 @@
     <div class="w-full">
         <div>
             <div
-                v-if="items.length !== 0"
+                v-if="(items.length > 1)"
                 class="p-3 bg-gray-100 mb-2 sm:mb-3 text-gray-600 font-semibold flex items-center justify-center rounded hover:cursor-pointer"
             >
                 <HandRaisedIcon class="h-4 w-4 text-gray-600 mr-2" />
@@ -51,6 +51,7 @@
 
         <add-item-modal
             :show="shouldShowAddItemModal"
+            :closet-id="this.id"
             @click:close="toggleAddItemModal(false)"
         />
 

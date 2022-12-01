@@ -114,7 +114,6 @@ export default {
 
     methods: {
         submit() {
-            
             const onFinish = () => {
                 this.form.reset('name');
                 this.$emit('click:close');

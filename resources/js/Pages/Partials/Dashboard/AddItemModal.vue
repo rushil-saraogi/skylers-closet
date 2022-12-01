@@ -91,8 +91,6 @@
 </template>
 
 <script>
-import { mapState } from "pinia";
-import { useStore } from "@/store";
 import DialogModal from "@/Jetstream/DialogModal.vue";
 import JetButton from "@/Jetstream/Button.vue";
 import JetSecondaryButton from "@/Jetstream/SecondaryButton.vue";
@@ -105,7 +103,7 @@ import LoaderTile from "@/Common/Tiles/LoaderTile.vue";
 import AddPhotoIcon from '../../../icons/AddPhotoIcon.vue';
 
 export default {
-    props: ["show"],
+    props: ["show", "closetId"],
 
     emits: ["click:close"],
 
@@ -153,8 +151,6 @@ export default {
     },
 
     computed: {
-        ...mapState(useStore, ["selectedCloset"]),
-
         isMetaDataAvailable() {
             return Object.keys(this.metaData).length !== 0;
         },
@@ -169,7 +165,7 @@ export default {
 
             this.setFromData(this.metaData);
             this.form.post(
-                this.route("create-item", [this.selectedCloset.id]),
+                this.route("create-item", [this.closetId]),
                 { onFinish }
             );
         },
