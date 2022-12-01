@@ -3,7 +3,7 @@
         <div class="relative flex flex-col w-full">
             <div class="flex flex-col items-center text-center">
                 <div>
-                    <div class="text-4xl font-bold mt-5">{{ closet.name }}</div>
+                    <div class="text-3xl sm:text-4xl font-bold mt-3 sm:mt-5">{{ closet.name }}</div>
 
                     <div class="mt-2 text-gray-600">
                         By
@@ -33,13 +33,13 @@
                     </SecondaryButton>
                 </div>
 
-                <CoverImage v-if="closet.wallpaper" :url="closet.wallpaper"  class="mt-3.5 sm:mt-7" />
+                <CoverImage v-if="closet.wallpaper" :url="closet.wallpaper"  class="mt-4 sm:mt-8" />
 
                 <div v-if="!closet.items.length">
                     <empty-state message="Nothing here yet" />
                 </div>
                 <ul
-                    class="grid gap-3 sm:gap-6 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-col-1 mt-3.5 sm:mt-7 w-full"
+                    class="grid gap-3 sm:gap-6 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-col-1 mt-5 sm:mt-8 w-full"
                 >
                     <li v-for="(item, index) in closet.items" :key="index">
                         <item-tile

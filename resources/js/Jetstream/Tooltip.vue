@@ -1,8 +1,12 @@
 <template>
-  <div class="tooltip-box">
+  <div
+    class="tooltip-box"
+    @mouseenter="hoverActive = true"
+    @mouseleave="hoverActive = false"
+  >
     <slot />
     <div
-      v-if="text"
+      v-if="(text && hoverActive)"
       :class="['tooltip', position]"
     >
       <span
@@ -25,7 +29,13 @@ export default {
         type: String,
         default: 'left'
     }
-  }
+  },
+
+  data() {
+    return {
+      hoverActive: false
+    }
+  },
 };
 </script>
 
