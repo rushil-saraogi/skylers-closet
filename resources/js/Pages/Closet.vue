@@ -15,7 +15,7 @@
                         </Link>
                     </div>
 
-                    <SecondaryButton :flush="false"  class="mt-4" @click="followCloset">
+                    <SecondaryButton v-if="!isUsersCloset" :flush="false"  class="mt-4" @click="followCloset">
                         <div class="flex items-center" v-if="isFollowingCloset">
                             <HeartIconFilled
                                 class="h-5 w-5 text-red-400"
@@ -33,36 +33,39 @@
                     </SecondaryButton>
                 </div>
 
-                <CoverImage v-if="closet.wallpaper" :url="closet.wallpaper"  class="mt-4 sm:mt-8" />
+                <div class="flex flex-col gap-6 w-full">
+                    <div>
+                        <!-- <CoverImage v-if="closet.wallpaper" :url="closet.wallpaper"  class="mt-4 sm:mt-8" /> -->
 
-                <div v-if="!closet.items.length">
-                    <empty-state message="Nothing here yet" />
+                        <div v-if="!closet.items.length">
+                            <empty-state message="Nothing here yet" />
+                        </div>
+
+                        <ul
+                            class="grid gap-3 sm:gap-6 grid-col-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-5 sm:mt-8 w-full"
+                        >
+                            <li v-for="(item, index) in closet.items" :key="index">
+                                <item-tile
+                                    v-bind="item"
+                                    :pub-mode="true"
+                                    :is-saved="isItemSaved(item)"
+                                    :with-chat-link="true"
+                                    @click:message="tagItemForMessage(item)"
+                                    @click:save="saveItemClick(item)"
+                                />
+                            </li>
+                        </ul>
+                    </div>
+                    <message-board
+                        class="sm:mt-2s"
+                        :tagged-item="taggedItem"
+                        :messages="messages"
+                        :closet="closet"
+                        @submit:message="tagItemForMessage(null)"
+                        @delete:tag="tagItemForMessage(null)"
+                    />
                 </div>
-                <ul
-                    class="grid gap-3 sm:gap-6 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-col-1 mt-5 sm:mt-8 w-full"
-                >
-                    <li v-for="(item, index) in closet.items" :key="index">
-                        <item-tile
-                            v-bind="item"
-                            :pub-mode="true"
-                            :is-saved="isItemSaved(item)"
-                            :with-chat-link="true"
-                            @click:message="tagItemForMessage(item)"
-                            @click:save="saveItemClick(item)"
-                        />
-                    </li>
-                </ul>
             </div>
-
-            <floating-buttons>
-                <floating-button
-                    tooltip="Comments"
-                    @click="toggleMessageBoard"
-                    :notification-text="(messages.length || '0')"
-                    icon="comment"
-                    type="primary" 
-                /> 
-            </floating-buttons>
 
             <save-item-modal
                 :show="showSaveItemModal"
@@ -71,18 +74,6 @@
                 @click:close="toggleSaveItemModal(false)"
                 @save:item="saveItem"
                 @remove:item="undoSave"
-            />
-
-            <message-board
-                class="mt-8"
-                classes="fixed bottom-0 mx-auto inset-x-0"
-                :tagged-item="taggedItem"
-                :messages="messages"
-                :closet="closet"
-                :show="showMessageBoard"
-                @toggle="toggleMessageBoard"
-                @submit:message="tagItemForMessage(null)"
-                @delete:tag="tagItemForMessage(null)"
             />
         </div>
     </app-layout>
@@ -141,6 +132,10 @@ export default {
             return this.auth?.user;
         },
 
+        isUsersCloset() {
+            return this.isLoggedIn && this.closet.user_id === this.auth.user.id;
+        },
+
         isFollowingCloset() {
             if (!this.isLoggedIn) {
                 return false;
@@ -163,7 +158,6 @@ export default {
     data() {
         return {
             taggedItem: null,
-            showMessageBoard: false,
             showSaveItemModal: false,
             savingItem: null,
         };
@@ -172,14 +166,6 @@ export default {
     methods: {
         tagItemForMessage(item) {
             this.taggedItem = item;
-
-            if (item) {
-                this.toggleMessageBoard(true);
-            }
-        },
-
-        toggleMessageBoard(show) {
-            this.showMessageBoard = show;
         },
 
         toggleSaveItemModal(show) {

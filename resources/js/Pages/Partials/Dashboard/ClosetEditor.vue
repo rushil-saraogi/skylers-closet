@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="mt-3 sm:mt-6">
-            <CoverImage v-if="wallpaper" :url="wallpaper" class="mt-3 mb-3 sm:mt-6 sm:mb-6" />
+            <!-- <CoverImage v-if="wallpaper" :url="wallpaper" class="mt-3 mb-3 sm:mt-6 sm:mb-6" /> -->
 
             <div v-if="items.length === 0">
                 <empty-state message="Let's try adding an item" />
@@ -33,8 +33,8 @@
         </div>
 
         <floating-buttons>
-            <floating-button tooltip="Add Item" @click="toggleAddItemModal(true)" icon="add" />
-            <floating-button tooltip="Add cover image" @click="toggleWallpaperModal(true)" icon="wallpaper" />
+            <floating-button tooltip="Add Item" type="primary" @click="toggleAddItemModal(true)" icon="add" />
+            <!-- <floating-button tooltip="Add cover image" @click="toggleWallpaperModal(true)" icon="wallpaper" /> -->
         </floating-buttons>
 
         <delete-item-modal

@@ -139,7 +139,7 @@
                             </div>
                         </div>
 
-                        <!-- Hamburger -->
+                        <!-- Mobile nav -->
                         <div class="-mr-2 flex items-center sm:hidden">
                             <button @click="showingNavigationDropdown = ! showingNavigationDropdown" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition">
                                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -151,18 +151,31 @@
                     </div>
                 </div>
 
+                <!-- Mobile tabs -->
+                <div
+                    class="sm:hidden bg-white fixed z-20 bottom-3 mx-auto inset-x-0 border flex justify-between rounded-full"
+                    :class="{
+                        'w-36': !isLoggedIn,
+                        'w-52': isLoggedIn
+                    }"
+                >
+                    <mobile-nav-tab :href="route('explore')" :active="route().current('explore')">
+                        <HomeIcon class="h-6 w-6 text-gray-700" />
+                    </mobile-nav-tab>
+                    <mobile-nav-tab v-if="isLoggedIn" :href="route('feed')" :active="route().current('feed')" :only="['items', 'user_closets']">
+                        <GlobeAmericasIcon class="h-6 w-6 text-gray-700" />
+                    </mobile-nav-tab>
+                    <mobile-nav-tab v-if="isLoggedIn" :href="route('search')" :active="route().current('search')">
+                        <MagnifyingGlassIcon class="h-6 w-6 text-gray-700" />
+                    </mobile-nav-tab>
+                    <mobile-nav-tab v-if="isLoggedIn" :href="route('dashboard')" :active="route().current('dashboard')">
+                        <UserIcon class="h-6 w-6 text-gray-700" />
+                    </mobile-nav-tab>
+                </div>
+
                 <!-- Responsive Navigation Menu -->
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <jet-responsive-nav-link v-if="isLoggedIn" :href="route('dashboard')" :active="route().current('dashboard')">
-                            You
-                        </jet-responsive-nav-link>
-                        <jet-responsive-nav-link :href="route('explore')" :active="route().current('explore')">
-                            Explore
-                        </jet-responsive-nav-link>
-                        <jet-responsive-nav-link v-if="isLoggedIn" :href="route('feed')" :active="route().current('feed')" :only="['items', 'user_closets']">
-                            Feed
-                        </jet-responsive-nav-link>
                         <jet-responsive-nav-link v-if="!isLoggedIn" :href="route('login')" :active="route().current('login')">
                             Log in
                         </jet-responsive-nav-link>
@@ -262,9 +275,12 @@
     import JetDropdown from '@/Jetstream/Dropdown.vue'
     import JetDropdownLink from '@/Jetstream/DropdownLink.vue'
     import JetNavLink from '@/Jetstream/NavLink.vue'
+    import MobileNavTab from '@/Jetstream/MobileNavTab.vue'
     import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink.vue'    
     import { usePage } from '@inertiajs/inertia-vue3'
     import { Head, Link } from '@inertiajs/inertia-vue3';
+    import IconButton from '@/Jetstream/IconButton.vue'
+    import { UserIcon, GlobeAmericasIcon, HomeIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/solid'
 
     export default {
         props: {
@@ -279,7 +295,13 @@
             JetDropdownLink,
             JetNavLink,
             JetResponsiveNavLink,
+            MobileNavTab,
             Link,
+            IconButton,
+            UserIcon,
+            GlobeAmericasIcon,
+            HomeIcon,
+            MagnifyingGlassIcon,
         },
 
         setup() {

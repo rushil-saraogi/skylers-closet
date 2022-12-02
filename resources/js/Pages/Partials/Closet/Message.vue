@@ -18,9 +18,9 @@
             <!-- Right side -->
             <div class="flex-1">
                 <div
-                    class="p-3 border border-indigo-200 bg-indigo-50 flex flex-col justify-start rounded-lg"
+                    class="p-3 border border-indigo-200 bg-indigo-50 shadow-sm flex flex-col justify-start rounded-lg"
                 >
-                    <div class="text-sm">
+                    <div class="text-sm text-left">
                         <span class="text-gray-700">{{
                             user.name
                         }}</span>
@@ -28,7 +28,7 @@
                             formatDate(created_at)
                         }}</span>
                     </div>
-                    <div class="mt-2">
+                    <div class="mt-2 text-left">
                         {{ message_body }}
                     </div>
                 </div>
@@ -54,13 +54,14 @@
                 <!-- Replies -->
                 <div
                     v-if="showReplies"
+                    class="ml-4 sm:ml-6"
                 >
                     <div
                         v-for="reply in replies"
                         :key="reply.id"
-                        class="ml-6 mt-2 p-3 bg-gray-100 rounded-lg"
+                        class="mt-2 p-3 bg-gray-100 rounded-lg"
                     >
-                        <div class="text-sm">
+                        <div class="text-sm text-left">
                             <span class="text-gray-700">{{
                                 reply.user.name
                             }}</span>
@@ -68,21 +69,21 @@
                                 formatDate(reply.created_at)
                             }}</span>
                         </div>
-                        <div class="mt-2">
+                        <div class="mt-2 text-left">
                             {{ reply.message_body }}
                         </div>
                     </div>
-                </div>
 
-                <input-group
-                    type="text"
-                    v-if="showReplyInput"
-                    v-model="this.replyForm.message_body"
-                    class="mt-2"
-                    placeholder="Add a comment..."
-                    :error="error"
-                    v-on:keyup.enter.prevent="submitReply"
-                />
+                    <input-group
+                        type="text"
+                        v-if="showReplyInput"
+                        v-model="this.replyForm.message_body"
+                        class="mt-2"
+                        placeholder="Add a reply..."
+                        :error="error"
+                        v-on:keyup.enter.prevent="submitReply"
+                    />
+                </div>
             </div>
         </div>
     </div>

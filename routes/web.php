@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 // Public routes
 Route::get('/', [DashboardController::class, 'explore'])->name('welcome');
 Route::get('/explore', [DashboardController::class, 'explore'])->name('explore');
+Route::get('/search', [DashboardController::class, 'search'])->name('search');
 Route::get('/closets/{closet}', [ClosetController::class, 'show'])->name('show-closet');
 Route::get('/user/{user}', [UserController::class, 'UserProfile'])->name('user-profile');
 

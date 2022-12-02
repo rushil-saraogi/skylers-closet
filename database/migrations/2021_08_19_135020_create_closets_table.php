@@ -16,6 +16,7 @@ class CreateClosetsTable extends Migration
         Schema::create('closets', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('description')->nullable();
             $table->string('wallpaper', 600)->nullable();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id');

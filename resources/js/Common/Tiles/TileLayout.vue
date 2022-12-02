@@ -97,12 +97,6 @@ export default {
 </script>
 
 <style>
-.item {
-    @media (max-width: 640px) {
-        max-width: 222px;
-    }
-}
-
 .item:hover {
     cursor: grab;
 }

@@ -36,15 +36,21 @@ class ClosetController extends Controller
         $closet = $closet->load('items', 'user');
         $owner = $closet->user;
 
-        return Inertia::render('Closet', [
+        $props = [
             'closet' => $closet,
             'messages' => Message::where('closet_id', $closet->id)
                 ->whereNull('parent_message_id')
                 ->with('replies.user', 'user', 'item')
+                ->orderBy('created_at', 'desc')
                 ->get(),
             'isFollowing' => $closet->followers->contains($owner),
-            'user_closets' => $owner->closets->load('items', 'category')
-        ]);
+        ];
+
+        if (Auth::check()) {
+            $props['user_closets'] = Auth::user()->closets->load('items', 'category');
+        }
+
+        return Inertia::render('Closet', $props);
     }
 
     /**

@@ -54,6 +54,15 @@ class DashboardController extends Controller
     }
 
     /**
+     * Return the search component
+     *
+     */
+    public function search(Request $request)
+    {
+        return Inertia::render('Search', []);
+    }
+
+    /**
      * Return the welcome component
      *
      */

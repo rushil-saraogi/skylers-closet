@@ -9,7 +9,7 @@
                 <div class="font-semibold text-md line-clamp-2">
                     {{ item.title }}
                 </div>
-                <div>${{ item.price }}</div>
+                <div class="text-left">${{ item.price }}</div>
             </div>
         </div>
     </div>
