@@ -155,7 +155,7 @@
                 <div
                     class="sm:hidden bg-white fixed z-20 bottom-3 mx-auto inset-x-0 border flex justify-between rounded-full"
                     :class="{
-                        'w-36': !isLoggedIn,
+                        'w-24': !isLoggedIn,
                         'w-52': isLoggedIn
                     }"
                 >
@@ -165,7 +165,7 @@
                     <mobile-nav-tab v-if="isLoggedIn" :href="route('feed')" :active="route().current('feed')" :only="['items', 'user_closets']">
                         <GlobeAmericasIcon class="h-6 w-6 text-gray-700" />
                     </mobile-nav-tab>
-                    <mobile-nav-tab v-if="isLoggedIn" :href="route('search')" :active="route().current('search')">
+                    <mobile-nav-tab :href="route('search')" :active="route().current('search')">
                         <MagnifyingGlassIcon class="h-6 w-6 text-gray-700" />
                     </mobile-nav-tab>
                     <mobile-nav-tab v-if="isLoggedIn" :href="route('dashboard')" :active="route().current('dashboard')">
@@ -280,7 +280,8 @@
     import { usePage } from '@inertiajs/inertia-vue3'
     import { Head, Link } from '@inertiajs/inertia-vue3';
     import IconButton from '@/Jetstream/IconButton.vue'
-    import { UserIcon, GlobeAmericasIcon, HomeIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/solid'
+    import { UserIcon, GlobeAmericasIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/solid'
+    import { HomeIcon } from '@heroicons/vue/24/outline'
 
     export default {
         props: {

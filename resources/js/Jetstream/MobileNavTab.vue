@@ -1,5 +1,5 @@
 <template>
-    <Link class="p-2.5 rounded-full" :class="classes" v-bind="$props">
+    <Link class="p-3 rounded-full" :class="classes" v-bind="$props">
         <slot />
     </Link>
 </template>
@@ -17,7 +17,7 @@
             classes() {
                 return this.active
                     ? 'opacity-100 transition'
-                    : 'opacity-60 transition'
+                    : 'opacity-50 transition'
             }
         }
     }
