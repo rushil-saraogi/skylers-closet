@@ -149,6 +149,10 @@ export default {
         },
 
         allUserItems() {
+            if (!this.isLoggedIn || !this.user_closets) {
+                return [];
+            }
+
             return this.user_closets.reduce((acc, closet) => {
                 return [...acc, ...closet.items];
             }, []);

@@ -7,6 +7,11 @@
                 :key="category.id"
                 :href="route('explore', {'category': category.id})"
             >
+                <component
+                    v-if="icons[category.name]"
+                    :is="icons[category.name]"
+                    class="h-5 w-5 mr-2"
+                />
                 {{ category.name }}
             </Link>
         </div>
@@ -25,8 +30,27 @@
 
 <script>
 import { Link } from "@inertiajs/inertia-vue3";
+import { 
+    ShoppingBagIcon,
+    DevicePhoneMobileIcon,
+    HomeIcon,
+    BookOpenIcon,
+    TagIcon,
+    ClockIcon,
+    FilmIcon
+} from '@heroicons/vue/24/outline';
 import { mapState } from "pinia";
 import { useStore } from "@/store";
+
+const icons = {
+    'Mixed Bag': ShoppingBagIcon,
+    'Tech': DevicePhoneMobileIcon,
+    'Home': HomeIcon,
+    'Books': BookOpenIcon,
+    'Fashion': TagIcon,
+    'Watches': ClockIcon,
+    'Movies': FilmIcon
+}
 
 export default {
     components: {
@@ -35,8 +59,9 @@ export default {
 
     data() {
         return {
+            icons,
             gridContainerClasses: "grid gap-3 sm:gap-4 w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-4",
-            gridItemClasses: "bg-gray-100 p-4 rounded-lg font-semibold hover:bg-indigo-100 hover:cursor-pointer transition",
+            gridItemClasses: "bg-gray-100 p-4 rounded-lg font-semibold hover:bg-indigo-100 hover:cursor-pointer transition flex items-center",
         }
     },
 
