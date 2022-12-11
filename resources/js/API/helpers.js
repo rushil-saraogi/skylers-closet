@@ -21,6 +21,13 @@ export function del(url) {
     });
 }
 
+export function get(url) {
+    return fetch(url, {
+        method: 'GET',
+        headers: getHeaders(),
+    }).then(res => res.json());
+}
+
 function getHeaders() {
     return {
         'Content-Type': 'application/json'

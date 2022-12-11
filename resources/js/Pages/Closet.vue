@@ -57,7 +57,7 @@
                         </ul>
                     </div>
                     <message-board
-                        class="sm:mt-2s"
+                        class="sm:mt-2"
                         :tagged-item="taggedItem"
                         :messages="messages"
                         :closet="closet"

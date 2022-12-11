@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MetaDataController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ClosetController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MessageController;
@@ -53,6 +54,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::delete('/api/closets/{closet}/items/{item}/remove-by-url', [ItemController::class, 'removeByUrl'])->name('remove-item-by-url');
     Route::post('/api/closets/{closet}/items/{item}/copy', [ItemController::class, 'copy'])->name('copy-item');
     Route::get('/api/links/get-meta', [MetaDataController::class, 'getMetaData'])->name('get-meta');
+    Route::get('/api/search', [SearchController::class, 'search'])->name('search-query');
     Route::get('/api/closets/current-user', [ClosetController::class, 'currentUser'])->name('current-user-closets');
     Route::put('/api/closets/{closet}/items/{item}', [ItemController::class, 'updateWithoutIntertia'])->name('api-update-item');
 });

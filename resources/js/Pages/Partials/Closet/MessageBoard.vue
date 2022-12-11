@@ -1,11 +1,11 @@
 <template>
     <!-- Start of board -->
     <div
-        class="w-full flex flex-col"
+        class="w-full flex flex-col bg-white p-3 sm:p-5 rounded-lg border shadow-sm relative"
         :class="{ [classes]: classes }"
     >
         <div class="w-full">
-            <div class="mt-3 sm:mt-4 bg-gray-100 p-2.5 sm:p-4 rounded">
+            <div class="bg-gray-100 p-2.5 sm:p-4 rounded">
                 <!-- Tagged item preview -->
                 <ItemMessageCard
                     v-if="taggedItem"

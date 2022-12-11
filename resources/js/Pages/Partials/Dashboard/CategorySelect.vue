@@ -61,7 +61,7 @@ export default {
         return {
             icons,
             gridContainerClasses: "grid gap-3 sm:gap-4 w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-4",
-            gridItemClasses: "bg-gray-100 p-4 rounded-lg font-semibold hover:bg-indigo-100 hover:cursor-pointer transition flex items-center",
+            gridItemClasses: "bg-gray-500/10 p-4 rounded-lg font-semibold hover:bg-indigo-600/20 hover:cursor-pointer transition flex items-center",
         }
     },
 
@@ -85,7 +85,7 @@ export default {
             const isSelected = this.selected && this.selected === category.id;
 
             return {
-                "bg-indigo-100": isSelected,
+                "bg-indigo-600/20": isSelected,
             };
         },
     }

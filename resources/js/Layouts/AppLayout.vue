@@ -4,7 +4,9 @@
 
         <jet-banner />
 
-        <div class="min-h-screen flex flex-col">
+        <div
+            class="min-h-screen flex flex-col bg-[url('/images/noise.png')] bg-opacity-40"
+        >
             <nav class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,6 +23,9 @@
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('explore')" :active="route().current('explore')">
                                     Explore
+                                </jet-nav-link>
+                                <jet-nav-link :href="route('search')" :active="route().current('search')">
+                                    Search
                                 </jet-nav-link>
                                 <jet-nav-link v-if="isLoggedIn" :href="route('feed')" :active="route().current('feed')">
                                     Feed
@@ -261,7 +266,9 @@
             </header>
 
             <!-- Page Content -->
-            <main class="flex-auto relative flex items-stretch max-w-7xl m-auto w-full py-4 px-4 sm:py-6 sm:px-6 lg:px-8">
+            <main
+                class="flex-auto relative flex items-stretch max-w-7xl m-auto w-full py-4 px-4 sm:py-6 sm:px-6 lg:px-8"
+            >
                 <slot></slot>
             </main>
         </div>

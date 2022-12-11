@@ -3,7 +3,7 @@
         <div 
             v-for="closet in closets" :key="closet.id" 
             @click="$emit('click:closet', closet)"
-            class="flex justify-between items-center px-4 py-3 sm:px-6 sm:py-4 border-b hover:cursor-pointer hover:bg-gray-50"
+            class="bg-white flex justify-between items-center px-4 py-3 sm:px-6 sm:py-4 border-b hover:cursor-pointer hover:bg-gray-50"
         >
             <div>
                 <div class="flex">
