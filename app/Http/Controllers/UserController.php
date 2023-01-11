@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Services\UserService;
 use App\Models\User;
+use App\Models\Hotel;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Http\Requests\CreateUserRequest;
 use Exception;
 
 class UserController extends Controller
@@ -25,15 +27,25 @@ class UserController extends Controller
     }
 
     /**
+     * Add new user
+     *
+     * @param CreateUserRequest $request
+     */
+    public function create(CreateUserRequest $request, Hotel $hotel)
+    {
+        $this->userService->create($request->all());
+    return redirect()->back();
+    }
+
+    /**
      * Get user profile
      *
      */
     public function UserProfile(Request $request, User $user)
     {
         return Inertia::render('UserProfile', [
-            'user' => $user->load('closets.items', 'closets.user'),
-            'isFollowingUser' => $user->followers->contains(Auth::user()),
-            'followerCount' => $user->followers->count()
+            // 'user' => $user->load('closets.items', 'closets.user'),
+            'user' => $user,
         ]);
     }
 
@@ -55,6 +67,12 @@ class UserController extends Controller
     public function unfollow(Request $request, User $user)
     {
         $this->userService->unfollow($user);
+        return redirect()->back();
+    }
+
+    public function completeOnboarding(Request $request, User $user)
+    {
+        $this->userService->completeOnboarding($user);
         return redirect()->back();
     }
 }

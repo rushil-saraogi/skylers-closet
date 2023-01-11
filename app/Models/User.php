@@ -17,6 +17,10 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    public static $ROLE_OWNER = 'OWNER';
+    public static $ROLE_EMPLOYEE = 'EMPLOYEE';
+    public static $ROLE_ADMIN = 'ADMIN';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -26,6 +30,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'hotel_id',
+        'role'
     ];
 
     /**
@@ -61,31 +67,13 @@ class User extends Authenticatable
     /**
      * User pages
      */
-    public function closets()
-    {
-        return $this->hasMany(Closet::class);
-    }
-
-    /**
-     * User pages
-     */
     public function messages()
     {
         return $this->hasMany(Message::class);
     }
 
-    public function followers()
+    public function hotels()
     {
-        return $this->belongsToMany(User::class, 'user_followers', 'user_id', 'follower_id');
-    }
-
-    public function follows()
-    {
-        return $this->belongsToMany(User::class, 'user_followers', 'follower_id', 'user_id');
-    }
-
-    public function subscriptions()
-    {
-        return $this->belongsToMany(Closet::class, 'closet_followers', 'follower_id', 'closet_id');
+        return $this->belongsToMany(Hotel::class);
     }
 }

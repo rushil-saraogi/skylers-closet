@@ -12,7 +12,6 @@
 <script>
     import Tooltip from './Tooltip.vue';
 
-
     export default {
         props: ['icon', 'color', 'variant', 'tooltip'],
 

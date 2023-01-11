@@ -3,7 +3,7 @@
 
     <div class="relative flex justify-center min-h-screen bg-white items-center">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 text-gray-800 text-center">
-            <img src="images/logo.svg" class="h-44 m-auto" />
+            <img src="images/logo.png" class="h-44 m-auto" />
             <div class="mt-4 flex gap-2 justify-center">
                 <Link :href="route('login')">
                     <jet-button>Login</jet-button>
@@ -38,7 +38,7 @@
 
         mounted() {
             if (this.$page.props.user) {
-                window.location.href = this.route('dashboard');
+                window.location.href = this.route('heme');
             }
         },
     }

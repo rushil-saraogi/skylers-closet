@@ -17,3 +17,19 @@ Tailwind breakpoints -
 '2xl': '1536px',
 
 */
+
+export const ROLES = {
+    EMPLOYEE: 'EMPLOYEE',
+    ADMIN: 'ADMIN',
+    OWNER: 'OWNER',
+};
+
+export const DEFAULT_ROLE = 'EMPLOYEE';
+
+export const TRIP_FILTERS = [
+    { label: 'All', value: 'all' },
+    { label: 'Active', value: 'active' },
+    { label: 'Upcoming', value: 'upcoming' },
+    { label: 'Past', value: 'past' },
+    { label: 'Cancelled', value: 'cancelled'}
+];

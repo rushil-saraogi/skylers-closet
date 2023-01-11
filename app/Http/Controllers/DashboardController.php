@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class DashboardController extends Controller
 {
@@ -23,110 +24,49 @@ class DashboardController extends Controller
     ) {
     }
 
-    /**
-     * Get the current user's pages
-     *
-     */
-    public function dashboard(Request $request)
+    public function home(Request $request)
     {
-        return Inertia::render('Dashboard', $this->getDashProps($request));
+        return Auth::user()
+            ? Inertia::render('Home', [])
+            : Inertia::render('Landing', []);
     }
 
-    /**
-     * Return the explore component
-     *
-     */
-    public function explore(Request $request)
+    public function design(Request $request)
     {
-        $props = [
-            'categories' => Category::all(),
-        ];
-
-        $props['selected'] = $request->query('category')
-            ? $props['categories']->firstWhere('id', $request->query('category'))
-            :  $props['categories']->first();
-        
-        $props['closets'] = Closet::where('category_id', $props['selected']->id)
-            ->with('category', 'items', 'user')
-            ->get();
-
-        return Inertia::render('Explore', $props);
+        return Inertia::render('Design', []);
     }
 
-    /**
-     * Return the search component
-     *
-     */
-    public function search(Request $request)
+    public function hotels(Request $request)
     {
-        return Inertia::render('Search', []);
-    }
-
-    /**
-     * Return the welcome component
-     *
-     */
-    public function welcome(Request $request)
-    {
-        $props = [
-            'categories' => Category::all(),
-        ];
-
-        $props['selected'] = $request->query('category')
-            ? $props['categories']->firstWhere('id', $request->query('category'))
-            :  $props['categories']->first();
-        
-        $props['closets'] = Closet::where('category_id', $props['selected']->id)
-            ->with('category', 'items', 'user')
-            ->get();
-
-        return Inertia::render('Welcome', array_merge(
-            $props,
-            [
-                'canLogin' => Route::has('login'),
-                'canRegister' => Route::has('register'),
-                'laravelVersion' => Application::VERSION,
-                'phpVersion' => PHP_VERSION,
-            ]
-        ));
-    }
-
-    /**
-     * Return the feed component
-     *
-     */
-    public function feed()
-    {
-        $followee_closet_ids = Closet::whereIn(
-            'user_id',
-            Auth::user()->follows->pluck('id')
-        )->get()->pluck('id');
-
-        $items = Item::whereIn('closet_id', $followee_closet_ids)
-            ->with('closet')
-            ->inRandomOrder()
-            ->paginate();
-        
-        return Inertia::render('Feed', [
-            'items' => $items,
-            'user_closets' => Auth::user()->closets->load('items', 'category')
+        return Inertia::render('Hotels', [
+            'hotels' => Auth::user()->hotels,
         ]);
     }
 
-    private function getDashProps(Request $request)
+    public function trips(Request $request)
     {
-        $props = [
-            'closets' => Closet::with('items')
-                ->with('category')
-                ->where('user_id', Auth::user()->id)
+        return Inertia::render('Trips', [
+            'hotels' => Auth::user()->hotels,
+        ]);
+    }
+
+    public function employees(Request $request)
+    {
+        $hotels = Auth::user()->hotels;
+        $hotelIds = $hotels->pluck('id');
+
+        return Inertia::render('Employees', [
+            'hotels' => Auth::user()->hotels,
+            'employees' => User::where('role', 'employee')
+                ->whereHas('hotels', function($q) use($hotelIds) {
+                    $q->whereIn('hotel_id', $hotelIds);
+                })
                 ->get(),
-            'categories' => Category::all(),
-        ];
+        ]);
+    }
 
-        if ($request->query('closet')) {
-            $props['selected'] = $props['closets']->firstWhere('id', $request->query('closet'));
-        }
-
-        return $props;
+    public function guests(Request $request)
+    {
+        return Inertia::render('Guests', []);
     }
 }

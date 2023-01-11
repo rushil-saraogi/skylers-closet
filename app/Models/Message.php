@@ -11,18 +11,13 @@ class Message extends Model
 
     protected $fillable = [
         'message_body',
-        'closet_id',
+        'guest_id',
         'user_id',
         'parent_message_id',
-        'item_id'
     ];
 
-    public function closet() {
-        return $this->belongsTo(Closet::class);  
-    }
-
-    public function item() {
-        return $this->belongsTo(Item::class);  
+    public function guest() {
+        return $this->belongsTo(Guest::class);  
     }
 
     public function user() {

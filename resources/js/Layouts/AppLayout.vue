@@ -5,39 +5,42 @@
         <jet-banner />
 
         <div
-            class="min-h-screen flex flex-col bg-[url('/images/noise.png')] bg-opacity-40"
+            class="min-h-screen flex flex-col bg-[url('/images/noise.png')] dark:bg-black"
         >
-            <nav class="bg-white border-b border-gray-100">
+            <nav class="bg-white border-b border-gray-100 rounded-2xl">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex-shrink-0 flex items-center">
-                                <Link :href="route('explore')">
+                                <Link :href="route('home')">
                                     <jet-application-mark class="block h-9 w-auto" />
                                 </Link>
                             </div>
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('explore')" :active="route().current('explore')">
-                                    Explore
-                                </jet-nav-link>
-                                <jet-nav-link :href="route('search')" :active="route().current('search')">
-                                    Search
-                                </jet-nav-link>
-                                <jet-nav-link v-if="isLoggedIn" :href="route('feed')" :active="route().current('feed')">
-                                    Feed
-                                </jet-nav-link>
-                                <jet-nav-link v-if="isLoggedIn" :href="route('dashboard')" :active="route().current('dashboard')">
-                                    You
-                                </jet-nav-link>
                                 <jet-nav-link v-if="!isLoggedIn" :href="route('login')" :active="route().current('login')">
                                     Log in
                                 </jet-nav-link>
                                 <jet-nav-link v-if="!isLoggedIn" :href="route('register')" :active="route().current('register')">
                                     Register
+                                </jet-nav-link>
+                                <jet-nav-link v-if="isLoggedIn" :href="route('hotels')" :active="route().current('hotels')">
+                                    Hotels
+                                </jet-nav-link>
+                                <jet-nav-link v-if="isLoggedIn" :href="route('design')" :active="route().current('design')">
+                                    Design
+                                </jet-nav-link>
+                                <jet-nav-link v-if="isLoggedIn" :href="route('trips')" :active="route().current('trips')">
+                                    Trips
+                                </jet-nav-link>
+                                <jet-nav-link v-if="isLoggedIn" :href="route('employees')" :active="route().current('employees')">
+                                    Employees
+                                </jet-nav-link>
+                                <jet-nav-link v-if="isLoggedIn" :href="route('guests')" :active="route().current('guests')">
+                                    Guests
                                 </jet-nav-link>
                             </div>
                         </div>
@@ -164,16 +167,7 @@
                         'w-52': isLoggedIn
                     }"
                 >
-                    <mobile-nav-tab :href="route('explore')" :active="route().current('explore')">
-                        <HomeIcon class="h-6 w-6 text-gray-700" />
-                    </mobile-nav-tab>
-                    <mobile-nav-tab v-if="isLoggedIn" :href="route('feed')" :active="route().current('feed')" :only="['items', 'user_closets']">
-                        <GlobeAmericasIcon class="h-6 w-6 text-gray-700" />
-                    </mobile-nav-tab>
-                    <mobile-nav-tab :href="route('search')" :active="route().current('search')">
-                        <MagnifyingGlassIcon class="h-6 w-6 text-gray-700" />
-                    </mobile-nav-tab>
-                    <mobile-nav-tab v-if="isLoggedIn" :href="route('dashboard')" :active="route().current('dashboard')">
+                    <mobile-nav-tab v-if="isLoggedIn" :href="route('home')" :active="route().current('home')">
                         <UserIcon class="h-6 w-6 text-gray-700" />
                     </mobile-nav-tab>
                 </div>
@@ -269,6 +263,11 @@
             <main
                 class="flex-auto relative flex items-stretch max-w-7xl m-auto w-full py-4 px-4 sm:py-6 sm:px-6 lg:px-8"
             >
+                <onboarding-wizard
+                    v-if="shouldShowOnboarding"
+                    :step="onboardingStep"
+                    :user="user"
+                />
                 <slot></slot>
             </main>
         </div>
@@ -282,6 +281,7 @@
     import JetDropdown from '@/Jetstream/Dropdown.vue'
     import JetDropdownLink from '@/Jetstream/DropdownLink.vue'
     import JetNavLink from '@/Jetstream/NavLink.vue'
+    import OnboardingWizard from "@/Pages/Onboarding/Wizard.vue"
     import MobileNavTab from '@/Jetstream/MobileNavTab.vue'
     import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink.vue'    
     import { usePage } from '@inertiajs/inertia-vue3'
@@ -306,6 +306,7 @@
             MobileNavTab,
             Link,
             IconButton,
+            OnboardingWizard,
             UserIcon,
             GlobeAmericasIcon,
             HomeIcon,
@@ -320,6 +321,14 @@
         computed: {
             isLoggedIn() {
                 return !!this.user;
+            },
+
+            shouldShowOnboarding() {
+                return this.isLoggedIn && !this.user?.onboarded;
+            },
+
+            onboardingStep() {
+                return this.user?.onboarding_step;
             }
         },
 

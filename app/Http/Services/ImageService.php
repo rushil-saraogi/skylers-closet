@@ -4,7 +4,7 @@ namespace App\Http\Services;
 
 use App\Http\Requests\UploadImageRequest;
 use App\Models\Image;
-use App\Models\Item;
+use App\Models\Hotel;
 use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -59,10 +59,10 @@ class ImageService
         return 'https://' . $bucket . '.s3-' . $region . '.amazonaws.com/' . $fileName;
     }
 
-    public function addCustomImageToItem(Item $item, $image)
+    public function addLogoToHotel(Hotel $hotel, $image)
     {
         $fileData = $this->uploadFile($image);
-        $item->image = $fileData['url'];
-        $item->save();
+        $hotel->logo = $fileData['url'];
+        $hotel->save();
     }
 }

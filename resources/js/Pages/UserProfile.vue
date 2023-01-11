@@ -45,7 +45,6 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import JetButton from "@/Jetstream/Button";
 import ImageHeader from "@/Jetstream/ImageHeader.vue";
-import ClosetTile from '@/Common/Tiles/ClosetTile.vue';
 import JetHeader from '@/Jetstream/Header.vue';
 import SecondaryButton from '@/Jetstream/SecondaryButton.vue';
 

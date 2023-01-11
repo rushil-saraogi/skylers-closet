@@ -1,6 +1,6 @@
 <template>
     <Link :href="'/'">
-        <img src="images/logo.svg" class="h-24" />
+        <img src="images/logo.png" class="h-20" />
     </Link>
 </template>
 
